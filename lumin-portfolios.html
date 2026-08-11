@@ -1,0 +1,2637 @@
+<title>Fund Research Dashboard - Portfolios</title>
+
+<style>
+  :root {
+    --ground: #F4F6F7;
+    --surface: #FCFCFB;
+    --surface-2: #F0F3F5;
+    --ink: #16202B;
+    --ink-2: #4E5A68;
+    --ink-3: #77828F;
+    --line: #E0E5EA;
+    --line-strong: #CBD3DB;
+    --accent: #1F5FA8;
+    --accent-soft: #EAF1F9;
+    --btn: #16202B;
+    --btn-ink: #FFFFFF;
+    --good: #12805C;
+    --warn: #C07A12;
+    --crit: #B4353A;
+    --warn-soft: #FBF3E4;
+    --crit-soft: #FBECEC;
+    --c-eq: #1F5FA8;
+    --c-fi: #12805C;
+    --c-dv: #C07A12;
+    --c-ca: #1E93A8;
+    --c-un: #8A93A0;
+    --nav-bg: #1D3D73;
+    --nav-ink: #FFFFFF;
+    --nav-ink-2: #C6D4E9;
+    --nav-ink-3: #8AA3C6;
+    --nav-hover: rgba(255, 255, 255, .09);
+    --nav-active: rgba(255, 255, 255, .16);
+    --shadow: 0 1px 2px rgba(22, 32, 43, .05), 0 1px 3px rgba(22, 32, 43, .04);
+    --radius: 8px;
+    --sans: ui-sans-serif, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --mono: ui-monospace, "Cascadia Mono", "Segoe UI Mono", Consolas, "Liberation Mono", monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #0F1318;
+      --surface: #171B21;
+      --surface-2: #1E242B;
+      --ink: #E8ECF1;
+      --ink-2: #AEB8C4;
+      --ink-3: #8794A2;
+      --line: #29313A;
+      --line-strong: #3A444F;
+      --accent: #6BA4E8;
+      --accent-soft: #1A2635;
+      --btn: #E8ECF1;
+      --btn-ink: #12171C;
+      --good: #1FA378;
+      --warn: #C2851A;
+      --crit: #D96A6E;
+      --warn-soft: #2A2214;
+      --crit-soft: #2C1A1B;
+      --c-eq: #4E8FDB;
+      --c-fi: #1FA378;
+      --c-dv: #C2851A;
+      --c-ca: #26A0BC;
+      --c-un: #7E8A98;
+    --nav-bg: #16294C;
+    --nav-ink: #FFFFFF;
+    --nav-ink-2: #B8C8E2;
+    --nav-ink-3: #7B93B8;
+    --nav-hover: rgba(255, 255, 255, .08);
+    --nav-active: rgba(255, 255, 255, .14);
+      --shadow: 0 1px 2px rgba(0, 0, 0, .4);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground: #0F1318;
+    --surface: #171B21;
+    --surface-2: #1E242B;
+    --ink: #E8ECF1;
+    --ink-2: #AEB8C4;
+    --ink-3: #8794A2;
+    --line: #29313A;
+    --line-strong: #3A444F;
+    --accent: #6BA4E8;
+    --accent-soft: #1A2635;
+    --btn: #E8ECF1;
+    --btn-ink: #12171C;
+    --good: #1FA378;
+    --warn: #C2851A;
+    --crit: #D96A6E;
+    --warn-soft: #2A2214;
+    --crit-soft: #2C1A1B;
+    --c-eq: #4E8FDB;
+    --c-fi: #1FA378;
+    --c-dv: #C2851A;
+    --c-ca: #26A0BC;
+    --c-un: #7E8A98;
+    --nav-bg: #16294C;
+    --nav-ink: #FFFFFF;
+    --nav-ink-2: #B8C8E2;
+    --nav-ink-3: #7B93B8;
+    --nav-hover: rgba(255, 255, 255, .08);
+    --nav-active: rgba(255, 255, 255, .14);
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4);
+  }
+
+  :root[data-theme="light"] {
+    --ground: #F4F6F7;
+    --surface: #FCFCFB;
+    --surface-2: #F0F3F5;
+    --ink: #16202B;
+    --ink-2: #4E5A68;
+    --ink-3: #77828F;
+    --line: #E0E5EA;
+    --line-strong: #CBD3DB;
+    --accent: #1F5FA8;
+    --accent-soft: #EAF1F9;
+    --btn: #16202B;
+    --btn-ink: #FFFFFF;
+    --good: #12805C;
+    --warn: #C07A12;
+    --crit: #B4353A;
+    --warn-soft: #FBF3E4;
+    --crit-soft: #FBECEC;
+    --c-eq: #1F5FA8;
+    --c-fi: #12805C;
+    --c-dv: #C07A12;
+    --c-ca: #1E93A8;
+    --c-un: #8A93A0;
+    --nav-bg: #1D3D73;
+    --nav-ink: #FFFFFF;
+    --nav-ink-2: #C6D4E9;
+    --nav-ink-3: #8AA3C6;
+    --nav-hover: rgba(255, 255, 255, .09);
+    --nav-active: rgba(255, 255, 255, .16);
+    --shadow: 0 1px 2px rgba(22, 32, 43, .05), 0 1px 3px rgba(22, 32, 43, .04);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  button, input, select, textarea { font: inherit; color: inherit; }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+
+  /* ---------- header ---------- */
+
+  .topbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .topbar-inner {
+    max-width: 1360px;
+    margin: 0 auto;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .mark { display: flex; flex-direction: column; line-height: 1.05; }
+  .mark-name { font-size: 21px; font-weight: 700; letter-spacing: -.03em; }
+  .mark-sub { font-size: 11px; font-weight: 600; color: var(--accent); letter-spacing: -.01em; }
+
+  .mark-rule { width: 1px; align-self: stretch; background: var(--line); }
+
+  .titleblock { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .titleline { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .titleline h1 { margin: 0; font-size: 17px; font-weight: 650; letter-spacing: -.02em; }
+  .subtitle { font-size: 12.5px; color: var(--accent); }
+
+  .pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11px; font-weight: 550;
+    padding: 2px 8px; border-radius: 999px;
+    border: 1px solid var(--line-strong);
+    background: var(--surface-2);
+    color: var(--ink-2);
+    white-space: nowrap;
+  }
+
+  .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+  .field-label { font-size: 12px; color: var(--ink-3); }
+
+  input[type="text"], input[type="date"], select, textarea {
+    background: var(--surface);
+    border: 1px solid var(--line-strong);
+    border-radius: 6px;
+    padding: 6px 9px;
+    color: var(--ink);
+  }
+  input::placeholder, textarea::placeholder { color: var(--ink-3); }
+  .initials-input { width: 76px; text-align: center; text-transform: uppercase; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 13px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    background: var(--btn);
+    color: var(--btn-ink);
+    font-weight: 550;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .btn:hover { opacity: .88; }
+  .btn-ghost {
+    background: var(--surface);
+    color: var(--ink-2);
+    border-color: var(--line-strong);
+  }
+  .btn-ghost:hover { background: var(--surface-2); opacity: 1; }
+  .btn-sm { padding: 4px 9px; font-size: 12px; }
+  .btn-danger { background: var(--crit); color: #fff; }
+
+  /* ---------- shell + sidebar nav ---------- */
+
+  .shell { display: flex; align-items: stretch; min-height: 100vh; }
+
+  .sidebar {
+    flex: none;
+    width: 236px;
+    background: var(--nav-bg);
+    padding: 26px 0 32px;
+    position: sticky; top: 0; align-self: flex-start;
+    max-height: 100vh; overflow-y: auto;
+  }
+  .sidebar nav { display: flex; flex-direction: column; gap: 26px; }
+  .sidebar :focus-visible { outline-color: #fff; }
+
+  .content { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; }
+
+  .navgroup { display: flex; flex-direction: column; gap: 1px; }
+  .navgroup-title {
+    font-size: 10.5px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .14em;
+    color: var(--nav-ink-3);
+    padding: 0 22px; margin-bottom: 9px;
+  }
+
+  .navitem {
+    display: flex; align-items: center; gap: 8px;
+    width: calc(100% - 20px); margin: 0 10px;
+    text-align: left;
+    padding: 8px 12px; border-radius: 6px;
+    background: none; border: 1px solid transparent;
+    color: var(--nav-ink-2);
+    font-size: 14.5px; font-weight: 500;
+    cursor: pointer;
+  }
+  .navitem:hover { background: var(--nav-hover); color: var(--nav-ink); }
+  .navitem[aria-current="true"] {
+    background: var(--nav-active);
+    color: var(--nav-ink);
+    font-weight: 650;
+  }
+  .navitem .n {
+    margin-left: auto;
+    font-size: 11px; font-variant-numeric: tabular-nums; font-weight: 600;
+    color: var(--nav-ink-3);
+    background: rgba(255, 255, 255, .1);
+    border-radius: 999px; padding: 1px 7px;
+  }
+  .navitem[aria-current="true"] .n { color: var(--nav-ink-2); }
+
+  @media (max-width: 900px) {
+    .shell { display: block; }
+    .sidebar {
+      width: auto; max-height: none; position: static;
+      padding: 12px 16px; overflow-x: auto;
+    }
+    .sidebar nav { flex-direction: row; align-items: center; gap: 20px; }
+    .navgroup { flex-direction: row; align-items: center; gap: 3px; }
+    .navgroup-title { padding: 0 4px 0 0; margin: 0; white-space: nowrap; }
+    .navitem { width: auto; margin: 0; white-space: nowrap; }
+  }
+
+  /* ---------- layout ---------- */
+
+  main { max-width: 1360px; margin: 0 auto; padding: 26px 24px 60px; }
+
+  .panel-head {
+    display: flex; align-items: flex-start; gap: 16px;
+    margin-bottom: 6px;
+  }
+  .panel-head h2 { margin: 0; font-size: 18px; font-weight: 650; letter-spacing: -.02em; }
+  .panel-head .btn { margin-left: auto; flex: none; }
+  .blurb { margin: 0 0 20px; color: var(--ink-2); font-size: 13.5px; max-width: 82ch; }
+
+  .empty {
+    border: 1px dashed var(--line-strong);
+    border-radius: var(--radius);
+    padding: 44px 20px;
+    text-align: center;
+    color: var(--ink-3);
+    background: var(--surface);
+  }
+
+  .stack { display: flex; flex-direction: column; gap: 26px; }
+
+  .range-head {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px;
+  }
+  .range-name { font-size: 13px; font-weight: 650; letter-spacing: .04em; text-transform: uppercase; }
+  .range-rule { flex: 1; height: 1px; background: var(--line); }
+  .range-count { font-size: 12px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 15px 16px 14px;
+    display: flex; flex-direction: column; gap: 12px;
+    text-align: left;
+    cursor: pointer;
+    width: 100%;
+  }
+  .card:hover { border-color: var(--line-strong); }
+
+  .card-top { display: flex; align-items: flex-start; gap: 10px; }
+  .card-title { font-size: 15px; font-weight: 620; letter-spacing: -.01em; }
+  .card-meta { font-size: 12px; color: var(--ink-3); margin-top: 2px; font-variant-numeric: tabular-nums; }
+
+  .chip {
+    font-size: 11px; font-weight: 600; padding: 2px 8px;
+    border-radius: 999px; border: 1px solid; white-space: nowrap;
+  }
+  .chip-core { color: var(--c-eq); border-color: color-mix(in srgb, var(--c-eq) 35%, transparent); background: color-mix(in srgb, var(--c-eq) 9%, transparent); }
+  .chip-passive { color: var(--ink-2); border-color: var(--line-strong); background: var(--surface-2); }
+  .chip-esg { color: var(--c-fi); border-color: color-mix(in srgb, var(--c-fi) 35%, transparent); background: color-mix(in srgb, var(--c-fi) 9%, transparent); }
+  .chip-income { color: var(--c-dv); border-color: color-mix(in srgb, var(--c-dv) 35%, transparent); background: color-mix(in srgb, var(--c-dv) 9%, transparent); }
+  .chip-other { color: var(--c-ca); border-color: color-mix(in srgb, var(--c-ca) 35%, transparent); background: color-mix(in srgb, var(--c-ca) 9%, transparent); }
+
+  .card-foot { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--ink-3); }
+  .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--line-strong); flex: none; }
+
+  /* ---------- allocation bar ---------- */
+
+  .allocbar { display: flex; height: 10px; border-radius: 3px; overflow: hidden; background: var(--surface-2); }
+  .allocbar span { display: block; height: 100%; box-shadow: 0 0 0 1px var(--surface) inset; }
+  .allocbar-lg { height: 26px; border-radius: 4px; }
+  .allocbar-lg span {
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 600; color: #fff; overflow: hidden;
+  }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 12px; color: var(--ink-2); }
+  .legend-item { display: inline-flex; align-items: center; gap: 6px; }
+  .swatch { width: 9px; height: 9px; border-radius: 2px; flex: none; }
+  .legend-val { font-variant-numeric: tabular-nums; color: var(--ink); font-weight: 550; }
+
+  /* ---------- detail view ---------- */
+
+  .crumb {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: none; border: none; padding: 0; margin-bottom: 14px;
+    color: var(--ink-2); font-size: 13px; cursor: pointer;
+  }
+  .crumb:hover { color: var(--ink); }
+
+  .detail-head { display: flex; align-items: flex-start; gap: 14px; flex-wrap: wrap; margin-bottom: 20px; }
+  .detail-head h2 { margin: 0; font-size: 21px; font-weight: 650; letter-spacing: -.02em; }
+  .detail-actions { margin-left: auto; display: flex; gap: 8px; flex-wrap: wrap; }
+
+  .split { display: grid; grid-template-columns: 260px 1fr; gap: 20px; align-items: start; }
+  @media (max-width: 860px) { .split { grid-template-columns: 1fr; } }
+
+  .side-title {
+    font-size: 11.5px; font-weight: 650; letter-spacing: .05em;
+    text-transform: uppercase; color: var(--ink-3); margin-bottom: 8px;
+  }
+  .snaplist { display: flex; flex-direction: column; gap: 6px; }
+  .snapitem {
+    display: flex; align-items: baseline; gap: 8px;
+    padding: 9px 11px; border-radius: 6px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    cursor: pointer; text-align: left; width: 100%;
+  }
+  .snapitem:hover { border-color: var(--line-strong); }
+  .snapitem[aria-current="true"] { border-color: var(--ink); background: var(--accent-soft); }
+  .snapitem .d { font-weight: 600; font-variant-numeric: tabular-nums; }
+  .snapitem .n { font-size: 12px; color: var(--ink-3); margin-left: auto; font-variant-numeric: tabular-nums; }
+
+  .box {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+  .box-head {
+    padding: 13px 16px; border-bottom: 1px solid var(--line);
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  }
+  .box-head h3 { margin: 0; font-size: 14.5px; font-weight: 620; }
+  .box-body { padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+
+  .tablewrap { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; }
+  thead th {
+    text-align: left; font-size: 11px; font-weight: 650;
+    letter-spacing: .04em; text-transform: uppercase; color: var(--ink-3);
+    padding: 8px 12px; border-bottom: 1px solid var(--line); white-space: nowrap;
+  }
+  tbody td { padding: 8px 12px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover td { background: var(--surface-2); }
+  .num { text-align: right; font-variant-numeric: tabular-nums; }
+  .isin { font-family: var(--mono); font-size: 12px; color: var(--ink-2); }
+  tfoot td {
+    padding: 9px 12px; border-top: 1px solid var(--line-strong);
+    font-weight: 650; font-variant-numeric: tabular-nums;
+  }
+
+  /* ---------- fund register ---------- */
+
+  .toolbar {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+  .toolbar .grow { flex: 1; min-width: 200px; }
+  .toolbar input[type="text"] { width: 100%; }
+
+  .fundrow { cursor: pointer; }
+  .fundrow[aria-expanded="true"] td { background: var(--accent-soft); }
+  .fundname { font-weight: 550; }
+  .ranges { display: flex; gap: 4px; flex-wrap: wrap; }
+
+  .minibar {
+    position: relative; height: 8px; min-width: 110px;
+    background: var(--surface-2); border-radius: 2px; overflow: hidden;
+  }
+  .minibar i {
+    position: absolute; top: 0; bottom: 0;
+    background: color-mix(in srgb, var(--accent) 45%, transparent);
+  }
+  .minibar b {
+    position: absolute; top: -2px; bottom: -2px; width: 2px;
+    background: var(--accent);
+  }
+
+  .notescell a {
+    display: inline-flex; align-items: center; gap: 5px;
+    color: var(--accent); text-decoration: none;
+    font-size: 12.5px; white-space: nowrap;
+  }
+  .notescell a:hover { text-decoration: underline; }
+  .notescell svg { flex: none; opacity: .8; }
+  .notes-n {
+    font-size: 11px; font-weight: 650; color: var(--ink-3);
+    background: var(--surface-2); border: 1px solid var(--line);
+    border-radius: 999px; padding: 0 6px; font-variant-numeric: tabular-nums;
+  }
+
+  a.wcell { text-decoration: none; color: var(--accent); }
+  a.wcell:hover { border-color: var(--accent); }
+
+  .breakdown td { background: var(--surface-2); }
+  .breakdown-inner { padding: 4px 0 10px; display: flex; flex-direction: column; gap: 10px; }
+  .wgrid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 6px;
+  }
+  .wcell {
+    display: flex; align-items: baseline; gap: 8px;
+    padding: 6px 9px; border-radius: 5px;
+    border: 1px solid var(--line); background: var(--surface);
+    font-size: 12.5px;
+  }
+  .wcell .w { margin-left: auto; font-variant-numeric: tabular-nums; font-weight: 620; }
+  .wcell.zero { opacity: .5; }
+
+  .note {
+    display: flex; gap: 8px; align-items: flex-start;
+    padding: 9px 12px; border-radius: 6px; font-size: 12.5px;
+    border: 1px solid; line-height: 1.45;
+  }
+  .note-warn { background: var(--warn-soft); border-color: color-mix(in srgb, var(--warn) 30%, transparent); color: var(--ink); }
+  .note-info { background: var(--surface-2); border-color: var(--line); color: var(--ink-2); }
+
+  /* ---------- calendar ---------- */
+
+  .cal-toolbar {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+  .cal-month {
+    font-size: 16px; font-weight: 650; letter-spacing: -.01em;
+    min-width: 150px;
+  }
+  .cal-legend { display: flex; gap: 6px; flex-wrap: wrap; margin-left: auto; }
+
+  .tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 600; padding: 2px 9px;
+    border-radius: 999px; border: 1px solid; white-space: nowrap;
+  }
+  .tag .swatch { border-radius: 50%; }
+  .tag-event { color: var(--c-dv); border-color: color-mix(in srgb, var(--c-dv) 40%, transparent); background: color-mix(in srgb, var(--c-dv) 10%, transparent); }
+  .tag-internal { color: var(--c-fi); border-color: color-mix(in srgb, var(--c-fi) 40%, transparent); background: color-mix(in srgb, var(--c-fi) 10%, transparent); }
+  .tag-external { color: var(--c-eq); border-color: color-mix(in srgb, var(--c-eq) 40%, transparent); background: color-mix(in srgb, var(--c-eq) 10%, transparent); }
+
+  .cal-grid {
+    display: grid; grid-template-columns: repeat(7, 1fr);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--line);
+    gap: 1px;
+    box-shadow: var(--shadow);
+  }
+  .cal-dow {
+    background: var(--surface-2);
+    padding: 7px 10px;
+    font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .1em;
+    color: var(--ink-3);
+  }
+  .cal-cell {
+    background: var(--surface);
+    min-height: 108px;
+    padding: 6px 6px 8px;
+    display: flex; flex-direction: column; gap: 4px;
+    cursor: pointer;
+    text-align: left; border: none; font: inherit; color: inherit;
+  }
+  .cal-cell:hover { background: var(--accent-soft); }
+  .cal-cell.cal-out { background: var(--ground); }
+  .cal-cell.cal-out .cal-num { color: var(--ink-3); opacity: .6; }
+  .cal-cell.cal-wkend:not(.cal-out) { background: color-mix(in srgb, var(--surface-2) 55%, var(--surface)); }
+  .cal-num {
+    font-size: 12px; font-weight: 600; color: var(--ink-2);
+    font-variant-numeric: tabular-nums;
+    align-self: flex-start;
+    padding: 1px 6px; border-radius: 999px;
+  }
+  .cal-cell.cal-today .cal-num { background: var(--accent); color: #fff; }
+
+  .cal-evt {
+    display: flex; align-items: baseline; gap: 5px;
+    width: 100%;
+    font-size: 11.5px; font-weight: 550;
+    padding: 2px 7px; border-radius: 5px;
+    border: 1px solid; border-left-width: 3px;
+    text-align: left; cursor: pointer; font-family: inherit;
+    overflow: hidden;
+  }
+  .cal-evt:hover { filter: brightness(1.06); }
+  .cal-evt .t { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+  .cal-evt .hm { font-size: 10.5px; font-weight: 650; font-variant-numeric: tabular-nums; flex: none; opacity: .85; }
+  .cal-evt .who { margin-left: auto; flex: none; font-size: 10px; font-weight: 700; letter-spacing: .04em; opacity: .75; }
+  .evt-event { color: var(--c-dv); border-color: color-mix(in srgb, var(--c-dv) 45%, transparent); background: color-mix(in srgb, var(--c-dv) 12%, transparent); }
+  .evt-internal { color: var(--c-fi); border-color: color-mix(in srgb, var(--c-fi) 45%, transparent); background: color-mix(in srgb, var(--c-fi) 12%, transparent); }
+  .evt-external { color: var(--c-eq); border-color: color-mix(in srgb, var(--c-eq) 45%, transparent); background: color-mix(in srgb, var(--c-eq) 12%, transparent); }
+  .cal-more { font-size: 11px; color: var(--ink-3); padding: 0 7px; }
+
+  .cal-upcoming { margin-top: 26px; }
+  .cal-upcoming h3 { margin: 0 0 10px; font-size: 13px; font-weight: 650; letter-spacing: .04em; text-transform: uppercase; }
+  .up-list { display: flex; flex-direction: column; gap: 6px; }
+  .up-row {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 8px 12px;
+    cursor: pointer; text-align: left; font: inherit; color: inherit; width: 100%;
+  }
+  .up-row:hover { border-color: var(--line-strong); }
+  .up-date { flex: none; width: 92px; font-size: 12px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+  .up-time { flex: none; width: 88px; font-size: 12px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+  .up-title { font-weight: 550; font-size: 13px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .up-who { margin-left: auto; flex: none; font-size: 11px; font-weight: 700; color: var(--ink-3); letter-spacing: .04em; }
+
+  .typepick { display: flex; gap: 8px; flex-wrap: wrap; }
+  .typepick label {
+    display: inline-flex; align-items: center; gap: 7px;
+    border: 1px solid var(--line-strong); border-radius: 6px;
+    padding: 7px 12px; cursor: pointer; font-size: 13px; font-weight: 550;
+    background: var(--surface); color: var(--ink-2);
+  }
+  .typepick input { position: absolute; opacity: 0; pointer-events: none; }
+  .typepick label:has(input:checked) { border-color: currentColor; }
+  .typepick label:has(input:checked).tp-event { color: var(--c-dv); background: color-mix(in srgb, var(--c-dv) 10%, transparent); }
+  .typepick label:has(input:checked).tp-internal { color: var(--c-fi); background: color-mix(in srgb, var(--c-fi) 10%, transparent); }
+  .typepick label:has(input:checked).tp-external { color: var(--c-eq); background: color-mix(in srgb, var(--c-eq) 10%, transparent); }
+
+  @media (max-width: 900px) {
+    .cal-cell { min-height: 74px; }
+    .cal-evt .who, .cal-evt .hm { display: none; }
+  }
+
+  /* ---------- dialog ---------- */
+
+  dialog {
+    border: 1px solid var(--line-strong);
+    border-radius: 10px;
+    background: var(--surface);
+    color: var(--ink);
+    padding: 0;
+    max-width: 640px;
+    width: calc(100vw - 32px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, .18);
+  }
+  dialog::backdrop { background: rgba(16, 22, 30, .42); }
+  .dlg-head { padding: 16px 18px 0; }
+  .dlg-head h3 { margin: 0 0 4px; font-size: 16px; font-weight: 650; letter-spacing: -.01em; }
+  .dlg-head p { margin: 0; font-size: 12.5px; color: var(--ink-3); }
+  .dlg-body { padding: 16px 18px; display: flex; flex-direction: column; gap: 14px; }
+  .dlg-foot {
+    padding: 13px 18px; border-top: 1px solid var(--line);
+    display: flex; gap: 8px; justify-content: flex-end; background: var(--surface-2);
+    border-radius: 0 0 10px 10px;
+  }
+  .row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .fieldset { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 150px; }
+  .fieldset label { font-size: 12px; font-weight: 600; color: var(--ink-2); }
+  .fieldset .hint { font-size: 11.5px; color: var(--ink-3); }
+  textarea { min-height: 150px; resize: vertical; font-family: var(--mono); font-size: 12px; line-height: 1.55; }
+
+  .filebtn { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+  .filebtn input { display: none; }
+
+  /* ---------- misc ---------- */
+
+  .placeholder {
+    border: 1px dashed var(--line-strong);
+    border-radius: var(--radius);
+    background: var(--surface);
+    padding: 48px 24px;
+    text-align: center;
+    color: var(--ink-3);
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+  }
+  .placeholder strong { color: var(--ink-2); font-weight: 620; font-size: 15px; }
+
+  footer {
+    max-width: 1360px; margin: 0 auto; padding: 0 24px 48px;
+    font-size: 11.5px; line-height: 1.6; color: var(--ink-3); max-width: 1360px;
+  }
+  footer p { margin: 0; max-width: 110ch; }
+
+  .tip {
+    position: fixed; z-index: 50; pointer-events: none;
+    background: var(--ink); color: var(--ground);
+    padding: 5px 9px; border-radius: 5px; font-size: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .25);
+    opacity: 0; transition: opacity .1s;
+    font-variant-numeric: tabular-nums; white-space: nowrap;
+  }
+  .tip[data-show="true"] { opacity: 1; }
+
+  .sr {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+</style>
+
+<div class="shell">
+<aside class="sidebar">
+  <nav id="sidebarNav" aria-label="Sections"></nav>
+</aside>
+
+<div class="content">
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="mark">
+      <span class="mark-name">Lumin</span>
+      <span class="mark-sub">VZ Group</span>
+    </div>
+    <div class="mark-rule"></div>
+    <div class="titleblock">
+      <div class="titleline">
+        <h1>Fund Research Dashboard</h1>
+        <span class="pill" id="scopePill" title="Entries are saved in this browser only">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Local workspace
+        </span>
+      </div>
+      <div class="subtitle">Shared fund-of-funds research hub &middot; Internal scoring 1-4 (lower is better)</div>
+    </div>
+    <div class="topbar-right">
+      <span class="field-label">Your initials</span>
+      <input type="text" class="initials-input" id="initials" maxlength="4" placeholder="e.g. JD" aria-label="Your initials">
+      <button class="btn" id="refreshBtn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 3v6h-6"/></svg>
+        Refresh
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main"></main>
+
+<footer>
+  <p id="footnote"></p>
+</footer>
+
+</div>
+</div>
+
+<div class="tip" id="tip" role="status" aria-live="polite"></div>
+
+<dialog id="portfolioDlg">
+  <form method="dialog">
+    <div class="dlg-head">
+      <h3>Add portfolio</h3>
+      <p>One entry per risk level within a range. Add its allocations afterwards as a dated rebalance.</p>
+    </div>
+    <div class="dlg-body">
+      <div class="row">
+        <div class="fieldset">
+          <label for="pRange">Range</label>
+          <input type="text" id="pRange" list="rangeList" placeholder="Core" required>
+          <datalist id="rangeList">
+            <option value="Core"></option><option value="Passive"></option>
+            <option value="ESG"></option><option value="Income"></option>
+          </datalist>
+        </div>
+        <div class="fieldset">
+          <label for="pRisk">Risk level</label>
+          <input type="text" id="pRisk" list="riskList" placeholder="L50" required>
+          <datalist id="riskList">
+            <option value="L10"></option><option value="L30"></option><option value="L50"></option>
+            <option value="L70"></option><option value="L90"></option><option value="L100"></option>
+          </datalist>
+        </div>
+      </div>
+      <div class="fieldset">
+        <label for="pNote">Note <span class="hint">optional - benchmark, mandate wording</span></label>
+        <input type="text" id="pNote" placeholder="e.g. WealthZentrum share class, IA Mixed 40-85% Shares">
+      </div>
+    </div>
+    <div class="dlg-foot">
+      <button class="btn btn-ghost" value="cancel" formnovalidate>Cancel</button>
+      <button class="btn" value="save" id="pSave">Add portfolio</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="rebalanceDlg">
+  <form method="dialog">
+    <div class="dlg-head">
+      <h3>New rebalance</h3>
+      <p>Paste straight from Excel, or upload a CSV. Columns: Fund Name, ISIN, Weight, and optionally Asset Class.</p>
+    </div>
+    <div class="dlg-body">
+      <div class="row">
+        <div class="fieldset" style="max-width:190px">
+          <label for="rDate">Effective date</label>
+          <input type="date" id="rDate" required>
+        </div>
+        <div class="fieldset">
+          <label for="rNote">Note <span class="hint">optional</span></label>
+          <input type="text" id="rNote" placeholder="e.g. Q2 2026 rebalance, IC approved">
+        </div>
+      </div>
+      <div class="fieldset">
+        <label for="rPaste">Allocations</label>
+        <textarea id="rPaste" spellcheck="false" placeholder="Fund Name&#9;ISIN&#9;Weight&#10;Vanguard FTSE Dev World ex-UK&#9;GB00B59G4Q73&#9;12.5%&#10;Royal London Short Duration Gilts&#9;GB00B8XYYQ86&#9;7.0%"></textarea>
+        <span class="hint" id="parseHint">Weights may be percentages (12.5%) or decimals (0.125) - totals are checked against 100%.</span>
+      </div>
+      <div class="row" style="align-items:center">
+        <label class="btn btn-ghost btn-sm filebtn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"/><path d="m7 9 5-5 5 5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+          Upload CSV
+          <input type="file" id="rFile" accept=".csv,.txt,.tsv">
+        </label>
+        <span class="hint" id="fileHint">.xlsx is not readable in the browser - copy the cells and paste, or save the sheet as CSV.</span>
+      </div>
+    </div>
+    <div class="dlg-foot">
+      <button class="btn btn-ghost" value="cancel" formnovalidate>Cancel</button>
+      <button class="btn" value="save" id="rSave">Save rebalance</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="eventDlg">
+  <form method="dialog">
+    <div class="dlg-head">
+      <h3 id="eHeading">New calendar entry</h3>
+      <p>Team schedule for the investment hub. Entries are shared via Export / Import workspace like everything else.</p>
+    </div>
+    <div class="dlg-body">
+      <div class="fieldset">
+        <label>Type</label>
+        <div class="typepick">
+          <label class="tp-event"><input type="radio" name="eType" value="event"><span class="swatch" style="background:var(--c-dv);border-radius:50%"></span>Conference</label>
+          <label class="tp-internal"><input type="radio" name="eType" value="internal" checked><span class="swatch" style="background:var(--c-fi);border-radius:50%"></span>Sales catchup</label>
+          <label class="tp-external"><input type="radio" name="eType" value="external"><span class="swatch" style="background:var(--c-eq);border-radius:50%"></span>Manager meeting</label>
+        </div>
+      </div>
+      <div class="fieldset">
+        <label for="eTitle">Title</label>
+        <input type="text" id="eTitle" placeholder="e.g. QIC meeting, Baillie Gifford manager call, CPD day" required>
+      </div>
+      <div class="row">
+        <div class="fieldset" style="max-width:170px">
+          <label for="eDate">Date</label>
+          <input type="date" id="eDate" required>
+        </div>
+        <div class="fieldset" style="max-width:120px">
+          <label for="eStart">Start <span class="hint">optional</span></label>
+          <input type="time" id="eStart">
+        </div>
+        <div class="fieldset" style="max-width:120px">
+          <label for="eEnd">End <span class="hint">optional</span></label>
+          <input type="time" id="eEnd">
+        </div>
+        <div class="fieldset" style="max-width:120px">
+          <label for="eWho">Who <span class="hint">initials</span></label>
+          <input type="text" id="eWho" placeholder="e.g. HE" style="text-transform:uppercase">
+        </div>
+      </div>
+      <div class="fieldset">
+        <label for="eNote">Details <span class="hint">optional - location, attendees, agenda</span></label>
+        <input type="text" id="eNote" placeholder="e.g. Boardroom / Teams link in invite">
+      </div>
+    </div>
+    <div class="dlg-foot">
+      <button type="button" class="btn btn-danger" id="eDelete" style="margin-right:auto;display:none">Delete</button>
+      <button class="btn btn-ghost" value="cancel" formnovalidate>Cancel</button>
+      <button class="btn" value="save" id="eSave">Save entry</button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+(function () {
+  "use strict";
+
+  var KEY = "lumin.fund-research.v1";
+
+  var NAV = [
+    {
+      group: "Investment Hub",
+      items: [
+        { id: "dashboard", label: "Dashboard" },
+        { id: "portfolios", label: "Portfolios" },
+        { id: "funds", label: "Funds" },
+        { id: "calendar", label: "Calendar" }
+      ]
+    },
+    {
+      group: "Research",
+      items: [
+        { id: "meetings", label: "Meeting Notes" },
+        { id: "quant", label: "Quant Scores" },
+        { id: "watchlist", label: "Watchlist" },
+        { id: "ddqs", label: "DDQs" }
+      ]
+    },
+    {
+      group: "Tasks",
+      items: [
+        { id: "research-tasks", label: "Research Tasks" },
+        { id: "qic-tasks", label: "QIC Tasks" },
+        { id: "off-desk", label: "Off Desk Projects" }
+      ]
+    }
+  ];
+
+  var NAV_ITEMS = NAV.reduce(function (a, g) { return a.concat(g.items); }, []);
+
+  var ICONS = {
+    grid: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',
+    briefcase: '<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>',
+    eye: '<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>',
+    pie: '<path d="M21.2 15.9A10 10 0 1 1 8.1 2.8"/><path d="M22 12A10 10 0 0 0 12 2v10Z"/>',
+    paper: '<path d="M4 22h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Z"/><path d="M8 7h8M8 11h8M8 15h5"/>',
+    calendar: '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+    checks: '<path d="m3 7 2 2 4-4"/><path d="m3 17 2 2 4-4"/><path d="M13 6h8M13 12h8M13 18h8"/>',
+    clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+    upload: '<path d="M12 15V3"/><path d="m7 8 5-5 5 5"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/>',
+    trash: '<path d="M3 6h18"/><path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>',
+    plus: '<path d="M12 5v14M5 12h14"/>',
+    back: '<path d="m15 18-6-6 6-6"/>',
+    down: '<path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/>',
+    warn: '<path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/>'
+  };
+
+  var CLASSES = [
+    { key: "Equities", varname: "--c-eq" },
+    { key: "Fixed Interest", varname: "--c-fi" },
+    { key: "Diversifiers", varname: "--c-dv" },
+    { key: "Cash", varname: "--c-ca" },
+    { key: "Unclassified", varname: "--c-un" }
+  ];
+
+  var CLASS_KEYS = CLASSES.map(function (c) { return c.key; });
+
+  // ---------- seeded Lumin model data ----------
+  // Extracted from 'Model Portfolio Analysis - V4.3.11'.
+  // Weights are model allocations in %, largest first. No client data.
+  // SEED_MODELS: [rangeIdx, platformIdx, risk, [[dateIdx, [[fundIdx, weight], ...]], ...]]
+
+  var SEED_ASSET = { E: "Equities", F: "Fixed Interest", D: "Diversifiers", C: "Cash", U: "Unclassified" };
+  var SEED_RANGES = ["Core","Passive","ESG","Income"];
+  var SEED_DATES = ["2026-05-01","2026-02-01","2025-10-30","2025-08-06","2025-05-01","2025-02-06","2024-11-07","2024-07-31","2024-05-01","2024-01-31","2023-11-01","2023-07-27","2023-05-02","2023-01-31","2022-11-02","2022-08-02","2022-04-27","2022-01-27","2021-10-27","2021-07-23","2021-04-29","2021-01-29","2020-10-23","2020-07-28","2020-04-24","2020-01-24","2019-12-04","2019-10-18","2019-07-22","2019-05-03","2019-01-25","2018-10-19","2018-07-17","2018-04-23","2018-02-02","2017-10-11","2017-08-01","2017-05-02","2017-04-26","2017-01-25"];
+  var SEED_PLATFORMS = [["AJB","AJ Bell"],["ARC","ARC"],["AXA","AXA"],["Asc","Ascentric"],["Elev","Elevate"],["ElevMG","Elevate (M&G)"],["Fid","Fidelity"],["M&G","M&G"],["M&GOff","M&G Offshore"],["Pru","Prudential"],["RJ","Raymond James"],["SL","Standard Life"],["SW","Scottish Widows"],["Tra","Transact"],["UTM","Utmost"],["WZ","WealthZentrum"]];
+
+  var SEED_FUNDS = [
+    ["Vanguard Global Bond Index (IP Acc)","IE00BPT2BQ43","F"],
+    ["Vanguard U.K. Government Bond Index (IP Acc)","IE00BPT2BS66","F"],
+    ["Cohen & Steers Diversified Real Assets Fund (FX GBP)","LU1821812770","D"],
+    ["Aberdeen Short-Dated Inflation Linked (N Acc)","GB00BDFZ6S09","F"],
+    ["TrinityBridge Select Fixed Income (X Inc)","GB00BD6R7Y87","F"],
+    ["L&G Strategic Bond (I Acc)","GB00B1TWMW95","F"],
+    ["Vanguard UK Short-Term Investment Grade Index (Acc GBP)","IE00BPT2BX10","F"],
+    ["Premier Miton Tellworth UK Select (A Acc GBP)","GB00BNY7YM73","D"],
+    ["Vanguard FTSE All World (ETF (GBP))","IE00B3RBWM25","E"],
+    ["Fidelity Global Dividend (R Acc)","GB00BP68CM89","E"],
+    ["Morgan Stanley EMD Opportunities","LU2617254367","F"],
+    ["Vanguard FTSE U.K. All Share Index (IP Acc)","GB00BPN5P907","E"],
+    ["Royal London Short Term Fixed Income","GB00BMNR1H58","F"],
+    ["CASH","","C"],
+    ["iShares Core Global Aggregate Bond (GBP Hedged (Dist))","IE00BF540Y54","F"],
+    ["iShares UK Gilts All Stocks Index (UK) D Inc","GB00B89VCR08","F"],
+    ["L&G Strategic Bond (C Acc)","GB00BYWRC554","F"],
+    ["Vanguard UK Short-Term Investment Grade Index (Plus Acc GBP)","IE00B9M1BB17","F"],
+    ["Vanguard FTSE 100 ((GBP) Distributing ETF)","IE00B810Q511","E"],
+    ["iShares Index Linked Gilt Index Fund (UK) (D Acc)","GB00B83RVT96","F"],
+    ["CG Absolute Return (M Inc GBP)","IE00BYQ69B30","D"],
+    ["Vanguard UK Investment Grade Bond Index","IE00B1S74Q32","F"],
+    ["Royal London Short Term Money Market (Y Inc)","GB00B3P2RZ52","F"],
+    ["Royal London Sterling Extra Yield Bond (Z GBP Income)","IE00BG5GTJ66","F"],
+    ["Vanguard U.K. Inflation Linked Gilt Index (IP Acc)","GB00BPN5P451","F"],
+    ["LF Ruffer Diversified Return (I Inc)","GB00BMWLQV75","D"],
+    ["Ruffer Total Return (I Inc)","GB00B03J9Y05","D"],
+    ["International Public Partnerships (Ord)","GB00B188SR50","D"],
+    ["BMO Property Growth & Income (I Inc)","GB00BQWJ8794","D"],
+    ["Jupiter Strategic Absolute Return Bond (F2 GBP Hedged Acc)","IE00BLP58S06","F"],
+    ["Ruffer Total Return (C Inc)","GB00B58BQH88","D"],
+    ["BNY Mellon Multi-Asset Diversified Return (Inst W Inc)","GB00B8HJ5779","D"],
+    ["Fidelity Global Dividend (W Inc)","GB00B7778087","E"],
+    ["Royal London Sterling Extra Yield Bond (A Inc)","IE0032571485","F"],
+    ["iShares £ Corporate Bond 0-5yr (UCITS ETF GBP (Dist))","IE00B5L65R35","F"],
+    ["UK Commercial Property REIT (Ord)","GB00B19Z2J52","D"],
+    ["JPM Global Core Real Assets (Ord)","GG00BJVKW831","D"],
+    ["Jupiter Strategic Bond (I Inc)","GB00B544HM32","F"],
+    ["Stewart Worldwide Sustainability (B Inc GBP)","GB00B8319S60","E"],
+    ["BNY Mellon Real Return (Institutional W Inc)","GB00B7W36529","D"],
+    ["HarbourVest Global Private Equity (Ord)","GG00BR30MJ80","E"],
+    ["Man GLG Undervalued Assets (D Professional Inc)","GB00BFH3NB82","E"],
+    ["Artemis Strategic Bond (MI Inc)","GB00B2PLJS27","F"],
+    ["Legg Mason - Western Asset Macro Opportunities Bond X GBP Acc (X Acc GBP)","IE00BSZLQG13","D"],
+    ["Architas - Diversified Real Assets A Inc","GB00BMP2ZM10","D"],
+    ["iShares - $ TIPS UCITS ETF USD Acc","IE00B1FZSC47","F"],
+    ["L&G European Index Trust (I Inc)","GB00B0CNGQ43","E"],
+    ["Tritax - Big Box Reit PLC Ord 1P","GB00BG49KP99","D"],
+    ["iShares - $ TIPS UCITS ETF GBP DIS Hedged (Inc)","IE00BDZVH859","F"],
+    ["M&G - Optimal Income Inst Inc GBP (I Inc)","GB00B1H05601","F"],
+    ["Artemis SmartGARP Global Emerging Markets (I Inc GBP)","GB00BW9HL249","E"],
+    ["Polar Capital Global Insurance (I Acc GBP)","IE00B5339C57","E"],
+    ["Vanguard FTSE Developed Europe ex-U.K. Index (Acc GBP)","GB00B5B71H80","E"],
+    ["Dimensional US Small Companies (Acc GBP)","IE00B0701B00","E"],
+    ["L&G S&P 500 US Equal Weight Index (C Acc GBP)","GB00BSWT8Q21","E"],
+    ["Premier Miton US Opportunities (B Institutional Acc)","GB00B8278F56","E"],
+    ["Montanaro European Smaller Companies (Inst Inc GBP)","IE00B3V9KZ14","E"],
+    ["Vanguard Global Emerging Markets (A Inc GBP)","GB00BZ82ZX06","E"],
+    ["Ninety One Global Environment (I Acc)","GB00BKT89K74","E"],
+    ["GAM UK Equity Income (Z Inc GBP)","GB00BF09N571","E"],
+    ["Redwheel Next Generation Emerging Markets (I Acc GBP)","LU1940965699","E"],
+    ["Fidelity Sustainable Global Health Care (W ACC GBP)","LU1033663300","E"],
+    ["Liontrust SF European Growth (2 Acc)","GB0030029390","E"],
+    ["Vanguard FTSE 250 ((GBP) Distributing ETF)","IE00BKX55Q28","E"],
+    ["JPM Japan (C Inc)","GB00B235RJ39","E"],
+    ["Baillie Gifford Emerging Markets Growth B Inc","GB0006020530","E"],
+    ["Jupiter UK Special Situations (I Inc)","GB00B66H8P73","E"],
+    ["JPM - Natural Resources C Inc","GB00B61M9437","E"],
+    ["Dodge & Cox - Global Stock A Acc GBP","IE00B54J6879","E"],
+    ["M&G Japan (I Acc)","GB00B74CQP79","E"],
+    ["Artemis UK Smaller Companies (I Acc)","GB00B2PLJL57","E"],
+    ["Xtrackers S&P 500 Equal Weight (1C)","IE00BLNMYC90","E"],
+    ["Invesco Perpetual - Pacific Y Inc","GB00BJ04K604","E"],
+    ["Vanguard Global Bond Index (GBP Hedged Acc)","IE00B50W2R13","F"],
+    ["Aberdeen Short-Dated Inflation Linked (B Acc)","GB00BGMK1733","F"],
+    ["L&G Global Equity Index (I Inc)","GB00B84K1975","E"],
+    ["L&G UK 100 Index Trust (I Inc)","GB00B0CNH494","E"],
+    ["FP Foresight UK Infrastructure (A Inc GBP)","GB00BF0VS815","D"],
+    ["Jupiter Strategic Absolute Return Bond (U1 GBP Hedged Acc)","IE00BLP58X58","F"],
+    ["HSBC Global Property (C Inc)","GB00B702WG47","D"],
+    ["L&G Short Dated Corp Bond Index (I Inc)","GB00BKGR3G14","F"],
+    ["Church House Tenax Abs Ret Strat (C Inc)","GB00BNBNRD03","D"],
+    ["Legg Mason - Western Asset Macro Opportunities Bond X Hedged GBP (X Acc GBP Hedged)","IE00BHBFD929","D"],
+    ["LF Ruffer Total Return C Inc","","U"],
+    ["Henderson - UK Property PAIF Feeder I Inc","GB00BYP82C20","D"],
+    ["Aberdeen - UK Property Feeder I Inc","GB00BTLX1Q39","D"],
+    ["Architas - Diversified Real Assets D Acc","GB00BRKD9W23","D"],
+    ["Invesco Perpetual - Global Targeted Returns Z Acc","GB00B8CHD613","D"],
+    ["Jupiter - Absolute Return I Acc","GB00B6Q84T67","D"],
+    ["Invesco Perpetual - European Equity Z Inc","GB00B8N44K25","E"],
+    ["Aviva Inv - Multi Strategy Target Income 2 (2 Inc)","GB00BQSBPF62","D"],
+    ["BlackRock - Global Property Securities Equity Tracker D Inc","GB00B848DD97","D"],
+    ["CF - Woodford Equity Income C Inc","GB00BLRZQ620","E"],
+    ["L&G S&P 500 US Equal Weight Index","GB00BSWT8L75","E"],
+    ["Montanaro European Smaller Companies (Inc GBP)","IE0001195316","E"],
+    ["Redwheel Next Generation Emerging Markets (R GBP)","LU1940965939","E"],
+    ["abrdn European Smaller Companies (I Acc)","GB00B0XWN580","E"],
+    ["HSBC FTSE 250 Index (C Inc)","GB00B80QFZ35","E"],
+    ["Baillie Gifford Emerging Markets Growth B Acc","GB0006020647","E"],
+    ["Invesco Perpetual - Pacific Z Inc","GB00B8N44Y60","E"],
+    ["Franklin - UK Mid Cap W Inc","GB00B8K8HH50","E"],
+    ["MI Somerset - Emerging Markets Dividend Growth A Inc","GB00B4QKMK51","E"],
+    ["Fundsmith - Equity I Inc","GB00B4MR8G82","E"],
+    ["Polar Capital - Healthcare Opportunities I GBP","IE00B3NLDF60","E"],
+    ["Schroder - European Alpha Income Z (Hedged) Inc","GB00B9DLYT99","E"],
+    ["Architas - Diversified Real Assets D Inc","GB00BRKD9X30","D"],
+    ["Legg Mason - Western Asset Macro Opportunities Bond Premier Hedged GBP","IE00BHBX1F87","D"],
+    ["Vanguard FTSE Developed Europe ex-U.K. Index (IP GBP Acc)","GB00BPN5P014","E"],
+    ["Third Point - Third Point Offshore Investors Ltd USD","GG00B1YQ7219","E"],
+    ["Invesco S&P 500 Equal Weight (UCITS ETF Acc)","IE00BNGJJT35","E"],
+    ["Vanguard Global Emerging Markets (A Acc GBP)","GB00BZ82ZY13","E"],
+    ["Royal London Short Term Money Market (Y Acc)","GB00B8XYYQ86","F"],
+    ["Fidelity Index World (P Inc)","GB00BP8RYB62","E"],
+    ["M&G Japan (PP Acc)","GB00BG03Y538","E"],
+    ["Architas - Diversified Real Assets A Acc","GB00BMP2ZL03","D"],
+    ["Invesco Perpetual - Global Targeted Returns Y Acc","GB00BJ04HL49","D"],
+    ["Invesco Perpetual - European Equity Y Inc","GB00BJ04FZ45","E"],
+    ["BlackRock - Global Property Securities Equity Tracker H Inc","GB00BPFJCN32","D"],
+    ["CF - Woodford Equity Income Z Inc","GB00BLRZQB71","E"],
+    ["TrinityBridge Select Fixed Income (X Acc)","GB00BD6DSC14","F"],
+    ["PineBridge Global Equity","IE000SZPPNQ2","E"],
+    ["L&G Global Equity Index (C Acc)","GB00BPN60094","E"],
+    ["Xtrackers MSCI World ex USA (1C)","IE0006WW1TQ4","E"],
+    ["Vanguard UK Investment Grade Bond Index (IP Acc)","IE00BPT2BT73","F"],
+    ["Xtrackers MSCI Value Factor (1C)","IE00BL25JM42","E"],
+    ["L&G All Stocks Gilt Index Trust (C Acc)","GB00BG0QNW27","F"],
+    ["LF Ruffer Diversified Return (I Acc)","GB00BMWLQW82","D"],
+    ["L&G UK Index Trust (C Acc)","GB00BG0QPJ30","E"],
+    ["Artemis SmartGARP Global Emerging Markets","GB00BNQNJ512","E"],
+    ["Janus Henderson Life Sciences","GB00BPXXDJ03","E"],
+    ["Premier Miton US Opportunities (F Acc)","GB00BNHND258","E"],
+    ["Vanguard U.K. Government Bond Index (Inst Plus Inc)","IE00BPT2BR59","F"],
+    ["L&G Global Infrastructure Index Fund (I-Class GBP Acc)","GB00BF0TZG22","D"],
+    ["HSBC FTSE EPRA NAREIT Developed UCITS ETF","IE00B5L01S80","D"],
+    ["iShares Global High Yield Corp Bond (UCITS ETF GBP Hegded)","IE00BJSFQX44","F"],
+    ["L&G Emerging Markets Government Bond (USD) Index","IE000Z3FSB21","F"],
+    ["Vanguard Emerging Markets Stock Index Fund (IP GBP Acc)","IE00BPT2BB99","E"],
+    ["Vanguard U.S. 500 Stock Index Fund (IP USD Acc)","IE00BFPM9T72","E"],
+    ["Xtrackers MSCI World Health Care","IE00BM67HK77","E"],
+    ["iShares £ Ultrashort Bond ETF","IE00BCRY6441","F"],
+    ["Vanguard Global Small-Cap Index Fund (IP GBP Acc)","IE00BPT2BD14","E"],
+    ["L&G Japan Index Trust (C ACC)","GB00BG0QP828","E"],
+    ["iShares Global Aggregate Bond ESG SRI UCITS ETF","IE000ZXYID24","F"],
+    ["Amundi MSCI United Kingdom SRI PAB Index","LU2269164153","E"],
+    ["BNP Paribas Easy ECPI Global ESG Infrastructure ETF","IE0006O3TTP9","D"],
+    ["UBS MSCI World SRI ETF","IE00BK72HH44","E"],
+    ["Amundi MSCI EM SRI PAB Index","LU2089234475","E"],
+    ["iShares Environment & Low Carbon Tilt Real Estate Index Fund","GB00B5BFJG71","D"],
+    ["Xtrackers S&P 500 Equal Weight ESG UCITS ETF","IE0004MFRED4","E"],
+    ["iShares $ High Yield Corp Bond ESG UCITS ETF","IE0003NVF3Y3","F"],
+    ["L&G Emerging Markets Government Bond (USD) Screened Index","IE000GWGMO62","F"],
+    ["Xtrackers MSCI USA ESG UCITS ETF","IE00BFMNPS42","E"],
+    ["Vanguard ESG Developed European Index","IE00B76VTL96","E"],
+    ["iShares MSCI World Health Care Sector Advanced","IE0009QS7W62","E"],
+    ["UBS MSCI World Small Cap Socially Responsible UCITS ETF","IE00BKSCBW67","E"],
+    ["iShares Japan Equity ESG Screened and Optimised Index Fund","GB00BN090851","E"],
+    ["Vanguard FTSE All-World High Dividend Yield UCITS ETF","IE00B8GKDB10","E"],
+    ["Premier Miton Strategic Monthly Income","GB00BMWVS003","F"],
+    ["PIMCO GIS Income Fund (GBP H Inst Inc)","IE00B8RHFL59","F"],
+    ["Cohen & Steers Diversified Real Assets Fund (GBP Hdg) (F Inc GBP (Hedged))","LU2313907409","D"],
+    ["L&G Strategic Bond (I Inc)","GB00B1TWMY10","F"],
+    ["Cohen & Steers Short Duration Preferred Income (F Inc GBP (Hedged))","LU2581459927","F"],
+    ["TM Gravis UK Infrastructure Income","GB00BYVB3Q65","D"],
+    ["BNY Mellon US Equity Income Fund (W Inc GBP)","IE00BD5M7551","E"],
+    ["Schroder US Equity Income Maximiser (L Inc)","GB00BYP25698","E"],
+    ["Schroder Income Maximiser (L Inc)","GB00BDD2F083","E"],
+    ["Artemis Global Income Fund (I Inc)","GB00B5N99561","E"],
+    ["Vanguard FTSE UK Equity Income Index (Inst Plus Inc GBP)","GB00BPN5NV83","E"],
+    ["JPM Emerging Markets Income (C Inc)","GB00B5N1BC33","E"],
+    ["Chikara Japan Income & Growth (S Inc GBP)","IE00BKRC2Z78","E"],
+  ];
+
+  // Fund manager meeting notes on the shared drive, keyed by fund index.
+  var SEED_NOTES = {"50":[["Artemis Global EM","C:\\Users\\HughEdwards\\OneDrive - Lumin Wealth Management\\Investment team work\\Equities\\Artemis Global EM",3]],"128":[["Artemis Global EM","C:\\Users\\HughEdwards\\OneDrive - Lumin Wealth Management\\Investment team work\\Equities\\Artemis Global EM",3]],"65":[["Baillie Gifford EM Growth","C:\\Users\\HughEdwards\\OneDrive - Lumin Wealth Management\\Investment team work\\Equities\\Baillie Gifford EM Growth",4]],"98":[["Baillie Gifford EM Growth","C:\\Users\\HughEdwards\\OneDrive - Lumin Wealth Management\\Investment team work\\Equities\\Baillie Gifford EM Growth",4]],"169":[["Chikara Japan","C:\\Users\\HughEdwards\\OneDrive - Lumin Wealth Management\\Investment team work\\Equities\\Chikara Japan",1]],"32":[["Fidelity Global Dividend","C:\\Users\\HughEdwards\\OneDrive - Lumin Wealth Management\\Investment team work\\Equities\\Fidelity Global Dividend",5]],"9":[["Fidelity Global Dividend","C:\\Users\\HughEdwards\\OneDrive - Lumin Wealth Management\\Investment team work\\Equities\\Fidelity Global Dividend",5]],"61":[["Fidelity Global Healthcare","C:\\Users\\HughEdwards\\OneDrive - Lumin Wealth Management\\Investment team work\\Equities\\Fidelity Global Healthcare",1]],"59":[["GAM UK Equity Fund","C:\\Users\\HughEdwards\\OneDrive - Lumin Wealth Management\\Investment team work\\Equities\\GAM UK Equity Fund",2]],"40":[["HPVE","C:\\Users\\HughEdwards\\OneDrive - Lumin Wealth Management\\Investment team work\\Equities\\HPVE",8]],"99":[["Invesco Pacific","C:\\Users\\HughEdwards\\OneDrive - Lumin Wealth Management\\Investment team work\\Equities\\Invesco Pacific",1]],"72":[["Invesco Pacific","C:\\Users\\HughEdwards\\OneDrive - Lumin Wealth Management\\Investment team work\\Equities\\Invesco Pacific",1]],"64":[["JPM Japan","C:\\Users\\HughEdwards\\OneDrive - Lumin Wealth Management\\Investment team work\\Equities\\JPM Japan",1]],"67":[["JPM Natural Resources","C:\\Users\\HughEdwards\\OneDrive - Lumin Wealth Management\\Investment team work\\Equities\\JPM Natural Resources",2]],"129":[["Janus Henderson Healthcare","C:\\Users\\HughEdwards\\OneDrive - Lumin Wealth Management\\Investment team work\\Equities\\Janus Henderson Healthcare",1]],"37":[["Jupiter Strategic Bond","C:\\Users\\HughEdwards\\OneDrive - Lumin Wealth Management\\Investment team work\\Equities\\Jupiter Strategic Bond",1]],"66":[["Jupiter UK Special Situations","C:\\Users\\HughEdwards\\OneDrive - Lumin Wealth Management\\Investment team work\\Equities\\Jupiter UK Special Situations",2]],"62":[["Liontrust Sustainable Future European Growth","C:\\Users\\HughEdwards\\OneDrive - Lumin Wealth Management\\Investment team work\\Equities\\Liontrust Sustainable Future European Growth",3]],"113":[["M&G Japan","C:\\Users\\HughEdwards\\OneDrive - Lumin Wealth Management\\Investment team work\\Equities\\M&G Japan",3]],"69":[["M&G Japan","C:\\Users\\HughEdwards\\OneDrive - Lumin Wealth Management\\Investment team work\\Equities\\M&G Japan",3]],"41":[["Man GLG Undervalued Assets","C:\\Users\\HughEdwards\\OneDrive - Lumin Wealth Management\\Investment team work\\Equities\\Man GLG Undervalued Assets",5]],"58":[["Ninety One Global Environment","C:\\Users\\HughEdwards\\OneDrive - Lumin Wealth Management\\Investment team work\\Equities\\Ninety One Global Environment",2]],"120":[["PineBridge Global Focus Equity Fund","C:\\Users\\HughEdwards\\OneDrive - Lumin Wealth Management\\Investment team work\\Equities\\PineBridge Global Focus Equity Fund",6]],"51":[["Polar Capital Global Insurance","C:\\Users\\HughEdwards\\OneDrive - Lumin Wealth Management\\Investment team work\\Equities\\Polar Capital Global Insurance",13]],"103":[["Polar Capital Healthcare","C:\\Users\\HughEdwards\\OneDrive - Lumin Wealth Management\\Investment team work\\Equities\\Polar Capital Healthcare",1],["Polar Capital Healthcare Opportunities Fund 16.01.25","C:\\Users\\HughEdwards\\OneDrive - Lumin Wealth Management\\Investment team work\\Equities\\Polar Capital Healthcare Opportunities Fund 16.01.25.docx",1]],"130":[["Premier Miton US Opps","C:\\Users\\HughEdwards\\OneDrive - Lumin Wealth Management\\Investment team work\\Equities\\Premier Miton US Opps",6]],"55":[["Premier Miton US Opps","C:\\Users\\HughEdwards\\OneDrive - Lumin Wealth Management\\Investment team work\\Equities\\Premier Miton US Opps",6]],"95":[["Redwheel Next Gen EM","C:\\Users\\HughEdwards\\OneDrive - Lumin Wealth Management\\Investment team work\\Equities\\Redwheel Next Gen EM",4]],"60":[["Redwheel Next Gen EM","C:\\Users\\HughEdwards\\OneDrive - Lumin Wealth Management\\Investment team work\\Equities\\Redwheel Next Gen EM",4]],"165":[["Schroder Income Maximiser","C:\\Users\\HughEdwards\\OneDrive - Lumin Wealth Management\\Investment team work\\Equities\\Schroder Income Maximiser.docx",1]],"38":[["Stewart WW Sustainability","C:\\Users\\HughEdwards\\OneDrive - Lumin Wealth Management\\Investment team work\\Equities\\Stewart WW Sustainability",3]],"57":[["Vanguard Global EM","C:\\Users\\HughEdwards\\OneDrive - Lumin Wealth Management\\Investment team work\\Equities\\Vanguard Global EM",4]],"110":[["Vanguard Global EM","C:\\Users\\HughEdwards\\OneDrive - Lumin Wealth Management\\Investment team work\\Equities\\Vanguard Global EM",4]]};
+
+  var SEED_MODELS = [
+    [0,1,"L10",[
+      [0,[[73,29],[15,12],[2,10],[74,9],[4,8.5],[5,7],[17,6.5],[7,5],[75,3.5],[9,2.5],[76,2.5],[10,2.5],[12,1.5],[13,0.5]]],
+      [1,[[73,29],[15,12],[2,10],[74,9],[4,8.5],[5,7],[17,6.5],[7,5],[9,3.5],[75,3.5],[76,3],[10,2.5],[13,0.5]]],
+      [2,[[73,31.5],[15,12],[74,9],[4,8.5],[2,8],[5,7],[7,7],[17,6.5],[9,3.5],[75,3.5],[76,3],[13,0.5]]],
+      [3,[[73,31.5],[15,10.5],[4,8.5],[2,8],[74,7.5],[5,7],[7,7],[17,6.5],[75,4.5],[76,3],[19,3],[9,2.5],[13,0.5]]],
+      [4,[[73,29.5],[15,10],[2,10],[4,9],[74,7.5],[17,7],[5,7],[20,5],[75,4.5],[19,4.5],[76,3],[55,2.5],[13,0.5]]],
+      [5,[[73,29.5],[15,10],[2,10],[4,9],[74,7.5],[21,7],[5,7],[20,5],[75,4.5],[19,4.5],[76,3],[9,2.5],[13,0.5]]],
+      [6,[[73,26.5],[4,10],[15,10],[2,10],[21,7.5],[22,6],[33,5.5],[19,5],[20,5],[75,4],[74,4],[76,3.5],[9,2.5],[13,0.5]]],
+      [7,[[73,19.5],[15,12.5],[4,11],[20,11],[2,9],[21,8],[19,7],[33,6.5],[22,5],[75,4],[76,3.5],[9,2.5],[13,0.5]]],
+      [8,[[73,19.5],[15,12.5],[4,11],[20,11],[2,9],[21,8],[19,7],[33,6.5],[22,5],[75,4],[76,3.5],[9,2.5],[13,0.5]]],
+      [9,[[73,18.5],[15,12],[4,9.5],[21,8.5],[25,8],[20,7.5],[2,7.5],[33,7],[19,7],[22,5],[75,3.5],[76,3],[9,2.5],[13,0.5]]],
+      [10,[[73,13.5],[15,11],[22,10],[25,10],[4,9.5],[21,8.5],[20,7.5],[2,7.5],[33,7],[19,6],[75,4],[9,2.5],[76,2.5],[13,0.5]]],
+      [11,[[22,16],[73,12],[15,10],[25,10],[4,8.5],[33,8],[21,7.5],[77,6.5],[20,6],[28,6],[75,4.5],[32,2.5],[76,2],[13,0.5]]],
+      [12,[[73,13],[78,12.5],[22,11],[25,11],[33,9],[4,8.5],[28,8],[77,6.5],[20,6],[31,5],[75,4.5],[32,3],[76,1.5],[13,0.5]]],
+      [13,[[73,15],[78,15],[25,10.5],[31,9.5],[4,9],[33,9],[28,9],[77,8],[20,5.5],[75,4],[32,2.5],[13,1.5],[76,1.5]]],
+      [14,[[73,15],[78,15],[31,9.5],[25,9.5],[77,8],[28,8],[79,7],[4,6],[20,5.5],[75,4],[33,4],[80,3.5],[32,2],[13,1.5],[76,1.5]]],
+      [15,[[37,14.5],[73,10],[4,10],[80,10],[31,9.5],[25,8],[77,8],[28,8],[79,7],[20,5.5],[75,4.5],[32,2],[13,1.5],[76,1.5]]],
+      [16,[[80,18],[37,14.5],[4,10],[31,9.5],[25,8],[77,8],[28,8],[79,7],[20,5.5],[75,4],[38,3],[13,1.5],[32,1.5],[76,1.5]]],
+      [17,[[80,18],[37,12.5],[4,12],[39,9.5],[77,8],[81,8],[28,8],[79,7],[75,4],[20,3.5],[38,3],[13,1.5],[76,1.5],[41,1.5],[57,1],[32,1]]],
+      [18,[[80,16],[4,14],[37,12.5],[39,12],[81,9],[77,8],[28,8],[79,7],[75,4],[38,3],[13,1.5],[76,1.5],[41,1.5],[57,1],[32,1]]],
+      [19,[[80,16],[39,12],[37,10.5],[4,9],[42,8.5],[81,8],[28,8],[77,7],[79,7],[75,4],[38,3.5],[13,1.5],[76,1.5],[41,1.5],[57,1],[32,1]]],
+      [20,[[80,16],[39,12],[42,10.5],[37,10.5],[81,8],[28,8],[4,7],[77,7],[79,7],[75,4],[38,3.5],[13,1.5],[76,1.5],[41,1.5],[57,1],[32,1]]],
+      [21,[[80,16],[39,12],[42,10.5],[37,10.5],[28,8],[82,7],[79,7],[4,6.5],[81,6],[75,5],[38,3.5],[77,3],[13,1.5],[76,1.5],[32,1],[41,1]]],
+      [22,[[80,21],[39,12],[42,10.5],[37,10.5],[28,8],[79,7.5],[82,7],[4,6],[75,5],[83,5],[38,2.5],[13,1.5],[76,1.5],[32,1],[41,1]]],
+      [23,[[80,21],[39,12],[42,10.5],[37,10.5],[28,8],[79,7.5],[82,7],[4,6],[44,6],[75,5],[38,2.5],[13,1.5],[76,1.5],[41,1]]],
+      [24,[[80,21],[39,12],[44,10],[42,9],[37,9],[28,8],[82,7.5],[79,7.5],[75,6],[4,6],[13,1.5],[76,1.5],[41,1]]],
+      [25,[[80,22.5],[39,12],[44,10],[42,9],[37,9],[28,8],[82,7.5],[79,7.5],[4,6],[75,3],[13,1.5],[76,1.5],[41,1.5],[46,1]]],
+      [26,[[80,22.5],[39,12],[42,10],[37,10],[44,10],[28,8],[82,7.5],[79,7.5],[4,4],[75,3],[13,1.5],[76,1.5],[41,1.5],[46,1]]],
+      [27,[[80,22.5],[39,12],[42,10],[37,10],[44,10],[28,8],[82,7.5],[79,7.5],[4,4],[75,3],[13,1.5],[76,1.5],[41,1.5],[46,1]]],
+      [28,[[80,22.5],[39,12],[42,10],[37,10],[44,10],[82,7.5],[28,5.5],[84,5],[79,5],[4,4],[75,3],[13,1.5],[76,1.5],[41,1.5],[46,1]]],
+      [29,[[80,22.5],[39,12],[42,10],[37,10],[44,10],[82,7.5],[28,5.5],[85,5],[84,5],[49,4],[75,3],[13,1.5],[76,1.5],[41,1.5],[46,1]]],
+      [30,[[80,22.5],[39,10],[49,9],[42,7.5],[37,7.5],[82,7.5],[86,7],[85,6.5],[84,6],[87,4],[75,3],[28,3],[13,1.5],[76,1.5],[41,1.5],[46,1],[88,1]]],
+      [31,[[80,22.5],[39,10],[42,7.5],[37,7.5],[82,7.5],[86,7],[85,6.5],[84,6],[87,5],[28,3],[75,2.5],[13,1.5],[41,1.5],[89,1],[88,1]]],
+      [32,[[80,22.5],[37,10],[39,10],[82,7.5],[86,7],[85,6.5],[84,6],[87,5],[28,3],[75,2.5],[13,1.5],[41,1.5],[89,1],[88,1]]],
+      [33,[[80,22.5],[49,15],[37,10],[39,10],[82,9],[86,7],[85,6.5],[84,6],[87,5],[75,2.5],[88,2.5],[13,1.5],[41,1.5],[89,1]]],
+      [34,[[80,22.5],[49,15],[37,10],[39,10],[82,9],[86,7],[85,6.5],[84,6],[87,5],[75,2.5],[88,2.5],[13,1.5],[41,1.5],[89,1]]],
+      [35,[[80,25],[49,12.5],[37,10],[86,7],[82,7],[85,6.5],[84,6.5],[90,5],[39,5],[87,5],[75,2.5],[88,2.5],[13,1.5],[41,1.5],[91,1.5],[89,1]]],
+      [36,[[80,25],[37,10],[82,7],[85,6.5],[84,6.5],[90,5],[39,5],[87,5],[91,5],[86,3.5],[75,2.5],[88,2.5],[13,1.5],[92,1.5],[89,1]]],
+      [37,[[80,25],[37,10],[75,7.5],[82,7],[85,6.5],[84,6.5],[90,5],[87,5],[91,5],[86,3.5],[92,2.5],[88,2.5],[13,1.5]]],
+      [38,[[80,25],[49,12.5],[37,10],[75,7.5],[82,7],[85,6.5],[84,6.5],[90,5],[87,5],[91,5],[86,3.5],[92,2.5],[88,2.5],[13,1.5]]],
+      [39,[[80,29.5],[37,10],[49,10],[75,7.5],[85,6.5],[84,6.5],[90,5],[87,5],[82,5],[91,5],[86,3.5],[92,2.5],[88,2.5],[13,1.5]]],
+    ]],
+    [0,1,"L30",[
+      [0,[[73,24.5],[15,8.5],[2,8.5],[76,7.5],[4,7.5],[74,5.5],[75,5],[5,5],[9,4],[17,3.5],[7,3.5],[51,3],[50,3],[10,3],[53,2],[93,2],[12,2],[52,1.5],[13,0.5]]],
+      [1,[[73,24.5],[76,9],[15,8.5],[4,7.5],[2,7.5],[74,5.5],[9,5],[5,5],[75,4.5],[7,4.5],[50,3.5],[17,3.5],[10,3],[51,2],[52,2],[53,2],[93,2],[13,0.5]]],
+      [2,[[73,27.5],[76,9],[15,8.5],[4,7.5],[2,6.5],[74,5.5],[7,5.5],[9,5],[5,5],[75,4.5],[50,3.5],[17,3.5],[51,2],[52,2],[53,2],[93,2],[13,0.5]]],
+      [3,[[73,27.5],[76,9],[75,7.5],[4,7.5],[15,7.5],[2,6.5],[7,5.5],[5,5],[9,4],[74,4],[50,3.5],[17,3.5],[19,2.5],[51,2],[52,2],[53,2],[13,0.5]]],
+      [4,[[73,25.5],[76,9],[4,8],[2,8],[15,7],[75,6.5],[5,5.5],[55,4.5],[74,4.5],[9,4],[50,4],[17,4],[20,4],[19,3],[51,2],[13,0.5]]],
+      [5,[[73,25.5],[76,9],[4,8],[2,8],[15,7],[75,6.5],[5,5.5],[55,4.5],[74,4.5],[9,4],[50,4],[21,4],[20,4],[19,3],[51,2],[13,0.5]]],
+      [6,[[73,24.5],[76,9.5],[4,9.5],[2,8],[15,7.5],[75,7],[21,5.5],[9,4.5],[50,4],[33,4],[20,4],[19,3.5],[55,3],[74,3],[51,2],[13,0.5]]],
+      [7,[[73,17.5],[4,10],[15,10],[76,8.5],[20,8],[75,7.5],[2,7],[21,6.5],[33,5.5],[19,5],[9,4],[50,3],[55,3],[51,2],[94,2],[13,0.5]]],
+      [8,[[73,17.5],[4,10],[15,10],[76,8.5],[20,8],[75,7.5],[2,7],[21,6.5],[33,5.5],[19,5],[9,4],[50,3],[55,3],[51,2],[94,2],[13,0.5]]],
+      [9,[[73,17],[15,10],[4,8.5],[75,7.5],[76,7.5],[21,7],[33,6],[25,6],[2,6],[19,5],[20,5],[9,4],[57,3],[55,3],[51,2],[94,2],[13,0.5]]],
+      [10,[[73,12],[15,9],[4,8.5],[21,7],[25,7],[33,6],[20,6],[2,6],[75,5.5],[22,5],[9,4],[76,4],[19,4],[57,3],[55,3],[58,3],[59,2.5],[51,2],[94,2],[13,0.5]]],
+      [11,[[73,10.5],[22,8.5],[15,8],[4,7.5],[33,7],[25,7],[75,6.5],[21,6],[28,6],[20,5],[77,5],[32,4],[57,3],[76,3],[55,3],[58,3],[59,2.5],[51,2],[94,2],[13,0.5]]],
+      [12,[[73,11.5],[78,10],[33,8],[25,8],[4,7.5],[28,7.5],[75,6],[22,5],[20,5],[77,5],[32,3.5],[58,3],[31,3],[76,2.5],[94,2.5],[57,2],[51,2],[55,2],[59,2],[95,2],[61,1.5],[13,0.5]]],
+      [13,[[78,12.5],[73,10],[28,8.5],[33,8],[4,7.5],[25,7.5],[31,6],[77,5.5],[32,5],[20,5],[38,4],[75,4],[76,2],[51,2],[55,2],[59,2],[95,2],[58,2],[13,1.5],[61,1.5],[96,1.5]]],
+      [14,[[78,12.5],[73,9.5],[25,7],[28,7],[32,6],[31,6],[77,5.5],[79,5.5],[4,5],[33,5],[20,5],[38,4.5],[75,4.5],[80,3.5],[76,2.5],[51,2],[55,2],[59,2],[58,2],[13,1.5],[61,1.5]]],
+      [15,[[37,13],[4,8.5],[80,8],[73,7],[28,7],[32,6],[31,6],[77,5.5],[79,5.5],[20,5],[25,5],[38,4.5],[75,4.5],[76,3.5],[51,2],[55,2],[59,2],[58,2],[13,1.5],[61,1.5]]],
+      [16,[[37,13],[80,13],[4,8.5],[32,7],[28,7],[31,6],[77,5.5],[79,5.5],[20,5],[25,5],[38,4.5],[75,4],[76,3.5],[41,2.5],[51,2],[58,2],[13,1.5],[62,1.5],[55,1.5],[97,1.5]]],
+      [17,[[80,13],[37,12],[4,9.5],[32,7],[28,7],[39,6],[77,5.5],[79,5.5],[38,4.5],[81,4],[75,3.5],[76,3.5],[20,3],[41,2.5],[57,2],[51,2],[58,2],[13,1.5],[64,1.5],[62,1.5],[55,1.5],[97,1.5]]],
+      [18,[[37,12],[80,12],[4,10.5],[39,8],[32,7],[28,7],[77,5.5],[79,5.5],[38,5],[81,5],[75,4],[76,3.5],[41,2.5],[97,2.5],[57,2],[58,2],[13,1.5],[64,1.5],[51,1.5],[55,1.5]]],
+      [19,[[80,11.5],[37,10],[4,9],[39,8],[32,7.5],[28,7],[38,5.5],[79,5.5],[75,5],[42,4],[57,3.5],[76,3.5],[77,3.5],[81,3.5],[41,2.5],[97,2.5],[58,2],[13,1.5],[64,1.5],[51,1.5],[55,1.5]]],
+      [20,[[80,11.5],[37,10],[42,8.5],[32,7.5],[28,7],[4,6.5],[39,6],[38,5.5],[79,5.5],[75,5],[57,3.5],[76,3.5],[77,3.5],[81,3.5],[41,2.5],[97,2.5],[58,2],[13,1.5],[64,1.5],[51,1.5],[55,1.5]]],
+      [21,[[80,11.5],[37,10],[42,8.5],[32,7.5],[28,7],[75,6.5],[4,6.5],[39,6],[38,5.5],[82,5.5],[79,5.5],[76,3.5],[98,2.5],[66,2.5],[41,2.5],[58,2],[77,2],[81,2],[13,1.5],[64,1.5]]],
+      [22,[[80,14.5],[37,10],[42,8.5],[32,7.5],[75,7.5],[28,7],[4,6],[39,6],[79,6],[38,5.5],[82,5.5],[76,3.5],[98,2.5],[66,2.5],[41,2.5],[83,2],[13,1.5],[64,1.5]]],
+      [23,[[80,14.5],[42,10],[37,10],[75,7.5],[28,7],[32,6],[4,6],[39,6],[82,6],[79,6],[38,4],[76,3.5],[44,3],[98,2.5],[66,2.5],[41,2.5],[13,1.5],[64,1.5]]],
+      [24,[[80,15.5],[42,9],[37,9],[75,8.5],[82,7],[28,7],[32,6],[4,6],[39,6],[79,6],[44,5],[76,3.5],[98,3],[66,2.5],[41,2.5],[67,2],[13,1.5]]],
+      [25,[[80,17.5],[42,9],[37,9],[82,7],[28,7],[75,6],[4,6],[39,6],[79,6],[44,5],[32,3.5],[76,3.5],[98,3],[66,3],[41,3],[67,2],[46,2],[13,1.5]]],
+      [26,[[80,17.5],[42,10],[37,10],[82,7],[28,7],[75,6],[39,6],[79,6],[44,5],[4,4],[32,3.5],[76,3.5],[98,3],[66,3],[41,3],[67,2],[46,2],[13,1.5]]],
+      [27,[[80,17.5],[42,10],[37,10],[82,7],[28,7],[75,6],[39,6],[79,6],[44,5],[4,4],[32,3.5],[76,3.5],[98,3],[66,3],[41,3],[67,2],[46,2],[13,1.5]]],
+      [28,[[80,17.5],[42,10],[37,10],[82,7],[75,6],[39,6],[44,5],[28,5],[4,4],[84,4],[79,4],[68,3.5],[76,3.5],[98,3],[66,3],[41,3],[67,2],[46,2],[13,1.5]]],
+      [29,[[80,17.5],[42,10],[37,10],[82,7],[75,6],[39,6],[44,5],[28,5],[49,4],[85,4],[84,4],[68,3.5],[76,3.5],[98,3],[66,3],[41,3],[67,2],[46,2],[13,1.5]]],
+      [30,[[80,17.5],[49,9],[42,7.5],[37,7.5],[82,7],[75,6],[39,6],[85,5.5],[84,5.5],[86,5],[68,3.5],[76,3.5],[66,3],[46,3],[41,3],[98,2],[67,2],[28,2],[13,1.5]]],
+      [31,[[80,17.5],[75,8],[42,7.5],[37,7.5],[82,7],[39,6],[85,5.5],[84,5.5],[86,5],[68,3],[66,2.5],[41,2.5],[76,2],[46,2],[28,2],[13,1.5],[89,1.5]]],
+      [32,[[80,17.5],[37,10],[75,8],[82,7],[39,6],[85,5.5],[84,5.5],[86,5],[87,5],[68,3],[66,2.5],[41,2.5],[76,2],[46,2],[28,2],[13,1.5],[89,1.5]]],
+      [33,[[80,17.5],[37,10],[49,10],[75,8],[82,8],[85,5.5],[84,5.5],[86,5],[39,5],[87,4.5],[68,3.5],[66,3],[41,2.5],[88,2.5],[99,2],[76,2],[46,2],[89,2],[13,1.5]]],
+      [34,[[80,17.5],[37,10],[49,10],[82,8],[75,6],[85,5.5],[84,5.5],[86,5],[39,5],[87,4.5],[68,3.5],[46,3.5],[66,3],[41,2.5],[51,2.5],[88,2.5],[76,2],[89,2],[13,1.5]]],
+      [35,[[80,25],[37,10],[75,6],[86,6],[82,6],[85,5],[84,5],[87,4.5],[68,3.5],[46,3.5],[66,3],[49,3],[41,2.5],[51,2.5],[90,2.5],[39,2.5],[88,2.5],[76,2],[89,2],[13,1.5],[91,1.5]]],
+      [36,[[80,25],[37,10],[75,6],[82,6],[85,5],[84,5],[90,4],[87,4],[91,4],[68,3.5],[46,3.5],[66,3],[92,2.5],[51,2.5],[86,2.5],[39,2.5],[88,2.5],[76,2],[89,2],[13,1.5]]],
+      [37,[[80,25],[37,10],[75,6],[82,6],[85,5],[84,5],[46,4.5],[92,4],[90,4],[87,4],[91,4],[68,3.5],[100,3.5],[66,3.5],[51,2.5],[86,2.5],[88,2.5],[13,1.5]]],
+      [38,[[80,25],[37,10],[75,6],[82,6],[85,5],[84,5],[46,4.5],[92,4],[90,4],[87,4],[91,4],[68,3.5],[100,3.5],[66,3.5],[49,3],[51,2.5],[86,2.5],[88,2.5],[13,1.5]]],
+      [39,[[80,27.5],[37,10],[75,7.5],[85,5],[84,5],[46,4.5],[92,4],[90,4],[87,4],[82,4],[91,4],[68,3.5],[100,3.5],[66,3.5],[51,3.5],[86,2.5],[88,2.5],[13,1.5]]],
+    ]],
+    [0,1,"L50",[
+      [0,[[73,16],[76,10.5],[2,8],[9,6.5],[4,6.5],[15,6.5],[75,6],[51,5.5],[93,5],[50,4.5],[74,4.5],[53,3],[5,3],[10,3],[52,2.5],[12,2.5],[95,2],[69,2],[7,2],[13,0.5]]],
+      [1,[[73,16],[76,9.5],[9,7.5],[2,7.5],[4,6.5],[15,6.5],[75,6],[50,5.5],[93,5],[74,4.5],[53,4],[51,3],[5,3],[10,3],[70,2.5],[95,2.5],[52,2.5],[7,2.5],[69,2],[13,0.5]]],
+      [2,[[73,18.5],[76,9.5],[9,7.5],[4,6.5],[15,6.5],[75,6],[50,5.5],[93,5],[2,5],[74,4.5],[7,4.5],[53,4],[5,4],[51,3],[70,3],[52,2.5],[95,2],[69,2],[13,0.5]]],
+      [3,[[73,18.5],[75,11],[76,9.5],[9,8],[4,6.5],[50,5.5],[15,5.5],[2,5],[7,4.5],[5,4],[53,3.5],[74,3.5],[51,3],[70,3],[52,2.5],[60,2],[69,2],[19,2],[13,0.5]]],
+      [4,[[73,17],[76,10],[75,9],[9,7.5],[4,7],[55,6],[2,6],[50,5.5],[15,5],[5,4],[51,3],[70,3],[74,3],[19,2.5],[17,2.5],[20,2.5],[95,2],[52,2],[69,2],[13,0.5]]],
+      [5,[[73,17],[75,10.5],[76,10],[9,7],[4,7],[55,6],[2,6],[50,5],[15,5],[5,4],[95,3.5],[51,3],[70,3],[74,3],[19,2.5],[21,2.5],[20,2.5],[69,2],[13,0.5]]],
+      [6,[[73,16],[76,10.5],[75,9.5],[4,8],[9,7],[2,6],[15,5.5],[50,5],[51,4.5],[55,3.5],[95,3.5],[71,3.5],[21,3.5],[70,3],[33,3],[19,2.5],[74,2.5],[20,2.5],[13,0.5]]],
+      [7,[[75,13],[76,12.5],[73,11],[4,8.5],[15,7.5],[9,6],[20,5],[2,5],[50,4.5],[51,4.5],[33,4.5],[21,4.5],[55,3.5],[19,3.5],[95,3],[94,3],[13,0.5]]],
+      [8,[[75,13],[76,12.5],[73,11],[4,8.5],[15,7.5],[9,6],[20,5],[2,5],[50,4.5],[51,4.5],[33,4.5],[21,4.5],[55,3.5],[19,3.5],[95,3],[94,3],[13,0.5]]],
+      [9,[[75,13],[76,11.5],[73,10.5],[4,7.5],[15,7.5],[9,6],[33,5],[21,5],[57,4.5],[51,4.5],[20,4],[25,4],[55,3.5],[19,3.5],[2,3.5],[95,3],[94,3],[13,0.5]]],
+      [10,[[75,9.5],[73,9.5],[76,7.5],[4,7.5],[9,7],[15,6.5],[33,5],[21,5],[20,5],[25,5],[51,4.5],[58,4.5],[57,3.5],[55,3.5],[2,3.5],[59,3],[95,3],[94,3],[19,2.5],[22,1],[13,0.5]]],
+      [11,[[75,11],[73,8.5],[32,7],[4,6.5],[76,6],[33,6],[15,5],[25,5],[51,4.5],[58,4.5],[28,4.5],[21,4],[20,4],[57,3.5],[55,3.5],[22,3.5],[77,3.5],[59,3],[95,3],[94,3],[13,0.5]]],
+      [12,[[75,10],[73,9],[32,8],[33,7.5],[78,7],[4,6.5],[25,6],[28,6],[76,5],[51,4],[58,4],[20,4],[55,3.5],[95,3.5],[77,3.5],[57,3],[59,3],[94,3],[61,2],[22,1],[13,0.5]]],
+      [13,[[75,9],[78,8.5],[32,8],[33,8],[38,7],[28,6],[73,5.5],[4,5.5],[31,5.5],[76,4],[51,4],[20,4],[77,4],[55,3.5],[25,3.5],[59,2.5],[57,2],[61,2],[95,2],[96,2],[58,2],[13,1.5]]],
+      [14,[[75,10],[32,8.5],[78,8.5],[38,7],[33,7],[76,5.5],[73,5.5],[31,5.5],[28,5.5],[79,4.5],[51,4],[4,4],[20,4],[77,4],[55,3.5],[25,3.5],[57,2],[61,2],[59,2],[58,2],[13,1.5]]],
+      [15,[[75,11],[32,8.5],[37,8],[38,7],[76,6],[73,5.5],[4,5.5],[31,5.5],[28,5.5],[80,5],[79,4.5],[51,4],[20,4],[77,4],[25,3.5],[57,2.5],[55,2.5],[61,2],[59,2],[58,2],[13,1.5]]],
+      [16,[[75,11.5],[80,9],[32,8.5],[37,8],[38,7],[76,6],[31,5.5],[28,5.5],[4,4.5],[79,4.5],[51,4],[20,4],[77,4],[41,3.5],[25,3.5],[57,2.5],[55,2],[58,2],[13,1.5],[62,1.5],[97,1.5]]],
+      [17,[[75,10],[80,9],[32,8.5],[38,7],[37,7],[76,6],[4,5.5],[39,5.5],[28,5.5],[57,5],[79,4.5],[51,4],[77,4],[41,3.5],[64,2.5],[20,2.5],[58,2],[81,2],[13,1.5],[62,1.5],[55,1.5],[97,1.5]]],
+      [18,[[75,10],[32,8.5],[80,8.5],[38,7],[37,7],[39,7],[76,6],[4,6],[28,5.5],[57,5],[79,4.5],[77,4],[41,3.5],[51,3],[81,3],[64,2.5],[97,2.5],[58,2],[13,1.5],[62,1.5],[55,1.5]]],
+      [19,[[75,10.5],[80,8.5],[32,8],[38,7],[39,7],[57,6.5],[76,6],[37,5.5],[28,5.5],[4,4.5],[79,4.5],[41,3.5],[51,3],[77,3],[64,2.5],[97,2.5],[58,2],[42,2],[81,2],[13,1.5],[66,1.5],[62,1.5],[55,1.5]]],
+      [20,[[75,10.5],[80,8.5],[32,8],[38,7],[57,6.5],[76,6],[42,5.5],[37,5.5],[28,5.5],[39,5],[79,4.5],[41,3.5],[51,3],[4,3],[77,3],[64,2.5],[97,2.5],[58,2],[81,2],[13,1.5],[66,1.5],[46,1.5],[55,1.5]]],
+      [21,[[75,13],[80,8.5],[32,8],[38,7],[76,6],[98,5.5],[42,5.5],[37,5.5],[28,5.5],[39,5],[82,5],[79,4.5],[41,3.5],[4,3],[64,2.5],[66,2.5],[46,2],[97,2],[58,2],[77,2],[13,1.5]]],
+      [22,[[75,15],[80,10],[32,8],[38,7],[76,6],[98,5.5],[42,5.5],[37,5.5],[28,5.5],[39,5],[82,5],[79,5],[41,3.5],[4,3],[64,2.5],[66,2.5],[46,2],[97,2],[13,1.5]]],
+      [23,[[75,15],[80,10],[32,7.5],[42,6.5],[37,6.5],[76,6],[98,5.5],[38,5.5],[28,5.5],[39,5],[82,5],[79,5],[41,3.5],[4,3],[64,2.5],[66,2.5],[97,2],[44,2],[13,1.5]]],
+      [24,[[75,15],[80,11],[32,7.5],[98,6.5],[76,6],[82,6],[42,5.5],[37,5.5],[28,5.5],[39,5],[79,5],[44,4],[41,3.5],[67,3],[4,3],[66,2.5],[99,2],[97,2],[13,1.5]]],
+      [25,[[80,12],[75,11.5],[98,6.5],[76,6],[42,6],[37,6],[82,6],[28,5.5],[39,5],[79,5],[32,4.5],[41,4.5],[44,4],[67,3],[66,3],[46,3],[4,3],[99,2],[97,2],[13,1.5]]],
+      [26,[[80,12],[75,11.5],[42,7.5],[37,7.5],[98,6.5],[76,6],[82,6],[28,5.5],[39,5],[79,5],[32,4.5],[41,4.5],[44,4],[67,3],[66,3],[46,3],[99,2],[97,2],[13,1.5]]],
+      [27,[[80,12],[75,11.5],[42,7.5],[37,7.5],[98,6.5],[76,6],[82,6],[28,5.5],[39,5],[79,5],[32,4.5],[41,4.5],[44,4],[67,3],[66,3],[46,3],[99,2],[97,2],[13,1.5]]],
+      [28,[[80,12],[75,11.5],[42,7.5],[37,7.5],[98,6.5],[76,6],[82,6],[39,5],[68,4.5],[41,4.5],[44,4],[84,3.5],[79,3.5],[28,3.5],[67,3],[66,3],[46,3],[99,2],[97,2],[13,1.5]]],
+      [29,[[80,12],[75,11.5],[42,7.5],[37,7.5],[98,6.5],[76,6],[82,6],[39,5],[68,4.5],[41,4.5],[44,4],[85,3.5],[84,3.5],[28,3.5],[67,3],[66,3],[46,3],[99,2],[97,2],[13,1.5]]],
+      [30,[[75,11.5],[80,10],[76,6],[37,6],[49,6],[82,6],[68,5],[42,5],[39,5],[41,4.5],[85,4.5],[98,4],[86,4],[84,4],[67,3],[66,3],[46,3],[99,2],[89,2],[97,2],[28,2],[13,1.5]]],
+      [31,[[75,12.5],[80,10],[37,6],[82,6],[68,5],[42,5],[86,5],[39,5],[76,4.5],[41,4.5],[85,4.5],[46,4],[84,4],[89,3.5],[66,3],[98,2],[28,2],[13,1.5]]],
+      [32,[[75,12.5],[80,10],[37,6],[82,6],[68,5],[86,5],[39,5],[87,5],[76,4.5],[41,4.5],[85,4.5],[46,4],[84,4],[89,3.5],[66,3],[101,2],[28,2],[13,1.5]]],
+      [33,[[75,12.5],[80,9.5],[37,6],[49,6],[82,6],[68,5],[86,5],[39,5],[87,5],[76,4.5],[41,4.5],[85,4.5],[46,4],[89,4],[84,4],[99,3.5],[66,3],[88,2.5],[67,2],[101,2],[13,1.5]]],
+      [34,[[75,10.5],[80,9.5],[46,6],[37,6],[49,6],[82,6],[68,5],[86,5],[39,5],[87,5],[41,4.5],[85,4.5],[89,4],[51,4],[84,4],[66,3],[88,2.5],[99,2],[67,2],[76,2],[101,2],[13,1.5]]],
+      [35,[[80,12],[75,11.5],[37,7],[46,6],[82,6],[68,5],[66,5],[86,5],[87,5],[41,4.5],[85,4.5],[84,4.5],[89,4],[51,4],[76,3],[90,2.5],[39,2.5],[88,2.5],[101,2],[49,2],[13,1.5]]],
+      [36,[[80,12],[75,11.5],[37,7],[46,6],[82,6],[92,5.5],[68,5],[87,5],[85,4.5],[84,4.5],[66,4],[89,4],[51,4],[76,3],[91,3],[86,2.5],[90,2.5],[88,2.5],[101,2],[39,2],[13,1.5]]],
+      [37,[[75,15],[80,12],[37,7],[82,6],[92,5.5],[68,5],[101,5],[87,5],[100,4.5],[46,4.5],[85,4.5],[84,4.5],[51,4],[66,3.5],[91,3],[86,2.5],[90,2.5],[88,2.5],[13,1.5]]],
+      [38,[[75,15],[80,12],[37,7],[82,6],[92,5.5],[68,5],[101,5],[87,5],[100,4.5],[46,4.5],[85,4.5],[84,4.5],[51,4],[66,3.5],[91,3],[86,2.5],[90,2.5],[88,2.5],[49,2],[13,1.5]]],
+      [39,[[75,15],[80,12],[37,7],[92,5.5],[68,5],[101,5],[87,5],[82,5],[100,4.5],[46,4.5],[85,4.5],[84,4.5],[51,4],[66,3.5],[102,3],[91,3],[86,2.5],[90,2.5],[88,2.5],[13,1.5]]],
+    ]],
+    [0,1,"L70",[
+      [0,[[76,12],[75,10.5],[9,8.5],[73,8],[51,7.5],[93,7.5],[50,5.5],[2,5],[53,4.5],[4,4.5],[95,3.5],[15,3.5],[52,3],[5,3],[12,3],[10,3],[69,2.5],[74,2.5],[70,2],[13,0.5]]],
+      [1,[[76,12],[9,9.5],[75,9.5],[73,8],[50,7],[93,7],[53,6],[51,5],[4,4.5],[70,4],[95,4],[52,3.5],[15,3.5],[5,3],[10,3],[2,3],[69,2.5],[74,2.5],[7,2],[13,0.5]]],
+      [2,[[76,12],[73,11.5],[9,9.5],[75,9.5],[50,7],[93,7],[53,6],[51,5],[70,4.5],[4,4.5],[15,4],[95,3.5],[52,3.5],[5,3.5],[74,3],[7,3],[69,2.5],[13,0.5]]],
+      [3,[[75,14.5],[76,12],[73,11.5],[9,10.5],[50,7],[51,6.5],[53,5],[70,4.5],[4,4.5],[15,4],[60,3.5],[52,3.5],[5,3.5],[69,3],[74,3],[7,3],[13,0.5]]],
+      [4,[[75,12.5],[76,12],[9,10],[73,10],[55,8],[50,7],[51,6.5],[4,5.5],[70,4.5],[5,4],[95,3.5],[15,3.5],[2,3.5],[52,3],[69,3],[74,3],[13,0.5]]],
+      [5,[[75,13.5],[76,12],[73,10],[9,9],[55,8],[51,6.5],[50,6.5],[4,5.5],[70,4.5],[95,4.5],[5,4],[15,3.5],[2,3.5],[69,3],[74,3],[94,2.5],[13,0.5]]],
+      [6,[[76,13],[75,12.5],[9,9],[73,8.5],[51,8],[50,6.5],[4,5.5],[71,5],[55,4.5],[70,4.5],[95,4.5],[15,4],[2,3.5],[74,3],[94,2.5],[33,2.5],[21,2.5],[13,0.5]]],
+      [7,[[75,16],[76,15.5],[9,9],[51,8],[73,8],[50,6.5],[94,5.5],[4,5.5],[95,5],[55,4.5],[15,4.5],[33,3.5],[21,3],[2,3],[20,2],[13,0.5]]],
+      [8,[[75,16],[76,15.5],[9,9],[51,8],[73,8],[50,6.5],[94,5.5],[4,5.5],[95,5],[55,4.5],[15,4.5],[33,3.5],[21,3],[2,3],[20,2],[13,0.5]]],
+      [9,[[75,16],[76,14.5],[9,9],[51,8],[73,8],[57,6.5],[94,5.5],[95,5],[4,5],[55,4.5],[15,4.5],[33,4],[21,3.5],[20,3],[2,2.5],[13,0.5]]],
+      [10,[[75,13],[76,10],[9,9.5],[51,8],[73,7],[57,5],[95,5],[94,5],[58,5],[4,5],[59,4.5],[15,4.5],[55,4],[33,4],[21,3.5],[20,3],[2,2.5],[22,1],[13,0.5]]],
+      [11,[[75,12],[32,9],[51,8],[76,7.5],[73,6.5],[55,6],[57,5],[95,5],[94,5],[58,5],[33,5],[59,4],[4,4],[28,3.5],[25,3],[61,2.5],[21,2.5],[15,2.5],[20,2.5],[22,1],[13,0.5]]],
+      [12,[[75,11.5],[32,9],[51,8],[76,7.5],[73,6.5],[55,6],[33,6],[57,5],[95,5],[94,5],[58,5],[28,4.5],[59,4],[4,4],[25,4],[61,3],[20,2.5],[78,2],[22,1],[13,0.5]]],
+      [13,[[75,11.5],[32,9],[38,7.5],[76,7.5],[51,7.5],[33,6.5],[55,6],[57,5],[78,4],[31,4],[25,3.5],[59,3],[95,3],[96,3],[73,3],[28,3],[61,2.5],[58,2.5],[4,2.5],[20,2.5],[13,1.5],[77,1.5]]],
+      [14,[[75,12.5],[32,10],[76,9],[38,8],[51,7.5],[55,6],[33,5.5],[57,5],[78,4],[31,4],[25,3.5],[59,3],[73,3],[28,3],[61,2.5],[58,2.5],[4,2.5],[20,2.5],[77,2.5],[79,2],[13,1.5]]],
+      [15,[[75,12.5],[32,10],[76,9],[38,8],[51,7],[37,5.5],[57,5],[73,4],[31,4],[62,3.5],[55,3.5],[25,3.5],[59,3],[4,3],[61,2.5],[58,2.5],[80,2.5],[20,2.5],[77,2.5],[28,2.5],[79,2],[13,1.5]]],
+      [16,[[75,10.5],[32,10],[76,9],[38,8],[51,7],[41,5.5],[37,5.5],[57,5],[55,4],[31,4],[62,3.5],[80,3.5],[25,3.5],[97,3],[58,2.5],[4,2.5],[20,2.5],[77,2.5],[28,2.5],[64,2],[79,2],[13,1.5]]],
+      [17,[[32,10],[75,9],[76,9],[57,8.5],[38,8],[51,7],[41,5.5],[37,4.5],[64,4],[39,4],[62,3.5],[4,3.5],[80,3.5],[55,3],[97,3],[58,2.5],[77,2.5],[28,2.5],[79,2],[13,1.5],[20,1.5],[81,1.5]]],
+      [18,[[32,10],[75,9],[76,9],[57,8.5],[38,8],[51,6],[41,5.5],[39,5],[37,4.5],[64,4],[97,4],[4,4],[62,3.5],[55,3],[80,3],[58,2.5],[77,2.5],[28,2.5],[81,2],[79,2],[13,1.5]]],
+      [19,[[57,10.5],[32,10],[75,10],[76,9],[38,8],[51,6],[39,5],[41,4.5],[64,4],[97,4],[62,3.5],[4,3.5],[37,3.5],[55,3],[80,3],[58,2.5],[28,2.5],[66,2],[77,2],[79,2],[13,1.5]]],
+      [20,[[57,10.5],[32,10],[75,10],[76,9],[38,8],[51,6],[41,4.5],[64,4],[97,4],[46,3.5],[37,3.5],[39,3.5],[55,3],[80,3],[58,2.5],[42,2.5],[4,2.5],[28,2.5],[66,2],[77,2],[79,2],[13,1.5]]],
+      [21,[[75,10.5],[98,10],[32,10],[76,9],[38,8],[51,6],[82,5],[41,4.5],[64,4],[97,4],[46,3.5],[37,3.5],[66,3],[80,3],[58,2.5],[42,2.5],[4,2.5],[39,2.5],[28,2.5],[79,2],[13,1.5]]],
+      [22,[[75,14],[32,10],[98,9],[76,9],[38,8],[51,6],[82,5],[41,4.5],[64,4],[97,4],[46,3.5],[37,3.5],[66,3],[80,3],[42,2.5],[39,2.5],[79,2.5],[28,2.5],[4,2],[13,1.5]]],
+      [23,[[75,14],[98,9],[32,9],[76,9],[38,6],[51,6],[37,5],[82,5],[41,4.5],[42,4.5],[64,4],[97,4],[39,4],[66,3],[80,3],[79,2.5],[28,2.5],[4,2],[13,1.5],[46,1.5]]],
+      [24,[[75,12.5],[98,9],[32,9],[76,9],[51,6],[99,5],[82,5],[41,4.5],[67,4],[97,4],[42,4],[37,4],[44,4],[39,4],[66,3],[80,3],[79,2.5],[28,2.5],[4,2],[13,1.5],[46,1.5]]],
+      [25,[[98,9],[75,8.5],[76,8],[32,7.5],[51,6],[82,6],[41,5.5],[99,5],[42,4.5],[37,4.5],[67,4],[46,4],[97,4],[44,4],[39,4],[66,3.5],[80,3.5],[79,2.5],[28,2.5],[4,2],[13,1.5]]],
+      [26,[[98,9],[75,8.5],[76,8],[32,7.5],[51,6],[82,6],[41,5.5],[42,5.5],[37,5.5],[99,5],[67,4],[46,4],[97,4],[44,4],[39,4],[66,3.5],[80,3.5],[79,2.5],[28,2.5],[13,1.5]]],
+      [27,[[98,9],[75,8.5],[76,8],[32,7.5],[51,6],[82,6],[41,5.5],[42,5.5],[37,5.5],[99,5],[67,4],[46,4],[97,4],[44,4],[39,4],[66,3.5],[80,3.5],[79,2.5],[28,2.5],[13,1.5]]],
+      [28,[[98,9],[75,8.5],[76,8],[68,7.5],[51,6],[82,6],[41,5.5],[42,5.5],[37,5.5],[99,5],[67,4],[46,4],[97,4],[44,4],[39,4],[66,3.5],[80,3.5],[79,2.5],[28,2.5],[13,1.5]]],
+      [29,[[98,9],[75,8.5],[76,8],[68,7.5],[51,6],[82,6],[41,5.5],[42,5.5],[37,5.5],[99,5],[67,4],[46,4],[97,4],[44,4],[39,4],[66,3.5],[80,3.5],[85,2.5],[28,2.5],[13,1.5]]],
+      [30,[[75,8.5],[76,8],[68,7.5],[98,6.5],[51,6],[82,6],[41,5.5],[99,5],[67,4],[46,4],[97,4],[37,4],[49,4],[86,4],[39,4],[66,3.5],[80,3.5],[42,3],[89,2.5],[85,2.5],[84,2.5],[13,1.5]]],
+      [31,[[75,14],[51,6],[82,6],[68,5.5],[76,5.5],[41,5.5],[89,5.5],[86,5],[39,5],[46,4.5],[98,4],[37,4],[66,3.5],[80,3.5],[42,3],[85,2.5],[84,2.5],[13,1.5]]],
+      [32,[[75,14],[51,6],[82,6],[68,5.5],[76,5.5],[41,5.5],[89,5.5],[86,5],[39,5],[46,4.5],[101,4],[37,4],[66,3.5],[80,3.5],[87,3],[85,2.5],[84,2.5],[13,1.5]]],
+      [33,[[75,14],[51,6],[82,6],[68,5.5],[41,5.5],[89,5.5],[99,5],[76,5],[86,5],[46,4.5],[101,4],[37,4],[49,4],[66,3.5],[80,3.5],[87,3],[67,2.5],[39,2.5],[88,2.5],[85,2.5],[84,2.5],[100,2],[13,1.5]]],
+      [34,[[75,12.5],[46,7],[51,6],[82,6],[68,5.5],[41,5.5],[89,5.5],[86,5],[101,4],[103,4],[37,4],[49,4],[66,3.5],[80,3.5],[87,3],[99,2.5],[67,2.5],[76,2.5],[39,2.5],[88,2.5],[85,2.5],[84,2.5],[100,2],[13,1.5]]],
+      [35,[[75,14],[46,7],[51,6],[82,6],[68,5.5],[66,5.5],[41,5.5],[89,5.5],[37,5],[86,5],[76,4],[101,4],[103,4],[87,3.5],[80,3],[85,3],[84,3],[49,2.5],[88,2.5],[100,2],[39,2],[13,1.5]]],
+      [36,[[75,14],[92,7],[46,7],[51,6],[82,6],[68,5.5],[89,5.5],[80,5.5],[37,5],[66,4],[76,4],[101,4],[103,4],[87,3.5],[85,3],[84,3],[86,2.5],[88,2.5],[100,2],[39,2],[13,1.5]]],
+      [37,[[75,20],[92,7],[101,6],[51,6],[82,6],[68,5.5],[80,5.5],[100,5],[37,5],[46,4.5],[66,4],[103,4],[87,3.5],[76,3],[85,3],[84,3],[86,2.5],[88,2.5],[13,1.5]]],
+      [38,[[75,20],[92,7],[101,6],[51,6],[82,6],[68,5.5],[80,5.5],[100,5],[37,5],[46,4.5],[66,4],[103,4],[87,3.5],[76,3],[85,3],[84,3],[49,2.5],[86,2.5],[88,2.5],[13,1.5]]],
+      [39,[[75,21],[92,7],[101,6],[51,6],[68,5.5],[80,5.5],[100,5],[37,5],[46,4.5],[102,4],[66,4],[103,4],[87,3.5],[82,3.5],[76,3],[85,3],[84,3],[86,2.5],[88,2.5],[13,1.5]]],
+    ]],
+    [0,1,"L90",[
+      [0,[[9,14.5],[76,14.5],[75,14],[93,11.5],[51,9],[50,8.5],[53,7],[95,5.5],[52,4],[69,4],[70,3.5],[12,3.5],[13,0.5]]],
+      [1,[[9,14.5],[76,14.5],[75,14],[93,11],[50,10.5],[53,8],[95,7],[51,6.5],[70,5],[52,4.5],[69,4],[13,0.5]]],
+      [2,[[9,14.5],[76,14.5],[75,14],[93,11],[50,10.5],[53,8],[51,6.5],[70,6],[95,6],[52,4.5],[69,4],[13,0.5]]],
+      [3,[[75,22],[9,16],[76,14.5],[50,10.5],[51,8.5],[53,7],[70,6],[60,6],[52,4.5],[69,4.5],[13,0.5]]],
+      [4,[[75,20],[76,14.5],[9,14],[55,11.5],[50,10.5],[51,8.5],[70,6],[95,6],[69,4.5],[52,4],[13,0.5]]],
+      [5,[[75,21],[76,14.5],[9,12.5],[55,11.5],[50,10],[51,8.5],[95,7],[70,6],[69,4.5],[94,4],[13,0.5]]],
+      [6,[[75,16],[76,14.5],[9,12.5],[51,9],[50,9],[55,7.5],[73,7.5],[95,6.5],[71,6],[70,5.5],[94,3.5],[33,2],[13,0.5]]],
+      [7,[[75,19.5],[76,18.5],[9,12],[50,9.5],[51,9],[55,7.5],[95,7],[94,7],[73,6.5],[33,3],[13,0.5]]],
+      [8,[[75,19.5],[76,18.5],[9,12],[50,9.5],[51,9],[55,7.5],[95,7],[94,7],[73,6.5],[33,3],[13,0.5]]],
+      [9,[[75,19.5],[76,17.5],[9,12],[57,9.5],[51,9],[55,7.5],[95,7],[94,7],[73,6.5],[33,4],[13,0.5]]],
+      [10,[[75,16],[76,13.5],[9,12],[51,9],[57,7],[55,7],[95,7],[94,6.5],[58,6],[59,5],[73,4.5],[33,3],[20,2],[22,1],[13,0.5]]],
+      [11,[[75,15],[32,12.5],[76,10],[51,9],[57,7.5],[55,7.5],[95,6.5],[94,6.5],[58,6],[59,4.5],[61,4],[33,4],[73,3.5],[25,2],[22,1],[13,0.5]]],
+      [12,[[75,15],[32,12.5],[76,10],[51,9],[57,8],[55,7.5],[95,6],[94,6],[58,6],[61,4.5],[59,4.5],[33,3.5],[73,3],[25,3],[22,1],[13,0.5]]],
+      [13,[[75,13],[32,12.5],[76,10],[38,9.5],[51,9],[57,8],[55,7.5],[61,4],[95,4],[96,4],[59,3.5],[33,3.5],[58,3],[25,3],[73,2.5],[13,1.5],[28,1.5]]],
+      [14,[[75,14.5],[32,14],[76,11.5],[38,10.5],[51,9],[57,8],[55,7.5],[61,4],[59,3.5],[33,3.5],[58,3],[25,3],[73,2.5],[28,2.5],[13,1.5],[20,1.5]]],
+      [15,[[32,14],[75,14],[76,11.5],[38,10.5],[51,9],[57,7.5],[62,4.5],[55,4.5],[61,4],[59,3.5],[58,3],[25,3],[28,2.5],[73,2],[4,2],[13,1.5],[37,1.5],[20,1.5]]],
+      [16,[[32,14],[75,12],[76,11.5],[38,10.5],[51,9],[57,7.5],[41,6.5],[55,5.5],[62,4.5],[97,3.5],[58,3],[25,3],[64,2.5],[28,2.5],[13,1.5],[37,1.5],[20,1.5]]],
+      [17,[[32,14],[57,12.5],[38,10.5],[76,10.5],[75,10],[51,9],[41,6.5],[64,5.5],[62,4.5],[55,3.5],[97,3.5],[58,3],[28,2.5],[13,1.5],[4,1.5],[81,1.5]]],
+      [18,[[32,14],[57,12.5],[38,10.5],[76,10.5],[75,10],[51,8],[41,6.5],[64,5.5],[62,4.5],[97,4.5],[55,3.5],[58,3],[28,2.5],[13,1.5],[4,1.5],[81,1.5]]],
+      [19,[[57,14.5],[32,13],[38,10.5],[76,10.5],[75,10],[51,8],[41,6.5],[64,5.5],[62,4.5],[97,4.5],[55,3.5],[58,3],[28,2.5],[66,2],[13,1.5]]],
+      [20,[[57,14.5],[32,13],[38,10.5],[76,10.5],[75,10],[51,8],[41,6.5],[64,5.5],[46,4.5],[97,4.5],[55,3.5],[58,3],[28,2.5],[66,2],[13,1.5]]],
+      [21,[[98,14.5],[32,13],[75,12],[38,10.5],[76,10.5],[51,8],[41,6.5],[64,5.5],[46,4.5],[97,4.5],[66,3.5],[58,3],[28,2.5],[13,1.5]]],
+      [22,[[75,16.5],[98,13.5],[32,13],[38,10.5],[76,10.5],[51,8],[41,6.5],[64,5],[46,4.5],[97,4.5],[66,3.5],[28,2.5],[13,1.5]]],
+      [23,[[75,16.5],[98,13.5],[32,12],[76,10.5],[51,8],[38,7.5],[41,6.5],[64,5],[97,4.5],[66,3.5],[39,3],[46,2.5],[28,2.5],[13,1.5],[42,1.5],[37,1.5]]],
+      [24,[[75,14],[98,12.5],[32,12],[76,10.5],[51,8],[99,7],[41,6.5],[67,6],[97,4.5],[66,3.5],[39,3.5],[46,2.5],[82,2.5],[28,2.5],[13,1.5],[42,1.5],[37,1.5]]],
+      [25,[[98,12.5],[32,10],[75,10],[76,9],[41,8],[51,8],[99,7],[67,6],[46,5],[97,4.5],[66,4],[39,4],[82,4],[28,2.5],[42,2],[37,2],[13,1.5]]],
+      [26,[[98,12.5],[32,10],[75,10],[76,9],[41,8],[51,8],[99,7],[67,6],[46,5],[97,4.5],[66,4],[39,4],[82,4],[28,2.5],[42,2],[37,2],[13,1.5]]],
+      [27,[[98,12.5],[32,10],[75,10],[76,9],[41,8],[51,8],[99,7],[67,6],[46,5],[97,4.5],[66,4],[39,4],[82,4],[28,2.5],[42,2],[37,2],[13,1.5]]],
+      [28,[[98,12.5],[68,10],[75,10],[76,9],[41,8],[51,8],[99,7],[67,6],[46,5],[97,4.5],[66,4],[39,4],[82,4],[28,2.5],[42,2],[37,2],[13,1.5]]],
+      [29,[[98,12.5],[68,10],[75,10],[76,9],[41,8],[51,8],[99,7],[67,6],[46,5],[97,4.5],[66,4],[39,4],[82,4],[85,2.5],[42,2],[37,2],[13,1.5]]],
+      [30,[[68,10],[75,10],[98,9.5],[76,9],[41,8],[51,8],[99,7],[67,6],[46,5],[97,4.5],[66,4],[39,4],[82,4],[89,3],[85,2.5],[37,2],[49,2],[13,1.5]]],
+      [31,[[75,17],[89,8],[51,8],[76,7.5],[68,7],[41,6.5],[98,6],[82,6],[46,5],[39,5],[66,4],[85,2.5],[37,2],[13,1.5]]],
+      [32,[[75,17],[89,8],[51,8],[76,7.5],[68,7],[41,6.5],[101,6],[82,6],[46,5],[39,5],[66,4],[85,2.5],[37,2],[13,1.5]]],
+      [33,[[75,17],[89,8],[51,8],[76,7.5],[68,7],[99,7],[41,6.5],[101,6],[82,6],[46,5],[39,5],[66,4],[67,3],[85,2.5],[100,2],[37,2],[49,2],[13,1.5]]],
+      [34,[[75,16],[46,9],[89,8],[51,8],[68,7],[41,6.5],[101,6],[103,6],[82,6],[39,5.1],[66,4],[99,3],[67,3],[76,2.5],[85,2.5],[100,2],[49,2],[37,1.9],[13,1.5]]],
+      [35,[[75,18],[46,9],[89,8],[51,8],[68,7],[66,6.5],[41,6.5],[101,6],[103,6],[82,6],[76,4],[39,4],[85,3.6],[37,2.4],[100,2],[13,1.5],[49,1.5]]],
+      [36,[[75,18],[46,9],[92,8],[89,8],[51,8],[68,7],[101,6],[103,6],[82,6],[66,5],[76,4],[39,4],[85,3.6],[37,2.4],[100,2],[13,1.5]]],
+      [37,[[75,28],[92,8],[51,8],[68,7],[101,7],[100,6],[46,6],[103,6],[82,6],[66,5],[76,4],[85,3.6],[37,2.4],[13,1.5]]],
+      [38,[[75,28],[92,8],[51,8],[68,7],[101,7],[100,6],[46,6],[103,6],[82,6],[66,5],[76,4],[85,3.6],[37,2.4],[13,1.5],[49,1.5]]],
+      [39,[[75,27],[92,8],[51,8],[68,7],[101,7],[100,6],[102,6],[46,6],[103,6],[66,5],[76,4],[85,3.6],[82,2.5],[37,2.4],[13,1.5]]],
+    ]],
+    [1,15,"L30",[
+      [0,[[0,29],[131,10],[11,9],[6,8.5],[74,7.5],[132,5],[121,4],[122,4],[133,4],[54,3],[134,3],[135,3],[136,2.5],[137,2],[138,2],[139,2],[107,1.5]]],
+    ]],
+    [1,15,"L50",[
+      [0,[[0,19.5],[11,13],[131,8.5],[121,7.5],[136,7],[54,6],[74,5],[107,4.5],[6,4.5],[132,4],[135,3],[133,3],[140,2.75],[137,2.5],[138,2.5],[134,2.5],[139,2.5],[141,1.75]]],
+    ]],
+    [1,15,"L70",[
+      [0,[[11,16.5],[121,11.5],[0,10.5],[136,8.5],[54,7],[137,6.5],[107,6],[140,5.5],[131,4.5],[6,3.5],[138,3],[139,3],[135,3],[141,2.5],[74,2.5],[134,2],[133,2],[132,2]]],
+    ]],
+    [1,15,"L100",[
+      [0,[[11,20.75],[121,18.25],[136,13.5],[54,11],[137,10],[107,8.5],[140,6.5],[141,4.5],[138,3.5],[139,3.5]]],
+    ]],
+    [2,15,"L30",[
+      [0,[[142,28],[131,10],[6,9.5],[143,9],[74,7.5],[144,5],[145,4.5],[146,4],[147,4],[148,3.5],[149,3],[150,3],[151,2.5],[152,2.5],[153,2],[139,2]]],
+    ]],
+    [2,15,"L50",[
+      [0,[[142,19.5],[143,12.25],[145,10],[131,8],[146,7.5],[148,5.5],[6,5],[74,5],[144,4],[152,3.5],[151,3],[150,3],[147,3],[149,2.5],[139,2.5],[154,2],[153,2],[155,1.75]]],
+    ]],
+    [2,15,"L70",[
+      [0,[[143,15],[145,13],[146,10],[142,10],[148,7],[152,6.5],[151,6],[6,4.5],[131,4.5],[154,4],[155,3],[139,3],[153,2.5],[74,2.5],[150,2.5],[149,2],[147,2],[144,2]]],
+    ]],
+    [2,15,"L100",[
+      [0,[[143,18.75],[145,18.5],[146,15.75],[148,11.25],[151,10.5],[152,9.75],[154,4.5],[155,4.5],[139,3.5],[153,3]]],
+    ]],
+    [3,15,"L30",[
+      [0,[[4,9.5],[123,9],[131,9],[156,8],[157,7.5],[158,7],[159,7],[160,6.5],[161,5.5],[162,5],[10,4],[163,3.5],[164,3.5],[165,3.5],[166,3],[167,3],[168,2.5],[12,2],[169,1]]],
+    ]],
+    [3,15,"L50",[
+      [0,[[156,14],[4,6.5],[163,6],[164,6],[165,6],[123,6],[131,6],[159,6],[166,5],[167,5],[158,5],[157,5],[161,4.5],[168,4],[160,4],[162,4],[10,3],[12,2.5],[169,1.5]]],
+    ]],
+    [3,15,"L70",[
+      [0,[[156,20],[163,8.5],[164,8.5],[165,8.5],[166,7],[167,7],[168,5.5],[4,4.5],[123,3.5],[131,3.5],[157,3.5],[158,3],[12,3],[160,2.5],[161,2.5],[159,2.5],[162,2.5],[169,2],[10,2]]],
+    ]],
+    [3,15,"L100",[
+      [0,[[156,28.5],[163,12.5],[164,12.5],[165,12],[166,10],[167,10],[168,8],[12,3.5],[169,3]]],
+    ]],
+  ];
+
+  var SEED_VERSION = "v2-2026-05-01";
+
+  // Seeded models are reference data: rebuilt from SEED_* on every load and never
+  // written to localStorage, which could not hold them. Only user edits persist.
+  function hydrateSeed() {
+    return SEED_MODELS.map(function (m) {
+      var rangeName = SEED_RANGES[m[0]];
+      var plat = SEED_PLATFORMS[m[1]];
+      var risk = m[2];
+      var id = "seed-" + [rangeName, plat[0], risk].join("-").toLowerCase();
+      return {
+        id: id,
+        seed: true,
+        range: rangeName,
+        risk: risk,
+        note: "",
+        snapshots: m[3].map(function (s, i) {
+          return {
+            id: id + "-" + i,
+            seed: true,
+            date: SEED_DATES[s[0]],
+            note: "",
+            author: "",
+            rows: s[1].map(function (h) {
+              var f = SEED_FUNDS[h[0]];
+              return {
+                fund: f[0], isin: f[1], weight: h[1],
+                asset: SEED_ASSET[f[2]] || "Unclassified",
+                notes: SEED_NOTES[h[0]] || null
+              };
+            })
+          };
+        })
+      };
+    });
+  }
+
+  // ---------- helpers ----------
+
+  function icon(name, size) {
+    return '<svg width="' + (size || 14) + '" height="' + (size || 14) + '" viewBox="0 0 24 24" fill="none" ' +
+      'stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      ICONS[name] + "</svg>";
+  }
+
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  function uid() {
+    return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+  }
+
+  function fmtPct(n, dp) {
+    if (n == null || isNaN(n)) return "-";
+    return n.toFixed(dp == null ? 1 : dp) + "%";
+  }
+
+  function fmtDate(iso) {
+    if (!iso) return "-";
+    var p = iso.split("-");
+    if (p.length !== 3) return iso;
+    var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    return Number(p[2]) + " " + months[Number(p[1]) - 1] + " " + p[0];
+  }
+
+  function chipClass(range) {
+    var r = String(range || "").toLowerCase();
+    if (r === "core") return "chip-core";
+    if (r === "passive") return "chip-passive";
+    if (r === "esg") return "chip-esg";
+    if (r === "income") return "chip-income";
+    return "chip-other";
+  }
+
+  function classColour(key) {
+    var found = CLASSES.filter(function (c) { return c.key === key; })[0];
+    return "var(" + (found ? found.varname : "--c-un") + ")";
+  }
+
+  // ---------- state ----------
+
+  var state = { portfolios: [], initials: "", removed: [], events: [] };
+  var view = {
+    tab: "portfolios",
+    openId: null, openSnap: null, armed: null,
+    fundQuery: "", fundClass: "", openFund: null,
+    calY: new Date().getFullYear(), calM: new Date().getMonth(),
+    editEvent: null
+  };
+
+  function loadState() {
+    var saved = { portfolios: [], initials: "", removed: [], events: [] };
+    try {
+      var raw = localStorage.getItem(KEY);
+      if (raw) {
+        var parsed = JSON.parse(raw);
+        if (Array.isArray(parsed.portfolios)) saved.portfolios = parsed.portfolios;
+        if (typeof parsed.initials === "string") saved.initials = parsed.initials;
+        if (Array.isArray(parsed.removed)) saved.removed = parsed.removed;
+        if (Array.isArray(parsed.events)) saved.events = parsed.events;
+      }
+    } catch (e) {
+      /* corrupt or absent - fall through to a clean seeded workspace */
+    }
+
+    state.initials = saved.initials;
+    state.removed = saved.removed;
+    state.events = saved.events;
+
+    // Seeded models come from SEED_* every time; only user edits were persisted.
+    var seeded = hydrateSeed().filter(function (p) {
+      return state.removed.indexOf(p.id) < 0;
+    });
+    var byId = {};
+    seeded.forEach(function (p) { byId[p.id] = p; });
+
+    var extra = [];
+    saved.portfolios.forEach(function (p) {
+      var target = byId[p.id];
+      if (target) {
+        // user snapshots added on top of a seeded model
+        (p.snapshots || []).forEach(function (s) {
+          if (!s.seed) target.snapshots.push(s);
+        });
+      } else if (!p.seed && (p.snapshots || []).length) {
+        // portfolios with no snapshots are stale shells - drop them
+        extra.push(p);
+      }
+    });
+
+    state.portfolios = seeded.concat(extra);
+
+    // One portfolio per range + risk level. Duplicates (e.g. a hand-added copy
+    // of a seeded model) collapse onto the entry with the most snapshots; user
+    // snapshots on a dropped duplicate are moved across rather than lost.
+    var byKey = {};
+    state.portfolios.forEach(function (p) {
+      var k = (String(p.range).trim() + "|" + String(p.risk).trim()).toLowerCase();
+      if (!byKey[k] || p.snapshots.length > byKey[k].snapshots.length) byKey[k] = p;
+    });
+    state.portfolios = state.portfolios.filter(function (p) {
+      var keep = byKey[(String(p.range).trim() + "|" + String(p.risk).trim()).toLowerCase()];
+      if (keep === p) return true;
+      p.snapshots.forEach(function (s) {
+        if (!s.seed) keep.snapshots.push(s);
+      });
+      return false;
+    });
+  }
+
+  // Writes user data only. The seeded models are far larger than the localStorage
+  // quota, so they are stored as a stub and rebuilt from SEED_* on load.
+  function saveState() {
+    var slim = state.portfolios.map(function (p) {
+      if (!p.seed) return p;
+      var mine = p.snapshots.filter(function (s) { return !s.seed; });
+      return mine.length ? { id: p.id, seed: true, snapshots: mine } : null;
+    }).filter(Boolean);
+
+    try {
+      localStorage.setItem(KEY, JSON.stringify({
+        portfolios: slim, initials: state.initials, removed: state.removed, events: state.events
+      }));
+    } catch (e) {
+      /* quota or private mode - the page still works for this session */
+    }
+  }
+
+  function getPortfolio(id) {
+    return state.portfolios.filter(function (p) { return p.id === id; })[0] || null;
+  }
+
+  function latestSnap(p) {
+    if (!p.snapshots.length) return null;
+    return p.snapshots.slice().sort(function (a, b) { return a.date < b.date ? 1 : -1; })[0];
+  }
+
+  function sortedSnaps(p) {
+    return p.snapshots.slice().sort(function (a, b) { return a.date < b.date ? 1 : -1; });
+  }
+
+  // ---------- allocation maths ----------
+
+  function classTotals(rows) {
+    var out = {};
+    CLASS_KEYS.forEach(function (k) { out[k] = 0; });
+    rows.forEach(function (r) {
+      var k = CLASS_KEYS.indexOf(r.asset) >= 0 ? r.asset : "Unclassified";
+      out[k] += r.weight;
+    });
+    return CLASS_KEYS.map(function (k) { return { key: k, value: out[k] }; })
+      .filter(function (d) { return d.value > 0.0001; });
+  }
+
+  function sumWeights(rows) {
+    return rows.reduce(function (a, r) { return a + r.weight; }, 0);
+  }
+
+  // ---------- charts ----------
+
+  function allocBar(rows, large) {
+    var data = classTotals(rows);
+    var total = data.reduce(function (a, d) { return a + d.value; }, 0);
+    if (!total) return '<div class="allocbar' + (large ? " allocbar-lg" : "") + '" aria-hidden="true"></div>';
+
+    var html = '<div class="allocbar' + (large ? " allocbar-lg" : "") + '" role="img" aria-label="' +
+      esc(data.map(function (d) { return d.key + " " + fmtPct(d.value); }).join(", ")) + '">';
+
+    data.forEach(function (d) {
+      var share = (d.value / total) * 100;
+      var label = large && share > 8 ? fmtPct(d.value, share > 14 ? 1 : 0) : "";
+      html += '<span style="width:' + share.toFixed(3) + '%;background:' + classColour(d.key) + '"' +
+        ' data-tip="' + esc(d.key + " - " + fmtPct(d.value)) + '">' + label + "</span>";
+    });
+    return html + "</div>";
+  }
+
+  function allocLegend(rows) {
+    var data = classTotals(rows);
+    if (!data.length) return "";
+    return '<div class="legend">' + data.map(function (d) {
+      return '<span class="legend-item"><span class="swatch" style="background:' + classColour(d.key) + '"></span>' +
+        esc(d.key) + ' <span class="legend-val">' + fmtPct(d.value) + "</span></span>";
+    }).join("") + "</div>";
+  }
+
+  // ---------- parsing ----------
+
+  function splitRow(line) {
+    if (line.indexOf("\t") >= 0) return line.split("\t");
+    // CSV with quoted fields
+    var out = [], cur = "", inQ = false;
+    for (var i = 0; i < line.length; i++) {
+      var ch = line[i];
+      if (ch === '"') {
+        if (inQ && line[i + 1] === '"') { cur += '"'; i++; }
+        else inQ = !inQ;
+      } else if (ch === "," && !inQ) {
+        out.push(cur); cur = "";
+      } else {
+        cur += ch;
+      }
+    }
+    out.push(cur);
+    return out;
+  }
+
+  function normaliseClass(raw) {
+    var s = String(raw || "").toLowerCase().trim();
+    if (!s) return "Unclassified";
+    if (/equit|share|stock/.test(s)) return "Equities";
+    if (/fixed|bond|gilt|credit|debt/.test(s)) return "Fixed Interest";
+    if (/divers|altern|property|infra|absolute|commod/.test(s)) return "Diversifiers";
+    if (/cash|money market|liquid/.test(s)) return "Cash";
+    return "Unclassified";
+  }
+
+  function parseAllocations(text) {
+    var lines = String(text || "").split(/\r?\n/)
+      .map(function (l) { return l.trim(); })
+      .filter(function (l) { return l.length > 0; });
+
+    if (!lines.length) return { rows: [], errors: ["Nothing to read - paste the allocations or upload a CSV."] };
+
+    var cells = lines.map(splitRow);
+    var idx = { fund: 0, isin: 1, weight: 2, asset: 3 };
+    var header = cells[0].map(function (c) { return c.toLowerCase().trim(); });
+    var looksLikeHeader = header.some(function (h) { return /isin|weight|fund|asset|name/.test(h); }) &&
+      !/^[A-Z]{2}[A-Z0-9]{9}\d$/i.test((cells[0][1] || "").trim());
+
+    if (looksLikeHeader) {
+      header.forEach(function (h, i) {
+        if (/isin/.test(h)) idx.isin = i;
+        else if (/weight|alloc|%/.test(h)) idx.weight = i;
+        else if (/asset|class|sector/.test(h)) idx.asset = i;
+        else if (/fund|name|security|holding/.test(h)) idx.fund = i;
+      });
+      cells.shift();
+    }
+
+    var rows = [], errors = [];
+    cells.forEach(function (c, n) {
+      var fund = (c[idx.fund] || "").trim();
+      var isin = (c[idx.isin] || "").trim().toUpperCase();
+      var rawW = (c[idx.weight] || "").trim();
+      if (!fund && !isin && !rawW) return;
+
+      var isPct = rawW.indexOf("%") >= 0;
+      var w = parseFloat(rawW.replace(/[%,\s]/g, ""));
+      if (isNaN(w)) {
+        errors.push("Row " + (n + 1) + ' ("' + (fund || isin || rawW) + '") has no readable weight - skipped.');
+        return;
+      }
+      rows.push({
+        fund: fund || "(unnamed)",
+        isin: isin,
+        weight: w,
+        wasPct: isPct,
+        asset: normaliseClass(c[idx.asset])
+      });
+    });
+
+    // Decimal fractions (0.125) vs percentages (12.5)
+    var anyPct = rows.some(function (r) { return r.wasPct; });
+    var total = sumWeights(rows);
+    if (!anyPct && total > 0 && total <= 1.5) {
+      rows.forEach(function (r) { r.weight = r.weight * 100; });
+    }
+    rows.forEach(function (r) { delete r.wasPct; });
+
+    return { rows: rows, errors: errors };
+  }
+
+  // ---------- rendering ----------
+
+  function renderNav() {
+    // Portfolios and Funds carry a live count; the unbuilt sections have nothing to count yet.
+    var counts = { portfolios: visiblePortfolios().length, funds: fundRegister().length, calendar: state.events.length };
+
+    document.getElementById("sidebarNav").innerHTML = NAV.map(function (g) {
+      return '<div class="navgroup"><div class="navgroup-title">' + esc(g.group) + "</div>" +
+        g.items.map(function (t) {
+          var n = counts[t.id];
+          return '<button class="navitem" aria-current="' + (t.id === view.tab) +
+            '" data-tab="' + t.id + '"><span>' + esc(t.label) + "</span>" +
+            (n == null ? "" : '<span class="n">' + n + "</span>") + "</button>";
+        }).join("") + "</div>";
+    }).join("");
+  }
+
+  function renderFootnote() {
+    document.getElementById("footnote").textContent =
+      "Entries are saved in this browser only - they are not shared with colleagues and will not survive clearing site data. " +
+      "Use Export workspace to hand the current state to someone else, and Import workspace to load theirs. " +
+      "Deletes use a two-step confirm and cannot be undone. " +
+      "Portfolio weightings are model allocations in % - never enter client portfolio values or personal data. " +
+      "The Lumin models were extracted from the investment team's Model Portfolio Analysis workbook (V4.3.11): " +
+      "one model per range and risk level, with every dated rebalance sheet it holds. They are a point-in-time copy, so check " +
+      "against the workbook before relying on them, and treat any snapshot flagged as not totalling 100% as suspect. " +
+      "Manager notes open the research folder on the OneDrive shared drive and only work when this page is opened " +
+      "from disk in the same Windows session. " +
+      "AI-generated content must be reviewed by a qualified individual before informing any regulated activity or client communication.";
+  }
+
+  function renderPlaceholder(label) {
+    return '<div class="placeholder">' + icon("grid", 22) +
+      "<strong>" + esc(label) + " is not built yet</strong>" +
+      "<span>This first version covers Portfolios only. Say the word and this section is next.</span></div>";
+  }
+
+  function visiblePortfolios() {
+    return state.portfolios;
+  }
+
+  function renderList() {
+    var shown = visiblePortfolios();
+
+    var head = '<div class="panel-head"><h2>Model portfolios (' + shown.length + ")</h2>" +
+      '<button class="btn btn-ghost" data-act="restore-seed" style="margin-left:auto">' +
+      icon("plus") + " Restore Lumin models</button>" +
+      '<button class="btn" data-act="add-portfolio" style="margin-left:0">' + icon("plus") + " Add portfolio</button></div>" +
+      '<p class="blurb">The Lumin ranges - Core, Passive, ESG and Income - with the risk levels within each. ' +
+      "Each portfolio holds dated allocation snapshots, one per rebalance. " +
+      "Allocations can be uploaded from Excel/CSV (Fund Name, ISIN, Weight) inside the rebalance editor.</p>";
+
+    if (!shown.length) {
+      return head + '<div class="empty">No portfolios yet - add your first range and risk level, ' +
+        "or use Restore Lumin models to bring back the seeded set.</div>";
+    }
+
+    var ranges = [];
+    shown.forEach(function (p) {
+      if (ranges.indexOf(p.range) < 0) ranges.push(p.range);
+    });
+    ranges.sort(function (a, b) {
+      var order = ["Core", "Passive", "ESG", "Income"];
+      var ia = order.indexOf(a), ib = order.indexOf(b);
+      if (ia < 0 && ib < 0) return a.localeCompare(b);
+      if (ia < 0) return 1;
+      if (ib < 0) return -1;
+      return ia - ib;
+    });
+
+    var body = ranges.map(function (range) {
+      var group = shown.filter(function (p) { return p.range === range; })
+        .sort(function (a, b) {
+          var pa = String(a.platformName || ""), pb = String(b.platformName || "");
+          if (pa !== pb) return pa.localeCompare(pb);
+          var na = parseInt(String(a.risk).replace(/\D/g, ""), 10);
+          var nb = parseInt(String(b.risk).replace(/\D/g, ""), 10);
+          if (isNaN(na) || isNaN(nb)) return String(a.risk).localeCompare(String(b.risk));
+          return na - nb;
+        });
+
+      var cards = group.map(function (p) {
+        var snap = latestSnap(p);
+        var meta = snap
+          ? snap.rows.length + " holdings &middot; " + fmtDate(snap.date)
+          : "No allocations yet";
+        var sub = p.platformName || p.note;
+        return '<button class="card" data-open="' + p.id + '">' +
+          '<div class="card-top"><div><div class="card-title">' + esc(p.range + " " + p.risk) + "</div>" +
+          '<div class="card-meta">' + meta + "</div></div>" +
+          '<span class="chip ' + chipClass(p.range) + '" style="margin-left:auto">' + esc(p.risk) + "</span></div>" +
+          (snap ? allocBar(snap.rows) + allocLegend(snap.rows) : '<div class="allocbar"></div>') +
+          '<div class="card-foot"><span>' + p.snapshots.length + " snapshot" + (p.snapshots.length === 1 ? "" : "s") + "</span>" +
+          (sub ? '<span class="dot"></span><span>' + esc(sub) + "</span>" : "") +
+          "</div></button>";
+      }).join("");
+
+      return "<section><div class=\"range-head\"><span class=\"range-name\">" + esc(range) + "</span>" +
+        '<span class="range-count">' + group.length + "</span><span class=\"range-rule\"></span></div>" +
+        '<div class="cards">' + cards + "</div></section>";
+    }).join("");
+
+    return head + '<div class="stack">' + body + "</div>";
+  }
+
+  // ---------- fund register ----------
+
+  var RANGE_ORDER = ["Core", "Passive", "ESG", "Income"];
+
+  function rangeRank(r) {
+    var i = RANGE_ORDER.indexOf(r);
+    return i < 0 ? RANGE_ORDER.length : i;
+  }
+
+  function riskRank(risk) {
+    var n = parseInt(String(risk).replace(/\D/g, ""), 10);
+    return isNaN(n) ? 999 : n;
+  }
+
+  // One entry per distinct fund across the latest snapshot of every visible portfolio.
+  function fundRegister() {
+    var map = {};
+    visiblePortfolios().forEach(function (p) {
+      var snap = latestSnap(p);
+      if (!snap) return;
+      snap.rows.forEach(function (r) {
+        var key = (r.isin || r.fund).toUpperCase();
+        if (!map[key]) {
+          map[key] = {
+            key: key, fund: r.fund, isin: r.isin, asset: r.asset,
+            notes: r.notes || null, holdings: []
+          };
+        }
+        if (!map[key].notes && r.notes) map[key].notes = r.notes;
+        map[key].holdings.push({
+          id: p.id, range: p.range, risk: p.risk,
+          weight: r.weight, date: snap.date
+        });
+      });
+    });
+
+    return Object.keys(map).map(function (k) {
+      var e = map[k];
+      e.holdings.sort(function (a, b) {
+        return rangeRank(a.range) - rangeRank(b.range) || riskRank(a.risk) - riskRank(b.risk);
+      });
+      var ws = e.holdings.map(function (h) { return h.weight; });
+      e.count = e.holdings.length;
+      e.min = Math.min.apply(null, ws);
+      e.max = Math.max.apply(null, ws);
+      e.avg = ws.reduce(function (a, b) { return a + b; }, 0) / ws.length;
+      e.ranges = [];
+      e.holdings.forEach(function (h) {
+        if (e.ranges.indexOf(h.range) < 0) e.ranges.push(h.range);
+      });
+      return e;
+    }).sort(function (a, b) {
+      return b.count - a.count || b.avg - a.avg || a.fund.localeCompare(b.fund);
+    });
+  }
+
+  function filterFunds(list) {
+    var q = view.fundQuery.trim().toLowerCase();
+    return list.filter(function (e) {
+      if (view.fundClass && e.asset !== view.fundClass) return false;
+      if (!q) return true;
+      return (e.fund + " " + e.isin + " " + e.ranges.join(" ")).toLowerCase().indexOf(q) >= 0;
+    });
+  }
+
+  // Windows path -> file:// URL. Works when this page is itself opened from disk.
+  function fileUrl(path) {
+    return "file:///" + encodeURI(String(path).replace(/\\/g, "/")).replace(/#/g, "%23");
+  }
+
+  function notesCell(e) {
+    if (!e.notes || !e.notes.length) return '<span style="color:var(--ink-3)">-</span>';
+    var files = e.notes.reduce(function (a, n) { return a + n[2]; }, 0);
+    var label = e.notes.length === 1 ? e.notes[0][0] : e.notes.length + " folders";
+    return '<a href="' + esc(fileUrl(e.notes[0][1])) + '" target="_blank" rel="noopener" ' +
+      'data-tip="' + esc(e.notes.map(function (n) { return n[1]; }).join("  |  ")) + '">' +
+      icon("paper", 12) + " " + esc(label) + ' <span class="notes-n">' + files + "</span></a>";
+  }
+
+  function spreadBar(e, scale) {
+    if (!scale) return "";
+    var lo = (e.min / scale) * 100;
+    var hi = (e.max / scale) * 100;
+    var av = (e.avg / scale) * 100;
+    return '<div class="minibar" data-tip="' + esc("min " + fmtPct(e.min) + " / avg " +
+      fmtPct(e.avg) + " / max " + fmtPct(e.max)) + '">' +
+      '<i style="left:' + lo.toFixed(2) + "%;width:" + Math.max(hi - lo, 1.2).toFixed(2) + '%"></i>' +
+      '<b style="left:' + av.toFixed(2) + '%"></b></div>';
+  }
+
+  function renderFundBreakdown(e) {
+    var cells = e.holdings.map(function (h) {
+      var label = h.range + " " + h.risk + (h.platformName ? " - " + h.platformName : "");
+      return '<span class="wcell"><span>' + esc(label) + "</span>" +
+        '<span class="w">' + fmtPct(h.weight, 2) + "</span></span>";
+    }).join("");
+
+    var notes = "";
+    if (e.notes && e.notes.length) {
+      notes = '<div class="side-title">Fund manager notes</div><div class="wgrid">' +
+        e.notes.map(function (n) {
+          return '<a class="wcell" href="' + esc(fileUrl(n[1])) + '" target="_blank" rel="noopener">' +
+            "<span>" + esc(n[0]) + '</span><span class="w">' + n[2] + "</span></a>";
+        }).join("") + "</div>";
+    }
+
+    return '<tr class="breakdown"><td colspan="9"><div class="breakdown-inner">' + notes +
+      '<div class="side-title">Held in ' + e.count + " model" + (e.count === 1 ? "" : "s") + "</div>" +
+      '<div class="wgrid">' + cells + "</div>" +
+      "</div></td></tr>";
+  }
+
+  function renderFunds() {
+    var all = fundRegister();
+
+    var shown = visiblePortfolios();
+    var withNotes = all.filter(function (e) { return e.notes && e.notes.length; }).length;
+
+    var head = '<div class="panel-head"><h2>Funds (' + all.length + ")</h2>" +
+      '<button class="btn btn-ghost" data-act="export-funds"' + (all.length ? "" : " disabled") + ">" +
+      icon("down") + " Export register</button></div>" +
+      '<p class="blurb">Every distinct fund in the latest allocation of the ' + shown.length +
+      " model portfolio" + (shown.length === 1 ? "" : "s") + " under Portfolios, with the spread of weights " +
+      "it is held at. Manager notes link straight to the research folder on the shared drive (" +
+      withNotes + " of " + all.length + " funds have notes filed). " +
+      "Click a fund to see which models hold it and at what weight.</p>";
+
+    if (!all.length) {
+      return head + '<div class="empty">No funds yet - add allocations to a portfolio first.</div>';
+    }
+
+    var classes = [];
+    all.forEach(function (e) { if (classes.indexOf(e.asset) < 0) classes.push(e.asset); });
+    classes.sort(function (a, b) { return CLASS_KEYS.indexOf(a) - CLASS_KEYS.indexOf(b); });
+
+    var toolbar = '<div class="toolbar">' +
+      '<div class="grow"><input type="text" id="fundSearch" placeholder="Search fund name, ISIN or range" ' +
+      'value="' + esc(view.fundQuery) + '" aria-label="Search funds"></div>' +
+      '<select id="fundClass" aria-label="Filter by asset class"><option value="">All asset classes</option>' +
+      classes.map(function (c) {
+        return '<option value="' + esc(c) + '"' + (view.fundClass === c ? " selected" : "") + ">" + esc(c) + "</option>";
+      }).join("") + "</select></div>";
+
+    var rows = filterFunds(all);
+    var scale = all.reduce(function (a, e) { return Math.max(a, e.max); }, 0);
+
+    if (!rows.length) {
+      return head + toolbar + '<div class="empty">No funds match that filter.</div>';
+    }
+
+    var body = rows.map(function (e) {
+      var open = view.openFund === e.key;
+      var tr = '<tr class="fundrow" data-fund="' + esc(e.key) + '" aria-expanded="' + open + '">' +
+        '<td class="fundname">' + esc(e.fund) + "</td>" +
+        '<td class="notescell">' + notesCell(e) + "</td>" +
+        '<td class="isin">' + esc(e.isin || "-") + "</td>" +
+        '<td><span class="legend-item"><span class="swatch" style="background:' + classColour(e.asset) + '"></span>' +
+        esc(e.asset) + "</span></td>" +
+        '<td class="num">' + e.count + "</td>" +
+        '<td><span class="ranges">' + e.ranges.map(function (r) {
+          return '<span class="chip ' + chipClass(r) + '">' + esc(r) + "</span>";
+        }).join("") + "</span></td>" +
+        "<td>" + spreadBar(e, scale) + "</td>" +
+        '<td class="num">' + fmtPct(e.min, 2) + "</td>" +
+        '<td class="num">' + fmtPct(e.max, 2) + "</td></tr>";
+      return tr + (open ? renderFundBreakdown(e) : "");
+    }).join("");
+
+    return head + toolbar +
+      '<div class="box"><div class="tablewrap"><table>' +
+      '<caption class="sr">Fund register across all model portfolios</caption>' +
+      "<thead><tr><th>Fund name</th><th>Manager notes</th><th>ISIN</th><th>Asset class</th>" +
+      '<th class="num">Models</th><th>Ranges</th><th>Weight spread</th>' +
+      '<th class="num">Min</th><th class="num">Max</th></tr></thead>' +
+      "<tbody>" + body + "</tbody></table></div></div>";
+  }
+
+  function renderDetail(p) {
+    var snaps = sortedSnaps(p);
+    var current = null;
+    if (view.openSnap) current = snaps.filter(function (s) { return s.id === view.openSnap; })[0] || null;
+    if (!current) current = snaps[0] || null;
+
+    var html = '<button class="crumb" data-act="back">' + icon("back") + " All portfolios</button>" +
+      '<div class="detail-head"><div><h2>' + esc(p.range + " " + p.risk) +
+      (p.platformName ? ' <span class="pill">' + esc(p.platformName) + "</span>" : "") + "</h2>" +
+      '<div class="card-meta">' + (p.note ? esc(p.note) + " &middot; " : "") +
+      p.snapshots.length + " dated snapshot" + (p.snapshots.length === 1 ? "" : "s") + "</div></div>" +
+      '<div class="detail-actions">' +
+      '<button class="btn btn-ghost" data-act="export-csv"' + (current ? "" : " disabled") + ">" +
+      icon("down") + " Export allocations</button>" +
+      (view.armed === "portfolio:" + p.id
+        ? '<button class="btn btn-danger" data-act="delete-portfolio">' + icon("trash") + " Confirm delete</button>"
+        : '<button class="btn btn-ghost" data-act="arm-portfolio">' + icon("trash") + " Delete</button>") +
+      '<button class="btn" data-act="add-rebalance">' + icon("plus") + " New rebalance</button>" +
+      "</div></div>";
+
+    if (!snaps.length) {
+      return html + '<div class="empty">No allocations yet - add the first dated rebalance.</div>';
+    }
+
+    var side = '<div><div class="side-title">Rebalance history</div><div class="snaplist">' +
+      snaps.map(function (s) {
+        return '<button class="snapitem" data-snap="' + s.id + '" aria-current="' + (current && s.id === current.id) + '">' +
+          '<span class="d">' + esc(fmtDate(s.date)) + "</span>" +
+          '<span class="n">' + s.rows.length + "</span></button>";
+      }).join("") + "</div></div>";
+
+    var total = sumWeights(current.rows);
+    var off = Math.abs(total - 100) > 0.5;
+
+    var rowsHtml = current.rows.slice().sort(function (a, b) { return b.weight - a.weight; })
+      .map(function (r) {
+        return "<tr><td>" + esc(r.fund) + "</td>" +
+          '<td class="isin">' + esc(r.isin || "-") + "</td>" +
+          '<td><span class="legend-item"><span class="swatch" style="background:' + classColour(r.asset) + '"></span>' +
+          esc(r.asset) + "</span></td>" +
+          '<td class="num">' + fmtPct(r.weight, 2) + "</td></tr>";
+      }).join("");
+
+    var main = '<div class="box"><div class="box-head"><h3>' + esc(fmtDate(current.date)) + "</h3>" +
+      '<span class="pill">' + current.rows.length + " holdings</span>" +
+      (current.author ? '<span class="pill">Added by ' + esc(current.author) + "</span>" : "") +
+      (current.note ? '<span class="card-meta">' + esc(current.note) + "</span>" : "") +
+      (current.seed
+        ? '<span class="card-meta" style="margin-left:auto">From the workbook</span>'
+        : '<button class="btn btn-ghost btn-sm" style="margin-left:auto" data-act="' +
+          (view.armed === "snap:" + current.id ? "delete-snap" : "arm-snap") + '">' +
+          icon("trash", 12) + (view.armed === "snap:" + current.id ? " Confirm delete" : " Delete snapshot") +
+          "</button>") + "</div>" +
+      '<div class="box-body">' +
+      (off ? '<div class="note note-warn">' + icon("warn", 15) +
+        "<span>Weights total " + fmtPct(total, 2) + ", not 100%. Check for a missing line or a truncated paste before relying on this snapshot.</span></div>" : "") +
+      allocBar(current.rows, true) + allocLegend(current.rows) +
+      '<div class="tablewrap"><table><caption class="sr">Allocations effective ' + esc(fmtDate(current.date)) + "</caption>" +
+      "<thead><tr><th>Fund name</th><th>ISIN</th><th>Asset class</th><th class=\"num\">Weight</th></tr></thead>" +
+      "<tbody>" + rowsHtml + "</tbody>" +
+      '<tfoot><tr><td colspan="3">Total</td><td class="num" style="color:' + (off ? "var(--warn)" : "inherit") + '">' +
+      fmtPct(total, 2) + "</td></tr></tfoot></table></div>" +
+      "</div></div>";
+
+    return html + '<div class="split">' + side + main + "</div>";
+  }
+
+  // ---------- calendar ----------
+
+  var EVT_TYPES = [
+    { key: "event", label: "Conference", varname: "--c-dv" },
+    { key: "internal", label: "Sales catchup", varname: "--c-fi" },
+    { key: "external", label: "Manager meeting", varname: "--c-eq" }
+  ];
+
+  function evtType(key) {
+    return EVT_TYPES.filter(function (t) { return t.key === key; })[0] || EVT_TYPES[0];
+  }
+
+  function pad2(n) { return (n < 10 ? "0" : "") + n; }
+
+  function isoDate(y, m, d) { return y + "-" + pad2(m + 1) + "-" + pad2(d); }
+
+  function todayIso() {
+    var t = new Date();
+    return isoDate(t.getFullYear(), t.getMonth(), t.getDate());
+  }
+
+  function getEvent(id) {
+    return state.events.filter(function (ev) { return ev.id === id; })[0] || null;
+  }
+
+  function eventsOn(iso) {
+    return state.events.filter(function (ev) { return ev.date === iso; })
+      .sort(function (a, b) {
+        var ta = a.start || "99:99", tb = b.start || "99:99";
+        if (ta !== tb) return ta < tb ? -1 : 1;
+        return (a.title || "").localeCompare(b.title || "");
+      });
+  }
+
+  function evtTime(ev) {
+    if (!ev.start) return "";
+    return ev.start + (ev.end ? "-" + ev.end : "");
+  }
+
+  function evtPill(ev) {
+    var t = evtType(ev.type);
+    var tipText = t.label + (ev.start ? " - " + evtTime(ev) : "") +
+      (ev.who ? " - " + ev.who : "") + (ev.note ? " - " + ev.note : "");
+    return '<button class="cal-evt evt-' + t.key + '" data-evt="' + ev.id + '" data-tip="' + esc(tipText) + '">' +
+      (ev.start ? '<span class="hm">' + esc(ev.start) + "</span>" : "") +
+      '<span class="t">' + esc(ev.title) + "</span>" +
+      (ev.who ? '<span class="who">' + esc(ev.who) + "</span>" : "") +
+      "</button>";
+  }
+
+  function renderCalendar() {
+    var y = view.calY, m = view.calM;
+    var months = ["January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"];
+    var today = todayIso();
+
+    var head = '<div class="panel-head"><h2>Team calendar</h2>' +
+      '<button class="btn" data-act="add-event">' + icon("plus") + " Add entry</button></div>" +
+      '<p class="blurb">The investment team schedule - manager meetings, conferences and sales catchups. ' +
+      "Click a day to add an entry, or click an entry to edit or delete it. " +
+      "Set your initials in the top bar and new entries are tagged to you automatically.</p>";
+
+    var toolbar = '<div class="cal-toolbar">' +
+      '<button class="btn btn-ghost btn-sm" data-act="cal-prev" aria-label="Previous month">' + icon("back", 12) + "</button>" +
+      '<button class="btn btn-ghost btn-sm" data-act="cal-next" aria-label="Next month" style="transform:scaleX(-1)">' + icon("back", 12) + "</button>" +
+      '<span class="cal-month">' + months[m] + " " + y + "</span>" +
+      '<button class="btn btn-ghost btn-sm" data-act="cal-today">Today</button>' +
+      '<div class="cal-legend">' + EVT_TYPES.map(function (t) {
+        return '<span class="tag tag-' + t.key + '"><span class="swatch" style="background:var(' + t.varname + ')"></span>' + t.label + "</span>";
+      }).join("") + "</div></div>";
+
+    var dows = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+    var cells = dows.map(function (d) { return '<div class="cal-dow">' + d + "</div>"; }).join("");
+
+    var first = new Date(y, m, 1);
+    var lead = (first.getDay() + 6) % 7; // Monday-first
+    var start = new Date(y, m, 1 - lead);
+
+    for (var i = 0; i < 42; i++) {
+      var d = new Date(start.getFullYear(), start.getMonth(), start.getDate() + i);
+      if (i === 35 && d.getMonth() !== m) break; // skip an entirely out-of-month sixth week
+      var iso = isoDate(d.getFullYear(), d.getMonth(), d.getDate());
+      var out = d.getMonth() !== m;
+      var dow = (d.getDay() + 6) % 7;
+      var evs = eventsOn(iso);
+      var shown = evs.slice(0, 4);
+
+      cells += '<div class="cal-cell' + (out ? " cal-out" : "") +
+        (iso === today ? " cal-today" : "") + (dow > 4 ? " cal-wkend" : "") +
+        '" data-day="' + iso + '" role="button" tabindex="0" aria-label="' + esc(fmtDate(iso)) + '">' +
+        '<span class="cal-num">' + d.getDate() + "</span>" +
+        shown.map(evtPill).join("") +
+        (evs.length > shown.length ? '<span class="cal-more">+' + (evs.length - shown.length) + " more</span>" : "") +
+        "</div>";
+    }
+
+    var grid = '<div class="cal-grid">' + cells + "</div>";
+
+    // next 14 days, across months, so nothing sneaks up over a month boundary
+    var upcoming = state.events.filter(function (ev) {
+      var lim = new Date();
+      lim.setDate(lim.getDate() + 14);
+      var limIso = isoDate(lim.getFullYear(), lim.getMonth(), lim.getDate());
+      return ev.date >= today && ev.date <= limIso;
+    }).sort(function (a, b) {
+      if (a.date !== b.date) return a.date < b.date ? -1 : 1;
+      return (a.start || "99:99") < (b.start || "99:99") ? -1 : 1;
+    });
+
+    var upHtml = '<div class="cal-upcoming"><h3>Next 14 days</h3>';
+    if (!upcoming.length) {
+      upHtml += '<div class="empty" style="padding:20px">Nothing scheduled in the next two weeks.</div>';
+    } else {
+      upHtml += '<div class="up-list">' + upcoming.map(function (ev) {
+        var t = evtType(ev.type);
+        return '<button class="up-row" data-evt="' + ev.id + '">' +
+          '<span class="up-date">' + esc(fmtDate(ev.date)) + "</span>" +
+          '<span class="up-time">' + esc(evtTime(ev) || "all day") + "</span>" +
+          '<span class="tag tag-' + t.key + '"><span class="swatch" style="background:var(' + t.varname + ')"></span>' + t.label + "</span>" +
+          '<span class="up-title">' + esc(ev.title) + (ev.note ? ' <span style="color:var(--ink-3);font-weight:400">- ' + esc(ev.note) + "</span>" : "") + "</span>" +
+          (ev.who ? '<span class="up-who">' + esc(ev.who) + "</span>" : "") +
+          "</button>";
+      }).join("") + "</div>";
+    }
+    upHtml += "</div>";
+
+    return head + toolbar + grid + upHtml;
+  }
+
+  function openEventDlg(ev, dateIso) {
+    view.editEvent = ev ? ev.id : null;
+    document.getElementById("eHeading").textContent = ev ? "Edit calendar entry" : "New calendar entry";
+    document.getElementById("eTitle").value = ev ? ev.title : "";
+    document.getElementById("eDate").value = ev ? ev.date : (dateIso || todayIso());
+    document.getElementById("eStart").value = ev && ev.start ? ev.start : "";
+    document.getElementById("eEnd").value = ev && ev.end ? ev.end : "";
+    document.getElementById("eWho").value = ev ? (ev.who || "") : state.initials;
+    document.getElementById("eNote").value = ev ? (ev.note || "") : "";
+    var type = ev ? ev.type : "internal";
+    Array.prototype.forEach.call(document.querySelectorAll('input[name="eType"]'), function (r) {
+      r.checked = r.value === type;
+    });
+    var del = document.getElementById("eDelete");
+    del.style.display = ev ? "" : "none";
+    del.textContent = "Delete";
+    document.getElementById("eSave").textContent = ev ? "Save changes" : "Save entry";
+    document.getElementById("eventDlg").showModal();
+  }
+
+  function render() {
+    renderNav();
+    var main = document.getElementById("main");
+
+    if (view.tab === "funds") {
+      main.innerHTML = renderFunds();
+      restoreSearchFocus();
+      return;
+    }
+
+    if (view.tab === "calendar") {
+      main.innerHTML = renderCalendar();
+      return;
+    }
+
+    if (view.tab !== "portfolios") {
+      var tab = NAV_ITEMS.filter(function (t) { return t.id === view.tab; })[0];
+      main.innerHTML = renderPlaceholder(tab ? tab.label : "This section");
+      return;
+    }
+
+    var p = view.openId ? getPortfolio(view.openId) : null;
+    main.innerHTML = p ? renderDetail(p) : renderList();
+  }
+
+  // The register re-renders on every keystroke, so put the caret back afterwards.
+  var refocusSearch = false;
+  function restoreSearchFocus() {
+    if (!refocusSearch) return;
+    refocusSearch = false;
+    var el = document.getElementById("fundSearch");
+    if (!el) return;
+    el.focus();
+    el.setSelectionRange(el.value.length, el.value.length);
+  }
+
+  // ---------- workspace transfer ----------
+
+  function exportWorkspace() {
+    offerDownload("lumin-fund-research.json", JSON.stringify(state, null, 2));
+  }
+
+  function importWorkspace(file) {
+    var reader = new FileReader();
+    reader.onload = function () {
+      try {
+        var parsed = JSON.parse(String(reader.result));
+        if (!parsed || !Array.isArray(parsed.portfolios)) throw new Error("shape");
+        state.portfolios = parsed.portfolios;
+        if (Array.isArray(parsed.events)) state.events = parsed.events;
+        saveState();
+        view.openId = null;
+        view.openSnap = null;
+        render();
+        toast("Workspace loaded - " + parsed.portfolios.length + " portfolios");
+      } catch (e) {
+        toast("That file is not a dashboard export");
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  function offerDownload(filename, data) {
+    if (!window.claude || !window.claude.downloads) {
+      toast("Downloads are not available in this view");
+      return;
+    }
+    window.claude.downloads.save({ filename: filename, data: data })
+      .catch(function (err) {
+        var code = err && err.code;
+        if (code === "declined") return;
+        if (code === "extension_not_enabled") {
+          var alt = filename.replace(/\.(csv)$/i, ".txt");
+          if (alt !== filename) {
+            window.claude.downloads.save({ filename: alt, data: data }).catch(function () {
+              toast("Could not save the file");
+            });
+            return;
+          }
+        }
+        if (code === "rate_limited") { toast("A save is already open - try again in a moment"); return; }
+        toast("Could not save the file");
+      });
+  }
+
+  function exportCsv(p, snap) {
+    var lines = ["Fund Name,ISIN,Asset Class,Weight %"];
+    snap.rows.forEach(function (r) {
+      lines.push('"' + r.fund.replace(/"/g, '""') + '","' + r.isin + '","' + r.asset + '",' + r.weight.toFixed(4));
+    });
+    var name = (p.range + "-" + p.risk + "-" + snap.date).replace(/[^A-Za-z0-9._-]/g, "-");
+    offerDownload(name + ".csv", lines.join("\n"));
+  }
+
+  // One row per fund per model, so the register can be pivoted in Excel.
+  function exportFundCsv() {
+    var q = function (s) { return '"' + String(s == null ? "" : s).replace(/"/g, '""') + '"'; };
+    var lines = ["Fund Name,ISIN,Asset Class,Range,Risk Level,Weight %,Effective Date,Manager Notes"];
+    filterFunds(fundRegister()).forEach(function (e) {
+      var notes = (e.notes || []).map(function (n) { return n[1]; }).join(" | ");
+      e.holdings.forEach(function (h) {
+        lines.push([q(e.fund), q(e.isin), q(e.asset), q(h.range),
+          q(h.risk), h.weight.toFixed(4), q(h.date), q(notes)].join(","));
+      });
+    });
+    offerDownload("lumin-fund-register.csv", lines.join("\n"));
+  }
+
+  // ---------- toast ----------
+
+  var toastTimer = null;
+  function toast(msg) {
+    var el = document.getElementById("tip");
+    el.textContent = msg;
+    el.style.left = "50%";
+    el.style.top = "auto";
+    el.style.bottom = "24px";
+    el.style.transform = "translateX(-50%)";
+    el.setAttribute("data-show", "true");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () {
+      el.setAttribute("data-show", "false");
+      el.style.bottom = "";
+    }, 2600);
+  }
+
+  // ---------- events ----------
+
+  document.getElementById("sidebarNav").addEventListener("click", function (e) {
+    var btn = e.target.closest("[data-tab]");
+    if (!btn) return;
+    view.tab = btn.getAttribute("data-tab");
+    view.armed = null;
+    render();
+  });
+
+  document.getElementById("refreshBtn").addEventListener("click", function () {
+    loadState();
+    document.getElementById("initials").value = state.initials;
+    view.armed = null;
+    render();
+    toast("Reloaded from this browser's saved copy");
+  });
+
+  document.getElementById("initials").addEventListener("input", function (e) {
+    state.initials = e.target.value.toUpperCase();
+    e.target.value = state.initials;
+    saveState();
+  });
+
+  document.getElementById("main").addEventListener("click", function (e) {
+    // let notes links open instead of toggling the row they sit in
+    if (e.target.closest("a[href]")) return;
+
+    var fundRow = e.target.closest("[data-fund]");
+    if (fundRow) {
+      var k = fundRow.getAttribute("data-fund");
+      view.openFund = view.openFund === k ? null : k;
+      render();
+      return;
+    }
+
+    var evtBtn = e.target.closest("[data-evt]");
+    if (evtBtn) {
+      var ev0 = getEvent(evtBtn.getAttribute("data-evt"));
+      if (ev0) openEventDlg(ev0, null);
+      return;
+    }
+
+    var dayCell = e.target.closest("[data-day]");
+    if (dayCell && !e.target.closest("[data-act]")) {
+      openEventDlg(null, dayCell.getAttribute("data-day"));
+      return;
+    }
+
+    var open = e.target.closest("[data-open]");
+    if (open) {
+      view.openId = open.getAttribute("data-open");
+      view.openSnap = null;
+      view.armed = null;
+      render();
+      return;
+    }
+
+    var snap = e.target.closest("[data-snap]");
+    if (snap) {
+      view.openSnap = snap.getAttribute("data-snap");
+      view.armed = null;
+      render();
+      return;
+    }
+
+    var actEl = e.target.closest("[data-act]");
+    if (!actEl) return;
+    var act = actEl.getAttribute("data-act");
+    var p = view.openId ? getPortfolio(view.openId) : null;
+
+    if (act === "add-portfolio") {
+      document.getElementById("portfolioDlg").showModal();
+    } else if (act === "back") {
+      view.openId = null; view.openSnap = null; view.armed = null; render();
+    } else if (act === "add-rebalance") {
+      document.getElementById("rDate").value = new Date().toISOString().slice(0, 10);
+      document.getElementById("rPaste").value = "";
+      document.getElementById("rNote").value = "";
+      document.getElementById("rebalanceDlg").showModal();
+    } else if (act === "arm-portfolio") {
+      view.armed = "portfolio:" + p.id; render();
+    } else if (act === "delete-portfolio") {
+      if (p.seed && state.removed.indexOf(p.id) < 0) state.removed.push(p.id);
+      state.portfolios = state.portfolios.filter(function (x) { return x.id !== p.id; });
+      view.openId = null; view.armed = null; saveState(); render();
+      toast("Portfolio deleted");
+    } else if (act === "arm-snap") {
+      var s0 = currentSnap(p); if (s0) { view.armed = "snap:" + s0.id; render(); }
+    } else if (act === "delete-snap") {
+      var s1 = currentSnap(p);
+      if (s1) {
+        p.snapshots = p.snapshots.filter(function (x) { return x.id !== s1.id; });
+        view.openSnap = null; view.armed = null; saveState(); render();
+        toast("Snapshot deleted");
+      }
+    } else if (act === "export-csv") {
+      var s2 = currentSnap(p);
+      if (s2) exportCsv(p, s2);
+    } else if (act === "export-funds") {
+      exportFundCsv();
+    } else if (act === "add-event") {
+      openEventDlg(null, null);
+    } else if (act === "cal-prev") {
+      view.calM--; if (view.calM < 0) { view.calM = 11; view.calY--; } render();
+    } else if (act === "cal-next") {
+      view.calM++; if (view.calM > 11) { view.calM = 0; view.calY++; } render();
+    } else if (act === "cal-today") {
+      var now = new Date();
+      view.calY = now.getFullYear(); view.calM = now.getMonth(); render();
+    } else if (act === "restore-seed") {
+      var n = state.removed.length;
+      state.removed = [];
+      saveState();
+      loadState();
+      render();
+      toast(n ? n + " Lumin model" + (n === 1 ? "" : "s") + " restored" : "All Lumin models are already here");
+    }
+  });
+
+  document.getElementById("main").addEventListener("input", function (e) {
+    if (e.target.id !== "fundSearch") return;
+    view.fundQuery = e.target.value;
+    view.openFund = null;
+    refocusSearch = true;
+    render();
+  });
+
+  document.getElementById("main").addEventListener("change", function (e) {
+    if (e.target.id === "fundClass") {
+      view.fundClass = e.target.value;
+      view.openFund = null;
+      render();
+    }
+  });
+
+  function currentSnap(p) {
+    if (!p) return null;
+    var snaps = sortedSnaps(p);
+    if (view.openSnap) {
+      var m = snaps.filter(function (s) { return s.id === view.openSnap; })[0];
+      if (m) return m;
+    }
+    return snaps[0] || null;
+  }
+
+  // dialogs
+
+  document.getElementById("portfolioDlg").addEventListener("close", function (e) {
+    var dlg = e.target;
+    if (dlg.returnValue !== "save") return;
+    var range = document.getElementById("pRange").value.trim();
+    var risk = document.getElementById("pRisk").value.trim();
+    if (!range || !risk) return;
+    var dupe = state.portfolios.filter(function (p) {
+      return String(p.range).trim().toLowerCase() === range.toLowerCase() &&
+        String(p.risk).trim().toLowerCase() === risk.toLowerCase();
+    })[0];
+    if (dupe) {
+      document.getElementById("pRange").value = "";
+      document.getElementById("pRisk").value = "";
+      document.getElementById("pNote").value = "";
+      view.openId = dupe.id;
+      view.openSnap = null;
+      render();
+      toast(range + " " + risk.toUpperCase() + " already exists - opened it");
+      return;
+    }
+    state.portfolios.push({
+      id: uid(),
+      range: range,
+      risk: risk.toUpperCase(),
+      note: document.getElementById("pNote").value.trim(),
+      snapshots: []
+    });
+    document.getElementById("pRange").value = "";
+    document.getElementById("pRisk").value = "";
+    document.getElementById("pNote").value = "";
+    saveState();
+    render();
+    toast("Portfolio added");
+  });
+
+  document.getElementById("rFile").addEventListener("change", function (e) {
+    var file = e.target.files && e.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function () {
+      document.getElementById("rPaste").value = String(reader.result);
+      document.getElementById("fileHint").textContent = "Loaded " + file.name + " - check the rows below, then save.";
+    };
+    reader.readAsText(file);
+    e.target.value = "";
+  });
+
+  document.getElementById("rebalanceDlg").addEventListener("close", function (e) {
+    if (e.target.returnValue !== "save") return;
+    var p = getPortfolio(view.openId);
+    if (!p) return;
+
+    var date = document.getElementById("rDate").value;
+    var parsed = parseAllocations(document.getElementById("rPaste").value);
+
+    if (!parsed.rows.length) {
+      toast(parsed.errors[0] || "No allocations could be read");
+      return;
+    }
+
+    p.snapshots.push({
+      id: uid(),
+      date: date,
+      note: document.getElementById("rNote").value.trim(),
+      author: state.initials,
+      rows: parsed.rows
+    });
+
+    view.openSnap = null;
+    saveState();
+    render();
+
+    var msg = parsed.rows.length + " holdings saved";
+    if (parsed.errors.length) msg += " - " + parsed.errors.length + " row(s) skipped";
+    toast(msg);
+  });
+
+  // calendar entry dialog
+
+  document.getElementById("eDelete").addEventListener("click", function () {
+    var btn = this;
+    if (btn.textContent !== "Confirm delete") {
+      btn.textContent = "Confirm delete";
+      return;
+    }
+    state.events = state.events.filter(function (ev) { return ev.id !== view.editEvent; });
+    view.editEvent = null;
+    saveState();
+    document.getElementById("eventDlg").close("deleted");
+    render();
+    toast("Entry deleted");
+  });
+
+  document.getElementById("eventDlg").addEventListener("close", function (e) {
+    if (e.target.returnValue !== "save") return;
+    var title = document.getElementById("eTitle").value.trim();
+    var date = document.getElementById("eDate").value;
+    if (!title || !date) { toast("An entry needs a title and a date"); return; }
+
+    var typeEl = document.querySelector('input[name="eType"]:checked');
+    var entry = {
+      id: view.editEvent || uid(),
+      type: typeEl ? typeEl.value : "internal",
+      title: title,
+      date: date,
+      start: document.getElementById("eStart").value,
+      end: document.getElementById("eEnd").value,
+      who: document.getElementById("eWho").value.trim().toUpperCase(),
+      note: document.getElementById("eNote").value.trim()
+    };
+    if (entry.end && entry.start && entry.end < entry.start) {
+      var swap = entry.start; entry.start = entry.end; entry.end = swap;
+    }
+    if (entry.end && !entry.start) { entry.start = entry.end; entry.end = ""; }
+
+    var existing = view.editEvent ? getEvent(view.editEvent) : null;
+    if (existing) {
+      state.events = state.events.map(function (ev) { return ev.id === entry.id ? entry : ev; });
+    } else {
+      state.events.push(entry);
+    }
+    view.editEvent = null;
+
+    // jump the grid to the month the entry lives in
+    var p = date.split("-");
+    view.calY = Number(p[0]);
+    view.calM = Number(p[1]) - 1;
+
+    saveState();
+    render();
+    toast(existing ? "Entry updated" : "Entry added");
+  });
+
+  // keyboard access for the day cells (divs, not buttons)
+  document.getElementById("main").addEventListener("keydown", function (e) {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    var cell = e.target.closest ? e.target.closest(".cal-cell[data-day]") : null;
+    if (!cell || e.target !== cell) return;
+    e.preventDefault();
+    openEventDlg(null, cell.getAttribute("data-day"));
+  });
+
+  // tooltip for allocation segments
+
+  var tip = document.getElementById("tip");
+  document.addEventListener("mousemove", function (e) {
+    var seg = e.target.closest("[data-tip]");
+    if (!seg) {
+      if (tip.getAttribute("data-show") === "true" && !toastTimer) tip.setAttribute("data-show", "false");
+      return;
+    }
+    clearTimeout(toastTimer);
+    toastTimer = null;
+    tip.textContent = seg.getAttribute("data-tip");
+    tip.style.bottom = "";
+    tip.style.transform = "translate(-50%, -140%)";
+    tip.style.left = e.clientX + "px";
+    tip.style.top = e.clientY + "px";
+    tip.setAttribute("data-show", "true");
+  });
+
+  // ---------- keyboard: workspace transfer ----------
+
+  var transferInput = document.createElement("input");
+  transferInput.type = "file";
+  transferInput.accept = ".json,.txt";
+  transferInput.style.display = "none";
+  transferInput.addEventListener("change", function () {
+    if (transferInput.files && transferInput.files[0]) importWorkspace(transferInput.files[0]);
+    transferInput.value = "";
+  });
+  document.body.appendChild(transferInput);
+
+  document.getElementById("scopePill").addEventListener("click", function () {
+    toast("Entries live in this browser only - use Export / Import workspace to move them");
+  });
+
+  // export / import controls in the header
+  var right = document.querySelector(".topbar-right");
+  var exportBtn = document.createElement("button");
+  exportBtn.className = "btn btn-ghost";
+  exportBtn.innerHTML = icon("down") + " Export";
+  exportBtn.title = "Save this workspace as a file you can send to a colleague";
+  exportBtn.addEventListener("click", exportWorkspace);
+
+  var importBtn = document.createElement("button");
+  importBtn.className = "btn btn-ghost";
+  importBtn.innerHTML = icon("upload") + " Import";
+  importBtn.title = "Load a workspace file from a colleague";
+  importBtn.addEventListener("click", function () { transferInput.click(); });
+
+  right.insertBefore(importBtn, right.lastElementChild);
+  right.insertBefore(exportBtn, importBtn);
+
+  // ---------- boot ----------
+
+  loadState();
+  document.getElementById("initials").value = state.initials;
+  renderFootnote();
+  render();
+})();
+</script>
