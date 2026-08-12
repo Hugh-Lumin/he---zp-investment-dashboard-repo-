@@ -1,0 +1,2101 @@
+{
+  "generatedAt": "2026-08-10 12:24",
+  "sourceSheet": "Model Weights - From 01.05.26",
+  "effectiveDate": "2026-05-02",
+  "fundCount": 72,
+  "funds": [
+    {
+      "name": "Aberdeen Short-Dated Inflation Linked",
+      "assetClass": "Fixed Interest",
+      "mgmt": "Passive",
+      "ranges": [
+        "Core",
+        "ESG",
+        "Passive"
+      ],
+      "shareClasses": [
+        {
+          "label": "N Acc",
+          "isin": "GB00BDFZ6S09",
+          "ocf": 0.001,
+          "ocfDate": "2026-05-06",
+          "amc": 0.001,
+          "platforms": [
+            "WZ"
+          ]
+        },
+        {
+          "label": "B Acc",
+          "isin": "GB00BGMK1733",
+          "ocf": 0.0014,
+          "ocfDate": "2025-05-06",
+          "amc": 0.001,
+          "platforms": [
+            "WZ"
+          ]
+        }
+      ],
+      "yield": 0.0383,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "",
+      "region": "Global",
+      "house": "Aberdeen",
+      "website": "https://www.aberdeeninvestments.com/en-gb/investor/funds"
+    },
+    {
+      "name": "Amundi MSCI EM SRI PAB Index",
+      "assetClass": "Equities",
+      "mgmt": "Passive",
+      "ranges": [
+        "ESG"
+      ],
+      "shareClasses": [
+        {
+          "label": "",
+          "isin": "LU2089234475",
+          "ocf": 0.0025,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0015,
+          "platforms": []
+        }
+      ],
+      "yield": null,
+      "yieldDate": null,
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "",
+      "region": "Asia & EM",
+      "house": "Amundi",
+      "website": "https://www.amundi.co.uk/professional/product-explorer"
+    },
+    {
+      "name": "Amundi MSCI United Kingdom SRI PAB Index",
+      "assetClass": "Equities",
+      "mgmt": "Passive",
+      "ranges": [
+        "ESG"
+      ],
+      "shareClasses": [
+        {
+          "label": "",
+          "isin": "LU2269164153",
+          "ocf": 0.0018,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0008,
+          "platforms": []
+        }
+      ],
+      "yield": null,
+      "yieldDate": null,
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "",
+      "region": "UK",
+      "house": "Amundi",
+      "website": "https://www.amundi.co.uk/professional/product-explorer"
+    },
+    {
+      "name": "Artemis Global Income Fund",
+      "assetClass": "Equities",
+      "mgmt": "Active",
+      "ranges": [
+        "Income"
+      ],
+      "shareClasses": [
+        {
+          "label": "I Inc",
+          "isin": "GB00B5N99561",
+          "ocf": 0.00825,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0075,
+          "platforms": []
+        }
+      ],
+      "yield": 0.0255,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "Using historic yield",
+      "region": "Global",
+      "house": "Artemis",
+      "website": "https://www.artemisfunds.com/en/gbr/adviser/funds"
+    },
+    {
+      "name": "Artemis SmartGARP Global Emerging Markets",
+      "assetClass": "Equities",
+      "mgmt": "Active",
+      "ranges": [
+        "Core"
+      ],
+      "shareClasses": [
+        {
+          "label": "e",
+          "isin": "GB00BNQNJ512",
+          "ocf": 0.0069,
+          "ocfDate": "2026-05-06",
+          "amc": 0.006,
+          "platforms": [
+            "WZ"
+          ]
+        },
+        {
+          "label": "I Inc GBP",
+          "isin": "GB00BW9HL249",
+          "ocf": 0.0084,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0075,
+          "platforms": [
+            "WZ"
+          ]
+        }
+      ],
+      "yield": 0.0278,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "Using historic yield",
+      "region": "Asia & EM",
+      "house": "Artemis",
+      "website": "https://www.artemisfunds.com/en/gbr/adviser/funds"
+    },
+    {
+      "name": "Artemis UK Smaller Companies",
+      "assetClass": "Equities",
+      "mgmt": "Active",
+      "ranges": [
+        "Core"
+      ],
+      "shareClasses": [
+        {
+          "label": "I Acc",
+          "isin": "GB00B2PLJL57",
+          "ocf": 0.0086,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0075,
+          "platforms": [
+            "WZ"
+          ]
+        }
+      ],
+      "yield": 0.0225,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "Using historic yield",
+      "region": "UK",
+      "house": "Artemis",
+      "website": "https://www.artemisfunds.com/en/gbr/adviser/funds"
+    },
+    {
+      "name": "BNP Paribas Easy ECPI Global ESG Infrastructure ETF",
+      "assetClass": "Diversifiers",
+      "mgmt": "Passive",
+      "ranges": [
+        "ESG"
+      ],
+      "shareClasses": [
+        {
+          "label": "",
+          "isin": "IE0006O3TTP9",
+          "ocf": 0.0031,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0031,
+          "platforms": []
+        }
+      ],
+      "yield": 0.0267,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "",
+      "region": "Global",
+      "house": "BNP Paribas",
+      "website": "https://www.bnpparibas-am.com/en-gb/professional/fund-explorer/"
+    },
+    {
+      "name": "BNY Mellon US Equity Income Fund",
+      "assetClass": "Equities",
+      "mgmt": "Active",
+      "ranges": [
+        "Income"
+      ],
+      "shareClasses": [
+        {
+          "label": "W Inc GBP",
+          "isin": "IE00BD5M7551",
+          "ocf": 0.0084,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0075,
+          "platforms": []
+        }
+      ],
+      "yield": 0.0176,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "",
+      "region": "US",
+      "house": "BNY Mellon",
+      "website": "https://www.bny.com/investments/uk/en/intermediary/funds.html"
+    },
+    {
+      "name": "CG Absolute Return",
+      "assetClass": "Diversifiers",
+      "mgmt": "Active",
+      "ranges": [
+        "Core"
+      ],
+      "shareClasses": [
+        {
+          "label": "M Inc GBP",
+          "isin": "IE00BYQ69B30",
+          "ocf": 0.0047,
+          "ocfDate": "2026-02-06",
+          "amc": 0.0035,
+          "platforms": [
+            "WZ"
+          ]
+        }
+      ],
+      "yield": 0.0267,
+      "yieldDate": "2026-02-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "",
+      "region": "Global",
+      "house": "CG",
+      "website": "https://cgasset.com/funds/"
+    },
+    {
+      "name": "Chikara Japan Income & Growth",
+      "assetClass": "Equities",
+      "mgmt": "Active",
+      "ranges": [
+        "Income"
+      ],
+      "shareClasses": [
+        {
+          "label": "S Inc GBP",
+          "isin": "IE00BKRC2Z78",
+          "ocf": 0.0105,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0075,
+          "platforms": []
+        }
+      ],
+      "yield": 0.026,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "",
+      "region": "Japan",
+      "house": "Chikara",
+      "website": "https://chikarainvestments.com/funds/"
+    },
+    {
+      "name": "Cohen & Steers Diversified Real Assets Fund",
+      "assetClass": "Diversifiers",
+      "mgmt": "Active",
+      "ranges": [
+        "Core"
+      ],
+      "shareClasses": [
+        {
+          "label": "FX GBP",
+          "isin": "LU1821812770",
+          "ocf": 0.0055,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0045,
+          "platforms": [
+            "WZ"
+          ]
+        }
+      ],
+      "yield": 0.0364,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "",
+      "region": "Global",
+      "house": "Cohen & Steers",
+      "website": "https://www.cohenandsteers.com/funds/"
+    },
+    {
+      "name": "Cohen & Steers Diversified Real Assets Fund (GBP Hdg)",
+      "assetClass": "Diversifiers",
+      "mgmt": "Active",
+      "ranges": [
+        "Income"
+      ],
+      "shareClasses": [
+        {
+          "label": "F Inc GBP (Hedged)",
+          "isin": "LU2313907409",
+          "ocf": 0.0055,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0045,
+          "platforms": []
+        }
+      ],
+      "yield": 0.0364,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "",
+      "region": "Global",
+      "house": "Cohen & Steers",
+      "website": "https://www.cohenandsteers.com/funds/"
+    },
+    {
+      "name": "Cohen & Steers Short Duration Preferred Income",
+      "assetClass": "Fixed Interest",
+      "mgmt": "Active",
+      "ranges": [
+        "Income"
+      ],
+      "shareClasses": [
+        {
+          "label": "F Inc GBP (Hedged)",
+          "isin": "LU2581459927",
+          "ocf": 0.0035,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0035,
+          "platforms": []
+        }
+      ],
+      "yield": 0.0494,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "",
+      "region": "Global",
+      "house": "Cohen & Steers",
+      "website": "https://www.cohenandsteers.com/funds/"
+    },
+    {
+      "name": "Dimensional US Small Companies",
+      "assetClass": "Equities",
+      "mgmt": "Active",
+      "ranges": [
+        "Core"
+      ],
+      "shareClasses": [
+        {
+          "label": "Acc GBP",
+          "isin": "IE00B0701B00",
+          "ocf": 0.0036,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0036,
+          "platforms": [
+            "WZ"
+          ]
+        }
+      ],
+      "yield": "-",
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "",
+      "region": "US",
+      "house": "Dimensional",
+      "website": "https://www.dimensional.com/gb-en"
+    },
+    {
+      "name": "Fidelity Global Dividend",
+      "assetClass": "Equities",
+      "mgmt": "Active",
+      "ranges": [
+        "Core"
+      ],
+      "shareClasses": [
+        {
+          "label": "W Inc",
+          "isin": "GB00B7778087",
+          "ocf": 0.0091,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0075,
+          "platforms": [
+            "WZ"
+          ]
+        },
+        {
+          "label": "R Acc",
+          "isin": "GB00BP68CM89",
+          "ocf": 0.0076,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0075,
+          "platforms": [
+            "WZ"
+          ]
+        }
+      ],
+      "yield": 0.0251,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "Using historic yield",
+      "region": "Global",
+      "house": "Fidelity",
+      "website": "https://www.fidelity.co.uk/funds/"
+    },
+    {
+      "name": "Fidelity Index World",
+      "assetClass": "Equities",
+      "mgmt": "Passive",
+      "ranges": [
+        "Core"
+      ],
+      "shareClasses": [
+        {
+          "label": "P Inc",
+          "isin": "GB00BP8RYB62",
+          "ocf": 0.0012,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0012,
+          "platforms": [
+            "WZ"
+          ]
+        }
+      ],
+      "yield": 0.0126,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "Using historic yield",
+      "region": "Global",
+      "house": "Fidelity",
+      "website": "https://www.fidelity.co.uk/funds/"
+    },
+    {
+      "name": "HSBC FTSE EPRA NAREIT Developed UCITS ETF",
+      "assetClass": "Diversifiers",
+      "mgmt": "Passive",
+      "ranges": [
+        "Passive"
+      ],
+      "shareClasses": [
+        {
+          "label": "",
+          "isin": "IE00B5L01S80",
+          "ocf": 0.0024,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0024,
+          "platforms": []
+        }
+      ],
+      "yield": 0.0373,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "",
+      "region": "Global",
+      "house": "HSBC",
+      "website": "https://www.assetmanagement.hsbc.co.uk/en/intermediary/investment-expertise/etfs"
+    },
+    {
+      "name": "Invesco S&P 500 Equal Weight",
+      "assetClass": "Equities",
+      "mgmt": "Passive",
+      "ranges": [
+        "Core"
+      ],
+      "shareClasses": [
+        {
+          "label": "UCITS ETF Acc",
+          "isin": "IE00BNGJJT35",
+          "ocf": 0.002,
+          "ocfDate": "2026-02-09",
+          "amc": 0.002,
+          "platforms": [
+            "WZ"
+          ]
+        }
+      ],
+      "yield": 0,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "",
+      "region": "US",
+      "house": "Invesco",
+      "website": "https://www.invesco.com/uk/en/financial-products.html"
+    },
+    {
+      "name": "iShares $ High Yield Corp Bond ESG UCITS ETF",
+      "assetClass": "Fixed Interest",
+      "mgmt": "Passive",
+      "ranges": [
+        "ESG"
+      ],
+      "shareClasses": [
+        {
+          "label": "",
+          "isin": "IE0003NVF3Y3",
+          "ocf": 0.0027,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0027,
+          "platforms": []
+        }
+      ],
+      "yield": 0.0831,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "12m trailing yield",
+      "region": "Global",
+      "house": "iShares",
+      "website": "https://www.ishares.com/uk"
+    },
+    {
+      "name": "iShares Core Global Aggregate Bond",
+      "assetClass": "Fixed Interest",
+      "mgmt": "Active",
+      "ranges": [
+        "Core"
+      ],
+      "shareClasses": [
+        {
+          "label": "GBP Hedged (Dist)",
+          "isin": "IE00BF540Y54",
+          "ocf": 0.001,
+          "ocfDate": "2026-05-06",
+          "amc": 0.001,
+          "platforms": [
+            "WZ"
+          ]
+        }
+      ],
+      "yield": 0.0314,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "",
+      "region": "Global",
+      "house": "iShares",
+      "website": "https://www.ishares.com/uk"
+    },
+    {
+      "name": "iShares Environment & Low Carbon Tilt Real Estate Index Fund",
+      "assetClass": "Diversifiers",
+      "mgmt": "Passive",
+      "ranges": [
+        "ESG"
+      ],
+      "shareClasses": [
+        {
+          "label": "",
+          "isin": "GB00B5BFJG71",
+          "ocf": 0.0012,
+          "ocfDate": "2026-05-06",
+          "amc": 0.001,
+          "platforms": []
+        }
+      ],
+      "yield": 0.0255,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "",
+      "region": "Global",
+      "house": "iShares",
+      "website": "https://www.ishares.com/uk"
+    },
+    {
+      "name": "iShares Global Aggregate Bond ESG SRI UCITS ETF",
+      "assetClass": "Fixed Interest",
+      "mgmt": "Passive",
+      "ranges": [
+        "ESG"
+      ],
+      "shareClasses": [
+        {
+          "label": "",
+          "isin": "IE000ZXYID24",
+          "ocf": 0.001,
+          "ocfDate": "2026-05-06",
+          "amc": 0.001,
+          "platforms": []
+        }
+      ],
+      "yield": 0.001,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "",
+      "region": "Global",
+      "house": "iShares",
+      "website": "https://www.ishares.com/uk"
+    },
+    {
+      "name": "iShares Global High Yield Corp Bond",
+      "assetClass": "Fixed Interest",
+      "mgmt": "Passive",
+      "ranges": [
+        "Passive"
+      ],
+      "shareClasses": [
+        {
+          "label": "UCITS ETF GBP Hegded",
+          "isin": "IE00BJSFQX44",
+          "ocf": 0.0055,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0055,
+          "platforms": []
+        }
+      ],
+      "yield": 0.05,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "12 month trailing distribution dividend yield",
+      "region": "Global",
+      "house": "iShares",
+      "website": "https://www.ishares.com/uk"
+    },
+    {
+      "name": "iShares Index Linked Gilt Index Fund (UK)",
+      "assetClass": "Fixed Interest",
+      "mgmt": "Passive",
+      "ranges": [
+        "Core"
+      ],
+      "shareClasses": [
+        {
+          "label": "D Acc",
+          "isin": "GB00B83RVT96",
+          "ocf": 0.0011,
+          "ocfDate": "2026-05-06",
+          "amc": 0.001,
+          "platforms": [
+            "WZ"
+          ]
+        }
+      ],
+      "yield": 0,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "",
+      "region": "UK",
+      "house": "iShares",
+      "website": "https://www.ishares.com/uk"
+    },
+    {
+      "name": "iShares Japan Equity ESG Screened and Optimised Index Fund",
+      "assetClass": "Equities",
+      "mgmt": "Passive",
+      "ranges": [
+        "ESG"
+      ],
+      "shareClasses": [
+        {
+          "label": "",
+          "isin": "GB00BN090851",
+          "ocf": 0.0009,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0007,
+          "platforms": []
+        }
+      ],
+      "yield": 0.0172,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "",
+      "region": "Japan",
+      "house": "iShares",
+      "website": "https://www.ishares.com/uk"
+    },
+    {
+      "name": "iShares MSCI World Health Care Sector Advanced",
+      "assetClass": "Equities",
+      "mgmt": "Passive",
+      "ranges": [
+        "ESG"
+      ],
+      "shareClasses": [
+        {
+          "label": "",
+          "isin": "IE0009QS7W62",
+          "ocf": 0.0018,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0018,
+          "platforms": []
+        }
+      ],
+      "yield": null,
+      "yieldDate": null,
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "",
+      "region": "Global",
+      "house": "iShares",
+      "website": "https://www.ishares.com/uk"
+    },
+    {
+      "name": "iShares UK Gilts All Stocks Index (UK) D Inc",
+      "assetClass": "Fixed Interest",
+      "mgmt": "Passive",
+      "ranges": [
+        "Core"
+      ],
+      "shareClasses": [
+        {
+          "label": "",
+          "isin": "GB00B89VCR08",
+          "ocf": 0.0011,
+          "ocfDate": "2026-05-06",
+          "amc": 0.001,
+          "platforms": [
+            "WZ"
+          ]
+        }
+      ],
+      "yield": null,
+      "yieldDate": null,
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "",
+      "region": "UK",
+      "house": "iShares",
+      "website": "https://www.ishares.com/uk"
+    },
+    {
+      "name": "iShares \u00a3 Ultrashort Bond ETF",
+      "assetClass": "Fixed Interest",
+      "mgmt": "Passive",
+      "ranges": [
+        "ESG",
+        "Passive"
+      ],
+      "shareClasses": [
+        {
+          "label": "",
+          "isin": "IE00BCRY6441",
+          "ocf": 0.0009,
+          "ocfDate": "2025-05-06",
+          "amc": 0.0009,
+          "platforms": []
+        }
+      ],
+      "yield": 0.043,
+      "yieldDate": "2025-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "",
+      "region": "Global",
+      "house": "iShares",
+      "website": "https://www.ishares.com/uk"
+    },
+    {
+      "name": "Janus Henderson Life Sciences",
+      "assetClass": "Equities",
+      "mgmt": "Active",
+      "ranges": [
+        "Core"
+      ],
+      "shareClasses": [
+        {
+          "label": "",
+          "isin": "GB00BPXXDJ03",
+          "ocf": 0.0081,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0065,
+          "platforms": [
+            "WZ"
+          ]
+        }
+      ],
+      "yield": "-",
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "",
+      "region": "US",
+      "house": "Janus Henderson",
+      "website": "https://www.janushenderson.com/en-gb/adviser/funds/"
+    },
+    {
+      "name": "JPM Emerging Markets Income",
+      "assetClass": "Equities",
+      "mgmt": "Active",
+      "ranges": [
+        "Income"
+      ],
+      "shareClasses": [
+        {
+          "label": "C Inc",
+          "isin": "GB00B5N1BC33",
+          "ocf": 0.009,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0075,
+          "platforms": []
+        }
+      ],
+      "yield": 0.0284,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "",
+      "region": "Asia & EM",
+      "house": "JPM",
+      "website": "https://am.jpmorgan.com/gb/en/asset-management/adv/products/fund-explorer/"
+    },
+    {
+      "name": "L&G Emerging Markets Government Bond (USD) Index",
+      "assetClass": "Fixed Interest",
+      "mgmt": "Passive",
+      "ranges": [
+        "Passive"
+      ],
+      "shareClasses": [
+        {
+          "label": "",
+          "isin": "IE000Z3FSB21",
+          "ocf": 0.0022,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0022,
+          "platforms": []
+        }
+      ],
+      "yield": 0.0647,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "Gross redemption yield",
+      "region": "Asia & EM",
+      "house": "L&G",
+      "website": "https://fundcentres.lgim.com/"
+    },
+    {
+      "name": "L&G Emerging Markets Government Bond (USD) Screened Index",
+      "assetClass": "Fixed Interest",
+      "mgmt": "Passive",
+      "ranges": [
+        "ESG"
+      ],
+      "shareClasses": [
+        {
+          "label": "",
+          "isin": "IE000GWGMO62",
+          "ocf": 0.0019,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0019,
+          "platforms": []
+        }
+      ],
+      "yield": 0.0609,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "Gross redemption yield",
+      "region": "Asia & EM",
+      "house": "L&G",
+      "website": "https://fundcentres.lgim.com/"
+    },
+    {
+      "name": "L&G Global Equity Index",
+      "assetClass": "Equities",
+      "mgmt": "Passive",
+      "ranges": [
+        "Core",
+        "Passive"
+      ],
+      "shareClasses": [
+        {
+          "label": "I Inc",
+          "isin": "GB00B84K1975",
+          "ocf": 0.0013,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0013,
+          "platforms": [
+            "WZ",
+            "ARC"
+          ]
+        },
+        {
+          "label": "C Acc",
+          "isin": "GB00BPN60094",
+          "ocf": 0.0008,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0008,
+          "platforms": [
+            "WZ",
+            "ARC"
+          ]
+        }
+      ],
+      "yield": 0.014,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "0346 070 8684",
+      "contactEmail": "",
+      "notes": "They don't have (or at least won't quote) an AMC. Quoting historic yield",
+      "region": "Global",
+      "house": "L&G",
+      "website": "https://fundcentres.lgim.com/"
+    },
+    {
+      "name": "L&G Global Infrastructure Index Fund",
+      "assetClass": "Diversifiers",
+      "mgmt": "Passive",
+      "ranges": [
+        "Passive"
+      ],
+      "shareClasses": [
+        {
+          "label": "I-Class GBP Acc",
+          "isin": "GB00BF0TZG22",
+          "ocf": 0.003,
+          "ocfDate": "2026-05-06",
+          "amc": 0.003,
+          "platforms": []
+        }
+      ],
+      "yield": 0.024,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "Using historic yield",
+      "region": "Global",
+      "house": "L&G",
+      "website": "https://fundcentres.lgim.com/"
+    },
+    {
+      "name": "L&G Japan Index Trust",
+      "assetClass": "Equities",
+      "mgmt": "Passive",
+      "ranges": [
+        "Passive"
+      ],
+      "shareClasses": [
+        {
+          "label": "C ACC",
+          "isin": "GB00BG0QP828",
+          "ocf": 0.0008,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0008,
+          "platforms": []
+        }
+      ],
+      "yield": 0.019,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "Using historic yield",
+      "region": "Japan",
+      "house": "L&G",
+      "website": "https://fundcentres.lgim.com/"
+    },
+    {
+      "name": "L&G S&P 500 US Equal Weight Index",
+      "assetClass": "Equities",
+      "mgmt": "Passive",
+      "ranges": [
+        "Core",
+        "Passive"
+      ],
+      "shareClasses": [
+        {
+          "label": "",
+          "isin": "GB00BSWT8L75",
+          "ocf": 0.0015,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0015,
+          "platforms": [
+            "WZ"
+          ]
+        },
+        {
+          "label": "C Acc GBP",
+          "isin": "GB00BSWT8Q21",
+          "ocf": 0.001,
+          "ocfDate": "2026-05-06",
+          "amc": 0.001,
+          "platforms": [
+            "WZ"
+          ]
+        }
+      ],
+      "yield": 0.018,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "Using historic yield",
+      "region": "US",
+      "house": "L&G",
+      "website": "https://fundcentres.lgim.com/"
+    },
+    {
+      "name": "L&G Strategic Bond",
+      "assetClass": "Fixed Interest",
+      "mgmt": "Active",
+      "ranges": [
+        "Core",
+        "Income"
+      ],
+      "shareClasses": [
+        {
+          "label": "I Acc",
+          "isin": "GB00B1TWMW95",
+          "ocf": 0.0063,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0063,
+          "platforms": [
+            "WZ"
+          ]
+        },
+        {
+          "label": "I Inc",
+          "isin": "GB00B1TWMY10",
+          "ocf": 0.0063,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0063,
+          "platforms": []
+        },
+        {
+          "label": "C Acc",
+          "isin": "GB00BYWRC554",
+          "ocf": 0.005,
+          "ocfDate": "2026-05-06",
+          "amc": 0.005,
+          "platforms": [
+            "WZ"
+          ]
+        }
+      ],
+      "yield": 0.065,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "Equity yield used",
+      "region": "Global",
+      "house": "L&G",
+      "website": "https://fundcentres.lgim.com/"
+    },
+    {
+      "name": "L&G UK 100 Index Trust",
+      "assetClass": "Equities",
+      "mgmt": "Passive",
+      "ranges": [
+        "Core"
+      ],
+      "shareClasses": [
+        {
+          "label": "I Inc",
+          "isin": "GB00B0CNH494",
+          "ocf": 0.001,
+          "ocfDate": "2026-05-06",
+          "amc": 0.001,
+          "platforms": [
+            "WZ",
+            "ARC"
+          ]
+        }
+      ],
+      "yield": 0.03,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "0348 070 8684",
+      "contactEmail": "",
+      "notes": "They don't have (or at least won't quote) an AMC. Quoting historic yield",
+      "region": "UK",
+      "house": "L&G",
+      "website": "https://fundcentres.lgim.com/"
+    },
+    {
+      "name": "M&G Japan",
+      "assetClass": "Equities",
+      "mgmt": "Active",
+      "ranges": [
+        "Core"
+      ],
+      "shareClasses": [
+        {
+          "label": "I Acc",
+          "isin": "GB00B74CQP79",
+          "ocf": 0.0047,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0047,
+          "platforms": [
+            "WZ"
+          ]
+        }
+      ],
+      "yield": 0.0135,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "Using historic yield",
+      "region": "Japan",
+      "house": "M&G",
+      "website": "https://www.mandg.com/investments/professional-investor/en-gb/funds"
+    },
+    {
+      "name": "Morgan Stanley EMD Opportunities",
+      "assetClass": "Fixed Interest",
+      "mgmt": "Active",
+      "ranges": [
+        "Core",
+        "Income"
+      ],
+      "shareClasses": [
+        {
+          "label": "",
+          "isin": "LU2617254367",
+          "ocf": 0.0078,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0065,
+          "platforms": [
+            "WZ"
+          ]
+        }
+      ],
+      "yield": 0.084,
+      "yieldDate": "2026-01-21",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "Using 12m yield",
+      "region": "Asia & EM",
+      "house": "Morgan Stanley",
+      "website": "https://www.morganstanley.com/im/en-gb/intermediary-investor/funds-and-performance.html"
+    },
+    {
+      "name": "PIMCO GIS Income Fund",
+      "assetClass": "Fixed Interest",
+      "mgmt": "Active",
+      "ranges": [
+        "Income"
+      ],
+      "shareClasses": [
+        {
+          "label": "GBP H Inst Inc",
+          "isin": "IE00B8RHFL59",
+          "ocf": 0.0055,
+          "ocfDate": "2025-05-06",
+          "amc": 0.0055,
+          "platforms": []
+        }
+      ],
+      "yield": 0.0622,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "",
+      "region": "Global",
+      "house": "PIMCO",
+      "website": "https://www.pimco.co.uk/en-gb/investments/gis"
+    },
+    {
+      "name": "PineBridge Global Equity",
+      "assetClass": "Equities",
+      "mgmt": "Active",
+      "ranges": [
+        "Core"
+      ],
+      "shareClasses": [
+        {
+          "label": "",
+          "isin": "IE000SZPPNQ2",
+          "ocf": 0.0062,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0051,
+          "platforms": [
+            "WZ"
+          ]
+        }
+      ],
+      "yield": null,
+      "yieldDate": null,
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "",
+      "region": "Global",
+      "house": "PineBridge",
+      "website": "https://www.pinebridge.com/en/investment-strategies"
+    },
+    {
+      "name": "Polar Capital Global Insurance",
+      "assetClass": "Equities",
+      "mgmt": "Active",
+      "ranges": [
+        "Core"
+      ],
+      "shareClasses": [
+        {
+          "label": "I Acc GBP",
+          "isin": "IE00B5339C57",
+          "ocf": 0.0082,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0075,
+          "platforms": [
+            "WZ",
+            "Ascentric",
+            "ARC"
+          ]
+        }
+      ],
+      "yield": 0.019,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "2072272700",
+      "contactEmail": "",
+      "notes": "Yield Unknown. Performance Fees: 10% of outperformance against MSCI Daily TR World Net Insurance Index",
+      "region": "Global",
+      "house": "Polar Capital",
+      "website": "https://www.polarcapital.co.uk/gb/professional/Our-Funds/"
+    },
+    {
+      "name": "Premier Miton Strategic Monthly Income",
+      "assetClass": "Fixed Interest",
+      "mgmt": "Active",
+      "ranges": [
+        "Income"
+      ],
+      "shareClasses": [
+        {
+          "label": "",
+          "isin": "GB00BMWVS003",
+          "ocf": 0.0045,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0045,
+          "platforms": []
+        }
+      ],
+      "yield": 0.0555,
+      "yieldDate": "2025-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "",
+      "region": "Global",
+      "house": "Premier Miton",
+      "website": "https://www.premiermiton.com/funds/"
+    },
+    {
+      "name": "Premier Miton Tellworth UK Select",
+      "assetClass": "Diversifiers",
+      "mgmt": "Active",
+      "ranges": [
+        "Core"
+      ],
+      "shareClasses": [
+        {
+          "label": "A Acc GBP",
+          "isin": "GB00BNY7YM73",
+          "ocf": 0.0092,
+          "ocfDate": "2025-05-06",
+          "amc": 0.0075,
+          "platforms": [
+            "WZ"
+          ]
+        }
+      ],
+      "yield": 0.0098,
+      "yieldDate": "2026-02-09",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "",
+      "region": "UK",
+      "house": "Premier Miton",
+      "website": "https://www.premiermiton.com/funds/"
+    },
+    {
+      "name": "Redwheel Next Generation Emerging Markets",
+      "assetClass": "Equities",
+      "mgmt": "Active",
+      "ranges": [
+        "Core"
+      ],
+      "shareClasses": [
+        {
+          "label": "I Acc GBP",
+          "isin": "LU1940965699",
+          "ocf": 0.0081,
+          "ocfDate": "2026-02-06",
+          "amc": 0.006,
+          "platforms": [
+            "WZ"
+          ]
+        },
+        {
+          "label": "R GBP",
+          "isin": "LU1940965939",
+          "ocf": 0.014,
+          "ocfDate": "2025-02-12",
+          "amc": 0.01,
+          "platforms": [
+            "WZ"
+          ]
+        }
+      ],
+      "yield": 0,
+      "yieldDate": "2026-02-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "",
+      "region": "Global",
+      "house": "Redwheel",
+      "website": "https://www.redwheel.com/uk/en/professional/funds/"
+    },
+    {
+      "name": "Royal London Short Term Fixed Income",
+      "assetClass": "Fixed Interest",
+      "mgmt": "Active",
+      "ranges": [
+        "Core",
+        "Income"
+      ],
+      "shareClasses": [
+        {
+          "label": "",
+          "isin": "GB00BMNR1H58",
+          "ocf": 0.0015,
+          "ocfDate": "2025-05-06",
+          "amc": 0.0015,
+          "platforms": [
+            "WZ"
+          ]
+        }
+      ],
+      "yield": 0.0426,
+      "yieldDate": "2025-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "",
+      "region": "Global",
+      "house": "Royal London",
+      "website": "https://www.rlam.com/uk/intermediaries/our-funds/"
+    },
+    {
+      "name": "Schroder Income Maximiser",
+      "assetClass": "Equities",
+      "mgmt": "Active",
+      "ranges": [
+        "Income"
+      ],
+      "shareClasses": [
+        {
+          "label": "L Inc",
+          "isin": "GB00BDD2F083",
+          "ocf": 0.0084,
+          "ocfDate": "2025-05-06",
+          "amc": 0.0068,
+          "platforms": []
+        }
+      ],
+      "yield": 0.0697,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "",
+      "region": "UK",
+      "house": "Schroder",
+      "website": "https://www.schroders.com/en-gb/uk/intermediary/funds-and-strategies/funds-in-focus/"
+    },
+    {
+      "name": "Schroder US Equity Income Maximiser",
+      "assetClass": "Equities",
+      "mgmt": "Active",
+      "ranges": [
+        "Income"
+      ],
+      "shareClasses": [
+        {
+          "label": "L Inc",
+          "isin": "GB00BYP25698",
+          "ocf": 0.0039,
+          "ocfDate": "2026-05-06",
+          "amc": 0.003,
+          "platforms": []
+        }
+      ],
+      "yield": 0.045,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "Using historic yield",
+      "region": "US",
+      "house": "Schroder",
+      "website": "https://www.schroders.com/en-gb/uk/intermediary/funds-and-strategies/funds-in-focus/"
+    },
+    {
+      "name": "TM Gravis UK Infrastructure Income",
+      "assetClass": "Diversifiers",
+      "mgmt": "Active",
+      "ranges": [
+        "Income"
+      ],
+      "shareClasses": [
+        {
+          "label": "",
+          "isin": "GB00BYVB3Q65",
+          "ocf": 0.0065,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0065,
+          "platforms": []
+        }
+      ],
+      "yield": 0.0647,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "Trailing dividend",
+      "region": "UK",
+      "house": "TM Gravis",
+      "website": "https://www.graviscapital.com/funds"
+    },
+    {
+      "name": "TrinityBridge Select Fixed Income",
+      "assetClass": "Fixed Interest",
+      "mgmt": "Active",
+      "ranges": [
+        "Core",
+        "Income"
+      ],
+      "shareClasses": [
+        {
+          "label": "X Acc",
+          "isin": "GB00BD6DSC14",
+          "ocf": 0.0048,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0048,
+          "platforms": [
+            "WZ"
+          ]
+        },
+        {
+          "label": "X Inc",
+          "isin": "GB00BD6R7Y87",
+          "ocf": 0.0047,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0047,
+          "platforms": [
+            "WZ"
+          ]
+        }
+      ],
+      "yield": 0.0449,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "Using dist. Yield",
+      "region": "Global",
+      "house": "TrinityBridge",
+      "website": "https://www.trinitybridge.com/investment-solutions"
+    },
+    {
+      "name": "UBS MSCI World Small Cap Socially Responsible UCITS ETF",
+      "assetClass": "Equities",
+      "mgmt": "Passive",
+      "ranges": [
+        "ESG"
+      ],
+      "shareClasses": [
+        {
+          "label": "",
+          "isin": "IE00BKSCBW67",
+          "ocf": 0.0023,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0023,
+          "platforms": []
+        }
+      ],
+      "yield": 0.0192,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "",
+      "region": "Global",
+      "house": "UBS",
+      "website": "https://www.ubs.com/uk/en/assetmanagement/funds.html"
+    },
+    {
+      "name": "UBS MSCI World SRI ETF",
+      "assetClass": "Equities",
+      "mgmt": "Passive",
+      "ranges": [
+        "ESG"
+      ],
+      "shareClasses": [
+        {
+          "label": "",
+          "isin": "IE00BK72HH44",
+          "ocf": 0.0019,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0019,
+          "platforms": []
+        }
+      ],
+      "yield": 0.0158,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "",
+      "region": "Global",
+      "house": "UBS",
+      "website": "https://www.ubs.com/uk/en/assetmanagement/funds.html"
+    },
+    {
+      "name": "Vanguard Emerging Markets Stock Index Fund",
+      "assetClass": "Equities",
+      "mgmt": "Passive",
+      "ranges": [
+        "Passive"
+      ],
+      "shareClasses": [
+        {
+          "label": "IP GBP Acc",
+          "isin": "IE00BPT2BB99",
+          "ocf": 0.0016,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0016,
+          "platforms": []
+        }
+      ],
+      "yield": 0.023,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "Equity yield used",
+      "region": "Asia & EM",
+      "house": "Vanguard",
+      "website": "https://www.vanguardinvestor.co.uk/"
+    },
+    {
+      "name": "Vanguard ESG Developed European Index",
+      "assetClass": "Equities",
+      "mgmt": "Passive",
+      "ranges": [
+        "ESG"
+      ],
+      "shareClasses": [
+        {
+          "label": "",
+          "isin": "IE00B76VTL96",
+          "ocf": 0.0014,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0014,
+          "platforms": []
+        }
+      ],
+      "yield": 0.0268,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "",
+      "region": "Global",
+      "house": "Vanguard",
+      "website": "https://www.vanguardinvestor.co.uk/"
+    },
+    {
+      "name": "Vanguard FTSE 100",
+      "assetClass": "Equities",
+      "mgmt": "Passive",
+      "ranges": [
+        "Core"
+      ],
+      "shareClasses": [
+        {
+          "label": "(GBP) Distributing ETF",
+          "isin": "IE00B810Q511",
+          "ocf": 0.0009,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0009,
+          "platforms": [
+            "WZ",
+            "Ascentric"
+          ]
+        }
+      ],
+      "yield": 0.0301,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "0800 917 5508",
+      "contactEmail": "",
+      "notes": "Yield is dist. yield. Assume OCF=AMC",
+      "region": "UK",
+      "house": "Vanguard",
+      "website": "https://www.vanguardinvestor.co.uk/"
+    },
+    {
+      "name": "Vanguard FTSE All World",
+      "assetClass": "Equities",
+      "mgmt": "Passive",
+      "ranges": [
+        "Core"
+      ],
+      "shareClasses": [
+        {
+          "label": "ETF (GBP)",
+          "isin": "IE00B3RBWM25",
+          "ocf": 0.0019,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0019,
+          "platforms": [
+            "WZ",
+            "Ascentric"
+          ]
+        }
+      ],
+      "yield": 0.0144,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "0800 917 5509",
+      "contactEmail": "",
+      "notes": "Yield is Equity Yield from Factsheet. Assume OCF=AMC",
+      "region": "Global",
+      "house": "Vanguard",
+      "website": "https://www.vanguardinvestor.co.uk/"
+    },
+    {
+      "name": "Vanguard FTSE All-World High Dividend Yield UCITS ETF",
+      "assetClass": "Equities",
+      "mgmt": "Passive",
+      "ranges": [
+        "Income"
+      ],
+      "shareClasses": [
+        {
+          "label": "",
+          "isin": "IE00B8GKDB10",
+          "ocf": 0.0029,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0029,
+          "platforms": []
+        }
+      ],
+      "yield": 0.032,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "Equity yield used",
+      "region": "Global",
+      "house": "Vanguard",
+      "website": "https://www.vanguardinvestor.co.uk/"
+    },
+    {
+      "name": "Vanguard FTSE Developed Europe ex-U.K. Index",
+      "assetClass": "Equities",
+      "mgmt": "Passive",
+      "ranges": [
+        "Core",
+        "Passive"
+      ],
+      "shareClasses": [
+        {
+          "label": "Acc GBP",
+          "isin": "GB00B5B71H80",
+          "ocf": 0.0012,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0012,
+          "platforms": [
+            "WZ"
+          ]
+        },
+        {
+          "label": "IP GBP Acc",
+          "isin": "GB00BPN5P014",
+          "ocf": 0.0008,
+          "ocfDate": "2024-10-09",
+          "amc": 0.0008,
+          "platforms": [
+            "WZ"
+          ]
+        }
+      ],
+      "yield": 0.0233,
+      "yieldDate": "2025-10-21",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "Equity yield used",
+      "region": "Europe",
+      "house": "Vanguard",
+      "website": "https://www.vanguardinvestor.co.uk/"
+    },
+    {
+      "name": "Vanguard FTSE U.K. All Share Index",
+      "assetClass": "Equities",
+      "mgmt": "Passive",
+      "ranges": [
+        "Core",
+        "Passive"
+      ],
+      "shareClasses": [
+        {
+          "label": "IP Acc",
+          "isin": "GB00BPN5P907",
+          "ocf": 0.0005,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0005,
+          "platforms": [
+            "WZ"
+          ]
+        }
+      ],
+      "yield": 0.037,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "Equity yield used",
+      "region": "UK",
+      "house": "Vanguard",
+      "website": "https://www.vanguardinvestor.co.uk/"
+    },
+    {
+      "name": "Vanguard FTSE UK Equity Income Index",
+      "assetClass": "Equities",
+      "mgmt": "Passive",
+      "ranges": [
+        "Income"
+      ],
+      "shareClasses": [
+        {
+          "label": "Inst Plus Inc GBP",
+          "isin": "GB00BPN5NV83",
+          "ocf": 0.0012,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0012,
+          "platforms": []
+        }
+      ],
+      "yield": 0.043,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "",
+      "region": "UK",
+      "house": "Vanguard",
+      "website": "https://www.vanguardinvestor.co.uk/"
+    },
+    {
+      "name": "Vanguard Global Bond Index",
+      "assetClass": "Fixed Interest",
+      "mgmt": "Passive",
+      "ranges": [
+        "Core",
+        "Passive"
+      ],
+      "shareClasses": [
+        {
+          "label": "GBP Hedged Acc",
+          "isin": "IE00B50W2R13",
+          "ocf": 0.0015,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0015,
+          "platforms": [
+            "WZ"
+          ]
+        },
+        {
+          "label": "IP Acc",
+          "isin": "IE00BPT2BQ43",
+          "ocf": 0.001,
+          "ocfDate": "2026-05-06",
+          "amc": 0.001,
+          "platforms": [
+            "WZ"
+          ]
+        }
+      ],
+      "yield": 0.0319,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "Using average coupon as yield",
+      "region": "Global",
+      "house": "Vanguard",
+      "website": "https://www.vanguardinvestor.co.uk/"
+    },
+    {
+      "name": "Vanguard Global Emerging Markets",
+      "assetClass": "Equities",
+      "mgmt": "Active",
+      "ranges": [
+        "Core"
+      ],
+      "shareClasses": [
+        {
+          "label": "A Acc GBP",
+          "isin": "GB00BZ82ZY13",
+          "ocf": 0.0078,
+          "ocfDate": "2025-02-12",
+          "amc": 0.0078,
+          "platforms": [
+            "WZ"
+          ]
+        }
+      ],
+      "yield": 0.034,
+      "yieldDate": "2025-02-12",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "",
+      "region": "Global",
+      "house": "Vanguard",
+      "website": "https://www.vanguardinvestor.co.uk/"
+    },
+    {
+      "name": "Vanguard Global Small-Cap Index Fund",
+      "assetClass": "Equities",
+      "mgmt": "Passive",
+      "ranges": [
+        "Passive"
+      ],
+      "shareClasses": [
+        {
+          "label": "IP GBP Acc",
+          "isin": "IE00BPT2BD14",
+          "ocf": 0.0024,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0024,
+          "platforms": []
+        }
+      ],
+      "yield": 0.019,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "Equity yield used",
+      "region": "Global",
+      "house": "Vanguard",
+      "website": "https://www.vanguardinvestor.co.uk/"
+    },
+    {
+      "name": "Vanguard U.K. Government Bond Index",
+      "assetClass": "Fixed Interest",
+      "mgmt": "Passive",
+      "ranges": [
+        "Core",
+        "ESG",
+        "Income",
+        "Passive"
+      ],
+      "shareClasses": [
+        {
+          "label": "Inst Plus Inc",
+          "isin": "IE00BPT2BR59",
+          "ocf": 0.0006,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0006,
+          "platforms": []
+        },
+        {
+          "label": "IP Acc",
+          "isin": "IE00BPT2BS66",
+          "ocf": 0.0006,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0006,
+          "platforms": [
+            "WZ"
+          ]
+        }
+      ],
+      "yield": 0.033,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "Using average coupon as yield",
+      "region": "UK",
+      "house": "Vanguard",
+      "website": "https://www.vanguardinvestor.co.uk/"
+    },
+    {
+      "name": "Vanguard U.S. 500 Stock Index Fund",
+      "assetClass": "Equities",
+      "mgmt": "Passive",
+      "ranges": [
+        "Passive"
+      ],
+      "shareClasses": [
+        {
+          "label": "IP USD Acc",
+          "isin": "IE00BFPM9T72",
+          "ocf": 0.0006,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0006,
+          "platforms": []
+        }
+      ],
+      "yield": 0.012,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "Equity yield used",
+      "region": "US",
+      "house": "Vanguard",
+      "website": "https://www.vanguardinvestor.co.uk/"
+    },
+    {
+      "name": "Vanguard UK Investment Grade Bond Index",
+      "assetClass": "Fixed Interest",
+      "mgmt": "Passive",
+      "ranges": [
+        "Income"
+      ],
+      "shareClasses": [
+        {
+          "label": "IP Acc",
+          "isin": "IE00BPT2BT73",
+          "ocf": 0.0006,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0006,
+          "platforms": [
+            "WZ"
+          ]
+        }
+      ],
+      "yield": 0.046,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "Using average coupon as yield",
+      "region": "UK",
+      "house": "Vanguard",
+      "website": "https://www.vanguardinvestor.co.uk/"
+    },
+    {
+      "name": "Vanguard UK Short-Term Investment Grade Index",
+      "assetClass": "Fixed Interest",
+      "mgmt": "Passive",
+      "ranges": [
+        "Core",
+        "ESG",
+        "Passive"
+      ],
+      "shareClasses": [
+        {
+          "label": "Plus Acc GBP",
+          "isin": "IE00B9M1BB17",
+          "ocf": 0.0012,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0012,
+          "platforms": [
+            "WZ"
+          ]
+        },
+        {
+          "label": "Acc GBP",
+          "isin": "IE00BPT2BX10",
+          "ocf": 0.0005,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0005,
+          "platforms": [
+            "WZ"
+          ]
+        }
+      ],
+      "yield": 0.0427,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "Using average coupon as yield",
+      "region": "UK",
+      "house": "Vanguard",
+      "website": "https://www.vanguardinvestor.co.uk/"
+    },
+    {
+      "name": "Xtrackers MSCI USA ESG UCITS ETF",
+      "assetClass": "Equities",
+      "mgmt": "Passive",
+      "ranges": [
+        "ESG"
+      ],
+      "shareClasses": [
+        {
+          "label": "",
+          "isin": "IE00BFMNPS42",
+          "ocf": 0.0015,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0015,
+          "platforms": []
+        }
+      ],
+      "yield": 0.0103,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "",
+      "region": "US",
+      "house": "Xtrackers",
+      "website": "https://etf.dws.com/en-gb/"
+    },
+    {
+      "name": "Xtrackers MSCI World ex USA",
+      "assetClass": "Equities",
+      "mgmt": "Passive",
+      "ranges": [
+        "Core",
+        "Passive"
+      ],
+      "shareClasses": [
+        {
+          "label": "1C",
+          "isin": "IE0006WW1TQ4",
+          "ocf": 0.0015,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0015,
+          "platforms": [
+            "WZ"
+          ]
+        }
+      ],
+      "yield": 0.0261,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "Using the MSCI ACWI ex US tracker div yield as FE shows no dividend for the fund",
+      "region": "Global",
+      "house": "Xtrackers",
+      "website": "https://etf.dws.com/en-gb/"
+    },
+    {
+      "name": "Xtrackers MSCI World Health Care",
+      "assetClass": "Equities",
+      "mgmt": "Passive",
+      "ranges": [
+        "Passive"
+      ],
+      "shareClasses": [
+        {
+          "label": "",
+          "isin": "IE00BM67HK77",
+          "ocf": 0.0025,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0025,
+          "platforms": []
+        }
+      ],
+      "yield": 0.0181,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "Using MSCI world health care dividend yield",
+      "region": "Global",
+      "house": "Xtrackers",
+      "website": "https://etf.dws.com/en-gb/"
+    },
+    {
+      "name": "Xtrackers S&P 500 Equal Weight ESG UCITS ETF",
+      "assetClass": "Equities",
+      "mgmt": "Passive",
+      "ranges": [
+        "ESG"
+      ],
+      "shareClasses": [
+        {
+          "label": "",
+          "isin": "IE0004MFRED4",
+          "ocf": 0.0017,
+          "ocfDate": "2026-05-06",
+          "amc": 0.0017,
+          "platforms": []
+        }
+      ],
+      "yield": 0.0191,
+      "yieldDate": "2026-05-06",
+      "contactPhone": "",
+      "contactEmail": "",
+      "notes": "",
+      "region": "US",
+      "house": "Xtrackers",
+      "website": "https://etf.dws.com/en-gb/"
+    }
+  ]
+}

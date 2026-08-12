@@ -1,4 +1,4 @@
-<title>Fund Research Dashboard - Portfolios</title>
+<title>Fund Research - Portfolios</title>
 
 <style>
   :root {
@@ -279,6 +279,25 @@
   }
   .navitem[aria-current="true"] .n { color: var(--nav-ink-2); }
 
+  .nav-parent { font-weight: 600; }
+  .nav-parent .chev {
+    margin-left: auto; flex: none;
+    display: inline-flex;
+    color: var(--nav-ink-3);
+    transition: transform .16s ease;
+  }
+  .nav-parent[aria-expanded="true"] .chev { transform: rotate(90deg); }
+  .nav-fan { display: flex; flex-direction: column; gap: 1px; animation: fanout .16s ease; }
+  .navitem.nav-sub {
+    width: calc(100% - 34px); margin: 0 10px 0 24px;
+    padding: 6.5px 12px;
+    font-size: 13.5px;
+  }
+  @keyframes fanout {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: none; }
+  }
+
   @media (max-width: 900px) {
     .shell { display: block; }
     .sidebar {
@@ -289,6 +308,8 @@
     .navgroup { flex-direction: row; align-items: center; gap: 3px; }
     .navgroup-title { padding: 0 4px 0 0; margin: 0; white-space: nowrap; }
     .navitem { width: auto; margin: 0; white-space: nowrap; }
+    .nav-fan { flex-direction: row; gap: 3px; }
+    .navitem.nav-sub { width: auto; margin: 0; padding: 8px 12px; }
   }
 
   /* ---------- layout ---------- */
@@ -350,6 +371,12 @@
   .chip-esg { color: var(--c-fi); border-color: color-mix(in srgb, var(--c-fi) 35%, transparent); background: color-mix(in srgb, var(--c-fi) 9%, transparent); }
   .chip-income { color: var(--c-dv); border-color: color-mix(in srgb, var(--c-dv) 35%, transparent); background: color-mix(in srgb, var(--c-dv) 9%, transparent); }
   .chip-other { color: var(--c-ca); border-color: color-mix(in srgb, var(--c-ca) 35%, transparent); background: color-mix(in srgb, var(--c-ca) 9%, transparent); }
+  .chip-new {
+    color: var(--accent);
+    border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+    background: color-mix(in srgb, var(--accent) 10%, transparent);
+    font-size: 10px; padding: 1px 6px; letter-spacing: .03em; text-transform: uppercase;
+  }
 
   .card-foot { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--ink-3); }
   .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--line-strong); flex: none; }
@@ -695,6 +722,49 @@
 
   /* ---------- misc ---------- */
 
+  /* ---------- investment content ---------- */
+
+  .linklike {
+    background: none; border: 0; padding: 0;
+    color: var(--accent); font: inherit; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 5px;
+  }
+  .linklike:hover { text-decoration: underline; }
+
+  .linkgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 14px; }
+  .linkcard {
+    display: flex; flex-direction: column; gap: 5px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 16px 18px;
+    color: inherit; text-decoration: none;
+  }
+  .linkcard:hover { border-color: var(--accent); }
+  .linkcard strong {
+    display: flex; align-items: center; gap: 7px;
+    font-size: 14.5px; font-weight: 620; color: var(--accent);
+  }
+  .linkcard span { color: var(--ink-3); font-size: 12.5px; }
+
+  .foldergrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 14px; }
+  .foldercard {
+    display: flex; flex-direction: column; gap: 5px; align-items: flex-start;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 16px 18px;
+    color: inherit; font: inherit; text-align: left; cursor: pointer;
+  }
+  .foldercard:hover { border-color: var(--accent); }
+  .foldercard strong {
+    display: flex; align-items: center; gap: 7px;
+    font-size: 14.5px; font-weight: 620; color: var(--accent);
+  }
+  .foldercard span { color: var(--ink-3); font-size: 12.5px; }
+
   .placeholder {
     border: 1px dashed var(--line-strong);
     border-radius: var(--radius);
@@ -728,6 +798,16 @@
   }
 </style>
 
+<script>
+// Apply the saved theme before the page paints, so there is no light/dark flash.
+(function () {
+  try {
+    var t = localStorage.getItem("lumin.fund-research.v1.theme");
+    if (t === "dark" || t === "light") document.documentElement.setAttribute("data-theme", t);
+  } catch (e) { /* private mode - follow the system preference */ }
+})();
+</script>
+
 <div class="shell">
 <aside class="sidebar">
   <nav id="sidebarNav" aria-label="Sections"></nav>
@@ -744,7 +824,7 @@
     <div class="mark-rule"></div>
     <div class="titleblock">
       <div class="titleline">
-        <h1>Fund Research Dashboard</h1>
+        <h1>Fund Research</h1>
         <span class="pill" id="scopePill" title="Entries are saved in this browser only">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
           Local workspace
@@ -753,6 +833,7 @@
       <div class="subtitle">Shared fund-of-funds research hub &middot; Internal scoring 1-4 (lower is better)</div>
     </div>
     <div class="topbar-right">
+      <button class="btn btn-ghost" id="themeBtn" aria-label="Switch between light and dark mode"></button>
       <span class="field-label">Your initials</span>
       <input type="text" class="initials-input" id="initials" maxlength="4" placeholder="e.g. JD" aria-label="Your initials">
       <button class="btn" id="refreshBtn">
@@ -853,7 +934,7 @@
   <form method="dialog">
     <div class="dlg-head">
       <h3 id="eHeading">New calendar entry</h3>
-      <p>Team schedule for the investment hub. Entries are shared via Export / Import workspace like everything else.</p>
+      <p>Team schedule for the investment hub. Entries save to the connected workspace folder when one is linked - otherwise they live in this browser and travel with Export / Import.</p>
     </div>
     <div class="dlg-body">
       <div class="fieldset">
@@ -900,6 +981,66 @@
   </form>
 </dialog>
 
+<dialog id="contentDlg">
+  <form method="dialog">
+    <div class="dlg-head">
+      <h3 id="cHeading">Attach document</h3>
+      <p>Attach the file itself, or paste a link to where it lives (website or SharePoint).</p>
+    </div>
+    <div class="dlg-body">
+      <div class="fieldset">
+        <label for="cTitle">Title</label>
+        <input type="text" id="cTitle" placeholder="e.g. Q3 2026 Quarterly Investment Review" required>
+      </div>
+      <div class="row">
+        <div class="fieldset" style="max-width:190px">
+          <label for="cDate">Date</label>
+          <input type="date" id="cDate" required>
+        </div>
+        <div class="fieldset">
+          <label for="cNote">Note <span class="hint">optional</span></label>
+          <input type="text" id="cNote" placeholder="e.g. final client version, approved by compliance">
+        </div>
+      </div>
+      <div class="row" style="align-items:center">
+        <label class="btn btn-ghost btn-sm filebtn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"/><path d="m7 9 5-5 5 5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+          Choose file
+          <input type="file" id="cFile" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.png,.jpg,.jpeg,.gif,.txt,.csv,.eml,.msg">
+        </label>
+        <span class="hint" id="cFileHint">Files up to 2.5 MB are stored in the workspace - for anything larger, paste a link instead.</span>
+      </div>
+      <div class="fieldset">
+        <label for="cLink">Link <span class="hint">optional - used when no file is attached</span></label>
+        <input type="url" id="cLink" placeholder="https://...">
+      </div>
+    </div>
+    <div class="dlg-foot">
+      <button class="btn btn-ghost" value="cancel" formnovalidate>Cancel</button>
+      <button class="btn" value="save" id="cSave">Save entry</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="folderDlg">
+  <form method="dialog">
+    <div class="dlg-head">
+      <h3 id="fHeading">New folder</h3>
+      <p>Folders group documents by year - name the folder after the year it covers.</p>
+    </div>
+    <div class="dlg-body">
+      <div class="fieldset">
+        <label for="fName">Folder name</label>
+        <input type="text" id="fName" placeholder="e.g. 2028" required>
+      </div>
+    </div>
+    <div class="dlg-foot">
+      <button class="btn btn-ghost" value="cancel" formnovalidate>Cancel</button>
+      <button class="btn" value="save">Create folder</button>
+    </div>
+  </form>
+</dialog>
+
 <script>
 (function () {
   "use strict";
@@ -910,9 +1051,9 @@
     {
       group: "Investment Hub",
       items: [
-        { id: "dashboard", label: "Dashboard" },
         { id: "portfolios", label: "Portfolios" },
         { id: "funds", label: "Funds" },
+        { id: "factsheet", label: "Fact Sheet" },
         { id: "calendar", label: "Calendar" }
       ]
     },
@@ -931,6 +1072,17 @@
         { id: "research-tasks", label: "Research Tasks" },
         { id: "qic-tasks", label: "QIC Tasks" },
         { id: "off-desk", label: "Off Desk Projects" }
+      ]
+    },
+    {
+      group: "Investment Content",
+      fan: true,
+      items: [
+        { id: "qir", label: "Quarterly Investment Reviews" },
+        { id: "studies", label: "Investment Studies" },
+        { id: "adhoc", label: "Ad Hoc Client Releases" },
+        { id: "media", label: "Media Coverage" },
+        { id: "lumin-news", label: "Lumin News Articles" }
       ]
     }
   ];
@@ -951,7 +1103,12 @@
     plus: '<path d="M12 5v14M5 12h14"/>',
     back: '<path d="m15 18-6-6 6-6"/>',
     down: '<path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/>',
-    warn: '<path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/>'
+    warn: '<path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/>',
+    chev: '<path d="m9 6 6 6-6 6"/>',
+    ext: '<path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>',
+    folder: '<path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/>',
+    sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+    moon: '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/>'
   };
 
   var CLASSES = [
@@ -1413,6 +1570,8 @@
         id: id,
         seed: true,
         range: rangeName,
+        platform: plat[0],
+        platformName: plat[1],
         risk: risk,
         note: "",
         snapshots: m[3].map(function (s, i) {
@@ -1483,13 +1642,52 @@
 
   // ---------- state ----------
 
-  var state = { portfolios: [], initials: "", removed: [], events: [] };
+  // One document list per Investment Content section (Lumin News is links-only).
+  function emptyContent() {
+    return { qir: [], studies: [], adhoc: [], media: [] };
+  }
+
+  // The Q3 2026 master workbook on the Investment Team SharePoint site - the
+  // folder it sits in is where every quarterly Master Quant Fund Review lives
+  // going forward.
+  var QUANT_MASTER_URL = "https://luminwealthmanagement.sharepoint.com/:x:/r/sites/LWMInvestmentTeam/_layouts/15/Doc.aspx?sourcedoc=%7B980AA6B2-48AE-4E28-8F43-1663D9F85D7F%7D&file=Master%20Quant%20Fund%20Review%20Q3%202026.xlsx&action=default&mobileredirect=true";
+
+  // Year folders for the Fact Sheet and Quant Scores sections. Seeded on a
+  // workspace's first load after this feature shipped; from then on the saved
+  // copy wins, so new folders, added files and deletions all stick.
+  function seedFolders() {
+    return {
+      factsheet: [
+        { id: "fs2023", name: "2023", links: [] },
+        { id: "fs2024", name: "2024", links: [] },
+        { id: "fs2025", name: "2025", links: [] },
+        { id: "fs2026", name: "2026", links: [] }
+      ],
+      quant: [
+        { id: "qs2026", name: "2026", links: [{
+          id: "qs2026master",
+          title: "Master Quant Fund Review Q3 2026",
+          date: "2026-08-12",
+          who: "",
+          note: "Master workbook - future quarterly reviews are filed in the same SharePoint folder",
+          link: QUANT_MASTER_URL,
+          file: null
+        }] },
+        { id: "qs2027", name: "2027", links: [] }
+      ]
+    };
+  }
+
+  var state = { portfolios: [], initials: "", removed: [], events: [], content: emptyContent(), folders: seedFolders() };
   var view = {
     tab: "portfolios",
     openId: null, openSnap: null, armed: null, compare: [],
-    fundQuery: "", fundClass: "", fundRegion: "", openFund: null, fundPage: null,
+    pfRange: "", pfPlatform: "",
+    fundQuery: "", fundClass: "", fundRegion: "", fundPlatform: "", openFund: null, fundPage: null,
     calY: new Date().getFullYear(), calM: new Date().getMonth(),
-    editEvent: null, meetingsFund: null
+    editEvent: null, meetingsFund: null,
+    contentOpen: false, contentTarget: null,
+    openFolder: null, folderTarget: null
   };
 
   // Team events entered by HE on 11 Aug 2026, recovered from the original
@@ -1503,7 +1701,7 @@
   ];
 
   function loadState() {
-    var saved = { portfolios: [], initials: "", removed: [], events: [] };
+    var saved = { portfolios: [], initials: "", removed: [], events: [], content: emptyContent(), folders: null };
     var firstOpen = true;
     try {
       var raw = localStorage.getItem(KEY);
@@ -1514,6 +1712,17 @@
         if (typeof parsed.initials === "string") saved.initials = parsed.initials;
         if (Array.isArray(parsed.removed)) saved.removed = parsed.removed;
         if (Array.isArray(parsed.events)) saved.events = parsed.events;
+        if (parsed.content) {
+          Object.keys(saved.content).forEach(function (k) {
+            if (Array.isArray(parsed.content[k])) saved.content[k] = parsed.content[k];
+          });
+        }
+        if (parsed.folders) {
+          saved.folders = seedFolders();
+          Object.keys(saved.folders).forEach(function (k) {
+            if (Array.isArray(parsed.folders[k])) saved.folders[k] = parsed.folders[k];
+          });
+        }
       }
     } catch (e) {
       /* corrupt or absent - fall through to a clean seeded workspace */
@@ -1522,6 +1731,9 @@
     state.initials = saved.initials;
     state.removed = saved.removed;
     state.events = firstOpen ? SEED_EVENTS.slice() : saved.events;
+    state.content = saved.content;
+    // Workspaces saved before folders existed pick up the seeded years once.
+    state.folders = saved.folders || seedFolders();
 
     // Seeded models come from SEED_* every time; only user edits were persisted.
     var seeded = hydrateSeed().filter(function (p) {
@@ -1546,16 +1758,22 @@
 
     state.portfolios = seeded.concat(extra);
 
-    // One portfolio per range + risk level. Duplicates (e.g. a hand-added copy
-    // of a seeded model) collapse onto the entry with the most snapshots; user
-    // snapshots on a dropped duplicate are moved across rather than lost.
+    // One portfolio per range + platform + risk level. Duplicates (e.g. a
+    // hand-added copy of a seeded model) collapse onto the entry with the most
+    // snapshots; user snapshots on a dropped duplicate are moved across rather
+    // than lost. The platform sits in the key so the same model on different
+    // providers (WealthZentrum, AJ Bell, ...) stays as separate portfolios.
+    function dupeKey(p) {
+      return (String(p.range).trim() + "|" + String(p.platform || "").trim() + "|" +
+        String(p.risk).trim()).toLowerCase();
+    }
     var byKey = {};
     state.portfolios.forEach(function (p) {
-      var k = (String(p.range).trim() + "|" + String(p.risk).trim()).toLowerCase();
+      var k = dupeKey(p);
       if (!byKey[k] || p.snapshots.length > byKey[k].snapshots.length) byKey[k] = p;
     });
     state.portfolios = state.portfolios.filter(function (p) {
-      var keep = byKey[(String(p.range).trim() + "|" + String(p.risk).trim()).toLowerCase()];
+      var keep = byKey[dupeKey(p)];
       if (keep === p) return true;
       p.snapshots.forEach(function (s) {
         if (!s.seed) keep.snapshots.push(s);
@@ -1564,6 +1782,7 @@
     });
 
     state.portfolios.forEach(dedupeSnapshots);
+    registerStateIds();
   }
 
   // One snapshot per date in each portfolio's rebalance history. The last entry
@@ -1575,22 +1794,317 @@
     p.snapshots = p.snapshots.filter(function (s) { return byDate[s.date] === s; });
   }
 
-  // Writes user data only. The seeded models are far larger than the localStorage
+  // User data only. The seeded models are far larger than the localStorage
   // quota, so they are stored as a stub and rebuilt from SEED_* on load.
-  function saveState() {
+  function userPayload() {
     var slim = state.portfolios.map(function (p) {
       if (!p.seed) return p;
       var mine = p.snapshots.filter(function (s) { return !s.seed; });
       return mine.length ? { id: p.id, seed: true, snapshots: mine } : null;
     }).filter(Boolean);
+    return {
+      portfolios: slim, removed: state.removed, events: state.events,
+      content: state.content, folders: state.folders
+    };
+  }
 
+  function saveState() {
+    var body = userPayload();
+    body.initials = state.initials;
     try {
-      localStorage.setItem(KEY, JSON.stringify({
-        portfolios: slim, initials: state.initials, removed: state.removed, events: state.events
-      }));
+      localStorage.setItem(KEY, JSON.stringify(body));
     } catch (e) {
       /* quota or private mode - the page still works for this session */
     }
+    folderSave();
+  }
+
+  // ---------- shared workspace folder ----------
+  // Chromium's File System Access API lets the page read and write real files
+  // once the user picks a folder. Connected, everything that used to live only
+  // in this browser - calendar entries, content rows, year folders, attachments -
+  // is written to <folder>/workspace.json plus an attachments/ subfolder, so the
+  // workspace survives the browser and, when the folder is OneDrive-synced,
+  // is shared with the whole team. localStorage stays as the offline fallback.
+
+  var WS_FILE = "workspace.json";
+  var ATT_DIR = "attachments";
+
+  var dirHandle = null;     // connected folder; null = localStorage-only mode
+  var savedHandle = null;   // remembered folder awaiting a permission click
+  var knownIds = {};        // every entry id this session has seen. On merge, a
+                            // disk entry we never knew is a colleague's addition
+                            // and comes in; one we knew but no longer hold
+                            // locally is our own deletion and stays out.
+  var pendingFiles = {};    // stored name -> Blob, written on the next save
+  var saveChain = Promise.resolve();   // serialises folder writes
+  var folderSaveFailed = false;
+
+  function fsSupported() {
+    return typeof window.showDirectoryPicker === "function";
+  }
+
+  // Tiny IndexedDB key-value store - localStorage cannot hold a folder handle.
+  function idb(mode, fn) {
+    return new Promise(function (resolve, reject) {
+      var open = indexedDB.open("lumin-fund-research", 1);
+      open.onupgradeneeded = function () { open.result.createObjectStore("kv"); };
+      open.onerror = function () { reject(open.error); };
+      open.onsuccess = function () {
+        var db = open.result;
+        var tx = db.transaction("kv", mode);
+        var req = fn(tx.objectStore("kv"));
+        tx.oncomplete = function () { db.close(); resolve(req && req.result); };
+        tx.onerror = function () { db.close(); reject(tx.error); };
+      };
+    });
+  }
+  function idbGet(k) { return idb("readonly", function (s) { return s.get(k); }); }
+  function idbSet(k, v) { return idb("readwrite", function (s) { return s.put(v, k); }); }
+  function idbDel(k) { return idb("readwrite", function (s) { return s.delete(k); }); }
+
+  function registerStateIds() {
+    state.events.forEach(function (e) { knownIds[e.id] = true; });
+    Object.keys(state.content).forEach(function (k) {
+      state.content[k].forEach(function (d) { knownIds[d.id] = true; });
+    });
+    Object.keys(state.folders).forEach(function (k) {
+      state.folders[k].forEach(function (f) {
+        knownIds[f.id] = true;
+        f.links.forEach(function (d) { knownIds[d.id] = true; });
+      });
+    });
+    state.portfolios.forEach(function (p) {
+      if (!p.seed) knownIds[p.id] = true;
+      p.snapshots.forEach(function (s) { if (!s.seed) knownIds[s.id] = true; });
+    });
+  }
+
+  // Local entries always win; disk entries this session has never seen are
+  // colleagues' additions and merge in. The one blind spot: a colleague's
+  // delete of an entry we still hold comes back on our next save - the safe
+  // direction to fail for a small team.
+  function mergeList(local, disk) {
+    var have = {};
+    local.forEach(function (e) { have[e.id] = true; });
+    var added = 0;
+    (disk || []).forEach(function (e) {
+      if (!e || !e.id || have[e.id] || knownIds[e.id]) return;
+      local.push(e);
+      added++;
+    });
+    return added;
+  }
+
+  function mergeDisk(parsed) {
+    if (!parsed) return 0;
+    var n = mergeList(state.events, parsed.events);
+    Object.keys(state.content).forEach(function (k) {
+      n += mergeList(state.content[k], parsed.content && parsed.content[k]);
+    });
+    Object.keys(state.folders).forEach(function (k) {
+      var byId = {};
+      state.folders[k].forEach(function (f) { byId[f.id] = f; });
+      ((parsed.folders && parsed.folders[k]) || []).forEach(function (df) {
+        if (!df || !df.id) return;
+        if (byId[df.id]) n += mergeList(byId[df.id].links, df.links);
+        else if (!knownIds[df.id]) { state.folders[k].push(df); n++; }
+      });
+    });
+    (parsed.removed || []).forEach(function (id) {
+      if (state.removed.indexOf(id) < 0) state.removed.push(id);
+    });
+    var byPid = {};
+    state.portfolios.forEach(function (p) { byPid[p.id] = p; });
+    (parsed.portfolios || []).forEach(function (dp) {
+      if (!dp || !dp.id) return;
+      var target = byPid[dp.id];
+      if (target) {
+        var have = {};
+        target.snapshots.forEach(function (s) { have[s.id] = true; });
+        (dp.snapshots || []).forEach(function (s) {
+          if (!s.seed && s.id && !have[s.id] && !knownIds[s.id]) { target.snapshots.push(s); n++; }
+        });
+        dedupeSnapshots(target);
+      } else if (!dp.seed && !knownIds[dp.id] && (dp.snapshots || []).length) {
+        state.portfolios.push(dp); n++;
+      }
+    });
+    registerStateIds();
+    return n;
+  }
+
+  function readFolder() {
+    return dirHandle.getFileHandle(WS_FILE)
+      .then(function (fh) { return fh.getFile(); })
+      .then(function (f) { return f.text(); })
+      .then(function (t) { return JSON.parse(t); })
+      .catch(function () { return null; });   // absent or unreadable = fresh folder
+  }
+
+  function writeFolder() {
+    var body = userPayload();
+    body.savedAt = new Date().toISOString();
+    body.by = state.initials || "";
+    return dirHandle.getFileHandle(WS_FILE, { create: true })
+      .then(function (fh) { return fh.createWritable(); })
+      .then(function (w) {
+        return w.write(JSON.stringify(body, null, 1)).then(function () { return w.close(); });
+      });
+  }
+
+  function flushPendingFiles() {
+    var names = Object.keys(pendingFiles);
+    if (!names.length) return Promise.resolve();
+    return dirHandle.getDirectoryHandle(ATT_DIR, { create: true }).then(function (dh) {
+      return names.reduce(function (p, name) {
+        return p.then(function () {
+          return dh.getFileHandle(name, { create: true })
+            .then(function (fh) { return fh.createWritable(); })
+            .then(function (w) {
+              return w.write(pendingFiles[name]).then(function () { return w.close(); });
+            })
+            .then(function () { delete pendingFiles[name]; });
+        });
+      }, Promise.resolve());
+    });
+  }
+
+  function readAttachment(stored) {
+    return dirHandle.getDirectoryHandle(ATT_DIR)
+      .then(function (dh) { return dh.getFileHandle(stored); })
+      .then(function (fh) { return fh.getFile(); });
+  }
+
+  // Piggybacks on every saveState(). Reads the folder first so colleagues'
+  // additions merge in instead of being overwritten.
+  function folderSave() {
+    if (!dirHandle) return;
+    saveChain = saveChain.then(function () {
+      return readFolder()
+        .then(function (parsed) { mergeDisk(parsed); return flushPendingFiles(); })
+        .then(writeFolder)
+        .then(function () { folderSaveFailed = false; });
+    }).catch(function () {
+      if (!folderSaveFailed) toast("Could not write to the workspace folder - entries are safe in this browser");
+      folderSaveFailed = true;
+    });
+  }
+
+  function safeName(name) {
+    return String(name || "file").replace(/[^\w.\- ]+/g, "_");
+  }
+
+  function dataUrlToBlob(dataUrl) {
+    var parts = String(dataUrl).split(",");
+    var mime = (parts[0].match(/data:(.*?)(;|$)/) || [])[1] || "application/octet-stream";
+    var bin = atob(parts[1] || "");
+    var bytes = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return new Blob([bytes], { type: mime });
+  }
+
+  // Attachments saved before a folder was connected sit as base64 inside the
+  // workspace JSON. On connect they move out to real files in attachments/.
+  function migrateAttachments() {
+    function visit(entries) {
+      entries.forEach(function (d) {
+        if (!d.file || !d.file.data || d.file.stored) return;
+        var stored = d.id + "__" + safeName(d.file.name);
+        try {
+          pendingFiles[stored] = dataUrlToBlob(d.file.data);
+          d.file.stored = stored;
+          delete d.file.data;
+        } catch (e) { /* leave this one as base64 */ }
+      });
+    }
+    Object.keys(state.content).forEach(function (k) { visit(state.content[k]); });
+    Object.keys(state.folders).forEach(function (k) {
+      state.folders[k].forEach(function (f) { visit(f.links); });
+    });
+  }
+
+  function adoptFolder(handle) {
+    dirHandle = handle;
+    return readFolder().then(function (parsed) {
+      var merged = mergeDisk(parsed);
+      migrateAttachments();
+      saveState();
+      paintScopePill();
+      renderFootnote();
+      render();
+      toast('Workspace folder connected - "' + handle.name + '"' +
+        (merged ? " (" + merged + " entr" + (merged === 1 ? "y" : "ies") + " merged in)" : ""));
+    });
+  }
+
+  function connectFolder() {
+    window.showDirectoryPicker({ id: "lumin-fund-research", mode: "readwrite" })
+      .then(function (handle) {
+        return idbSet("dir", handle)
+          .catch(function () { /* not remembered - the picker reopens next time */ })
+          .then(function () { return adoptFolder(handle); });
+      })
+      .catch(function (e) {
+        if (e && e.name !== "AbortError") toast("Could not open that folder");
+      });
+  }
+
+  function reconnectFolder(handle) {
+    handle.requestPermission({ mode: "readwrite" }).then(function (perm) {
+      if (perm === "granted") return adoptFolder(handle);
+      toast("Folder access was declined - entries stay in this browser");
+    }).catch(function () { toast("Could not reopen the workspace folder"); });
+  }
+
+  function disconnectFolder() {
+    if (!window.confirm("Disconnect the workspace folder?\n\nNew entries will save in this browser only. " +
+      "Attachments already written to the folder stay there and need it reconnected to open.")) return;
+    dirHandle = null;
+    savedHandle = null;
+    idbDel("dir").catch(function () {});
+    paintScopePill();
+    renderFootnote();
+    toast("Workspace folder disconnected");
+  }
+
+  // The browser only re-grants folder access on a click, so a remembered
+  // folder paints the pill as "Reconnect" rather than loading silently.
+  function initFolderStorage() {
+    if (!fsSupported()) return;
+    idbGet("dir").then(function (handle) {
+      if (!handle) return;
+      return handle.queryPermission({ mode: "readwrite" }).then(function (perm) {
+        if (perm === "granted") return adoptFolder(handle);
+        savedHandle = handle;
+        paintScopePill();
+        toast('Click "Reconnect" in the header to load the shared workspace folder');
+      });
+    }).catch(function () { /* no remembered folder */ });
+  }
+
+  var PILL_SVG = {
+    lock: '<rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+    folder: '<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>'
+  };
+
+  function paintScopePill() {
+    if (!fsSupported()) return;   // keep the original browser-only pill
+    var pill = document.getElementById("scopePill");
+    var svg = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+      'stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">' +
+      PILL_SVG[dirHandle || savedHandle ? "folder" : "lock"] + "</svg> ";
+    if (dirHandle) {
+      pill.innerHTML = svg + "Folder: " + esc(dirHandle.name);
+      pill.title = 'Saving to the "' + dirHandle.name + '" workspace folder - click to disconnect';
+    } else if (savedHandle) {
+      pill.innerHTML = svg + 'Reconnect "' + esc(savedHandle.name) + '"';
+      pill.title = "Click to reload the shared workspace folder (the browser checks once per session)";
+    } else {
+      pill.innerHTML = svg + "Local workspace";
+      pill.title = "Entries save in this browser only - click to connect a shared workspace folder";
+    }
+    pill.style.cursor = "pointer";
   }
 
   function getPortfolio(id) {
@@ -1755,22 +2269,47 @@
 
   function renderNav() {
     // Portfolios and Funds carry a live count; the unbuilt sections have nothing to count yet.
-    var counts = { portfolios: visiblePortfolios().length, funds: fundRegister().length, calendar: state.events.length, meetings: meetingFolders().length, ddqs: DDQ_TEMPLATES.length };
+    var counts = {
+      portfolios: visiblePortfolios().length, funds: fundRegister().length, calendar: state.events.length,
+      meetings: meetingFolders().length, ddqs: DDQ_TEMPLATES.length,
+      qir: state.content.qir.length, studies: state.content.studies.length,
+      adhoc: state.content.adhoc.length, media: state.content.media.length,
+      factsheet: folderDocCount("factsheet"), quant: folderDocCount("quant"),
+      "lumin-news": LUMIN_NEWS_ISSUES.length
+    };
 
     document.getElementById("sidebarNav").innerHTML = NAV.map(function (g) {
-      return '<div class="navgroup"><div class="navgroup-title">' + esc(g.group) + "</div>" +
-        g.items.map(function (t) {
-          var n = counts[t.id];
-          return '<button class="navitem" aria-current="' + (t.id === view.tab) +
-            '" data-tab="' + t.id + '"><span>' + esc(t.label) + "</span>" +
-            (n == null ? "" : '<span class="n">' + n + "</span>") + "</button>";
-        }).join("") + "</div>";
+      var items = g.items.map(function (t) {
+        var n = counts[t.id];
+        return '<button class="navitem' + (g.fan ? " nav-sub" : "") + '" aria-current="' + (t.id === view.tab) +
+          '" data-tab="' + t.id + '"><span>' + esc(t.label) + "</span>" +
+          (n == null ? "" : '<span class="n">' + n + "</span>") + "</button>";
+      }).join("");
+
+      if (!g.fan) {
+        return '<div class="navgroup"><div class="navgroup-title">' + esc(g.group) + "</div>" + items + "</div>";
+      }
+
+      // Fan-out group: a clickable parent that expands to its sections. The
+      // parent shows as current when a hidden child is the active tab.
+      var childActive = g.items.some(function (t) { return t.id === view.tab; });
+      return '<div class="navgroup">' +
+        '<button class="navitem nav-parent" data-fan="1" aria-expanded="' + view.contentOpen +
+        '" aria-current="' + (childActive && !view.contentOpen) + '"><span>' + esc(g.group) + "</span>" +
+        '<span class="chev">' + icon("chev", 13) + "</span></button>" +
+        (view.contentOpen ? '<div class="nav-fan">' + items + "</div>" : "") +
+        "</div>";
     }).join("");
   }
 
   function renderFootnote() {
+    var scope = dirHandle
+      ? 'Entries and attachments are saved to the "' + dirHandle.name + '" workspace folder - point every ' +
+        "machine at the same OneDrive-synced folder and the team shares one workspace. "
+      : "Entries are saved in this browser only - they are not shared with colleagues and will not survive " +
+        "clearing site data. Click the pill in the header to connect a shared workspace folder. ";
     document.getElementById("footnote").textContent =
-      "Entries are saved in this browser only - they are not shared with colleagues and will not survive clearing site data. " +
+      scope +
       "Use Export workspace to hand the current state to someone else, and Import workspace to load theirs. " +
       "Deletes use a two-step confirm and cannot be undone. " +
       "Portfolio weightings are model allocations in % - never enter client portfolio values or personal data. " +
@@ -1785,7 +2324,7 @@
   function renderPlaceholder(label) {
     return '<div class="placeholder">' + icon("grid", 22) +
       "<strong>" + esc(label) + " is not built yet</strong>" +
-      "<span>This first version covers Portfolios only. Say the word and this section is next.</span></div>";
+      "<span>Say the word and this section is next.</span></div>";
   }
 
   function visiblePortfolios() {
@@ -1793,19 +2332,58 @@
   }
 
   function renderList() {
-    var shown = visiblePortfolios();
+    var all = visiblePortfolios();
 
-    var head = '<div class="panel-head"><h2>Model portfolios (' + shown.length + ")</h2>" +
+    // Range filter options: the known order first, then anything user-added.
+    var rangeOpts = [];
+    all.forEach(function (p) {
+      if (rangeOpts.indexOf(p.range) < 0) rangeOpts.push(p.range);
+    });
+    rangeOpts.sort(function (a, b) { return rangeRank(a) - rangeRank(b) || a.localeCompare(b); });
+
+    // Provider filter options: every platform seen across the portfolios.
+    var platOpts = [];
+    all.forEach(function (p) {
+      if (p.platformName && platOpts.indexOf(p.platformName) < 0) platOpts.push(p.platformName);
+    });
+    platOpts.sort(function (a, b) { return a.localeCompare(b); });
+    if (view.pfPlatform && platOpts.indexOf(view.pfPlatform) < 0) view.pfPlatform = "";
+    if (view.pfRange && rangeOpts.indexOf(view.pfRange) < 0) view.pfRange = "";
+
+    var shown = all.filter(function (p) {
+      if (view.pfRange && p.range !== view.pfRange) return false;
+      if (view.pfPlatform && (p.platformName || "") !== view.pfPlatform) return false;
+      return true;
+    });
+
+    var filtered = shown.length !== all.length;
+    var head = '<div class="panel-head"><h2>Model portfolios (' +
+      (filtered ? shown.length + " of " + all.length : all.length) + ")</h2>" +
       '<button class="btn btn-ghost" data-act="restore-seed" style="margin-left:auto">' +
       icon("plus") + " Restore Lumin models</button>" +
       '<button class="btn" data-act="add-portfolio" style="margin-left:0">' + icon("plus") + " Add portfolio</button></div>" +
-      '<p class="blurb">The Lumin ranges - Core, Passive, ESG and Income - with the risk levels within each. ' +
+      '<p class="blurb">The Lumin ranges - Core, Passive, ESG and Income - with the risk levels within each, ' +
+      "across every platform the models are run on. " +
       "Each portfolio holds dated allocation snapshots, one per rebalance. " +
       "Allocations can be uploaded from Excel/CSV (Fund Name, ISIN, Weight) inside the rebalance editor.</p>";
 
-    if (!shown.length) {
+    if (!all.length) {
       return head + '<div class="empty">No portfolios yet - add your first range and risk level, ' +
         "or use Restore Lumin models to bring back the seeded set.</div>";
+    }
+
+    var toolbar = '<div class="toolbar">' +
+      '<select id="pfRange" aria-label="Filter by range"><option value="">All ranges</option>' +
+      rangeOpts.map(function (r) {
+        return '<option value="' + esc(r) + '"' + (view.pfRange === r ? " selected" : "") + ">" + esc(r) + "</option>";
+      }).join("") + "</select>" +
+      '<select id="pfPlatform" aria-label="Filter by provider"><option value="">All providers</option>' +
+      platOpts.map(function (n) {
+        return '<option value="' + esc(n) + '"' + (view.pfPlatform === n ? " selected" : "") + ">" + esc(n) + "</option>";
+      }).join("") + "</select></div>";
+
+    if (!shown.length) {
+      return head + toolbar + '<div class="empty">No portfolios match that filter.</div>';
     }
 
     var ranges = [];
@@ -1834,10 +2412,10 @@
 
       var cards = group.map(function (p) {
         var snap = latestSnap(p);
-        var meta = snap
+        var meta = (p.platformName ? esc(p.platformName) + " &middot; " : "") + (snap
           ? snap.rows.length + " holdings &middot; " + fmtDate(snap.date)
-          : "No allocations yet";
-        var sub = p.platformName || p.note;
+          : "No allocations yet");
+        var sub = p.note;
         return '<button class="card" data-open="' + p.id + '">' +
           '<div class="card-top"><div><div class="card-title">' + esc(p.range + " " + p.risk) + "</div>" +
           '<div class="card-meta">' + meta + "</div></div>" +
@@ -1853,7 +2431,7 @@
         '<div class="cards">' + cards + "</div></section>";
     }).join("");
 
-    return head + '<div class="stack">' + body + "</div>";
+    return head + toolbar + '<div class="stack">' + body + "</div>";
   }
 
   // ---------- fund register ----------
@@ -1870,10 +2448,13 @@
     return isNaN(n) ? 999 : n;
   }
 
-  // One entry per distinct fund across the latest snapshot of every visible portfolio.
-  function fundRegister() {
+  // One entry per distinct fund across the latest snapshot of every visible
+  // portfolio. Pass a provider name to build the register (and its stats) from
+  // that platform's models only.
+  function fundRegister(platformName) {
     var map = {};
     visiblePortfolios().forEach(function (p) {
+      if (platformName && (p.platformName || "") !== platformName) return;
       var snap = latestSnap(p);
       if (!snap) return;
       snap.rows.forEach(function (r) {
@@ -1887,6 +2468,7 @@
         if (!map[key].notes && r.notes) map[key].notes = r.notes;
         map[key].holdings.push({
           id: p.id, range: p.range, risk: p.risk,
+          platform: p.platform || "", platformName: p.platformName || "",
           weight: r.weight, date: snap.date
         });
       });
@@ -1895,7 +2477,9 @@
     return Object.keys(map).map(function (k) {
       var e = map[k];
       e.holdings.sort(function (a, b) {
-        return rangeRank(a.range) - rangeRank(b.range) || riskRank(a.risk) - riskRank(b.risk);
+        return rangeRank(a.range) - rangeRank(b.range) ||
+          a.platformName.localeCompare(b.platformName) ||
+          riskRank(a.risk) - riskRank(b.risk);
       });
       var ws = e.holdings.map(function (h) { return h.weight; });
       e.count = e.holdings.length;
@@ -2034,7 +2618,15 @@
   }
 
   function renderFunds() {
-    var all = fundRegister();
+    // Provider options come from every portfolio, so the filter is always offered in full.
+    var platOpts = [];
+    visiblePortfolios().forEach(function (p) {
+      if (p.platformName && platOpts.indexOf(p.platformName) < 0) platOpts.push(p.platformName);
+    });
+    platOpts.sort(function (a, b) { return a.localeCompare(b); });
+    if (view.fundPlatform && platOpts.indexOf(view.fundPlatform) < 0) view.fundPlatform = "";
+
+    var all = fundRegister(view.fundPlatform);
 
     var shown = visiblePortfolios();
     var withNotes = all.filter(function (e) { return e.notes && e.notes.length; }).length;
@@ -2073,6 +2665,10 @@
       '<select id="fundRegion" aria-label="Filter equities by region"><option value="">All regions - equities</option>' +
       regions.map(function (r) {
         return '<option value="' + esc(r) + '"' + (view.fundRegion === r ? " selected" : "") + ">" + esc(r) + "</option>";
+      }).join("") + "</select>" +
+      '<select id="fundPlatform" aria-label="Filter by provider"><option value="">All providers</option>' +
+      platOpts.map(function (n) {
+        return '<option value="' + esc(n) + '"' + (view.fundPlatform === n ? " selected" : "") + ">" + esc(n) + "</option>";
       }).join("") + "</select></div>";
 
     var rows = filterFunds(all);
@@ -2111,16 +2707,13 @@
 
   // ---------- fund research page ----------
 
+  // Each entry: [name, file type, direct SharePoint link to the template].
   var DDQ_TEMPLATES = [
-    ["Equity fund DDQ template", "Word"],
-    ["Fixed income fund DDQ template", "Word"],
-    ["Passive / index fund DDQ template", "Word"],
-    ["ESG & stewardship questionnaire", "Word"],
-    ["Operational due diligence (ODD) template", "Excel"]
+    ["Fund Manager Due Diligence Template", "Word",
+      "https://luminwealthmanagement.sharepoint.com/:w:/r/sites/LWMInvestmentTeam/_layouts/15/Doc.aspx" +
+      "?sourcedoc=%7BE093068F-1761-4C5A-9DDB-CD5C4FFDAA45%7D" +
+      "&file=Fund%20Manager%20Due%20Diligence%20Template.docx&action=default&mobileredirect=true"]
   ];
-
-  // Blank templates live in the team document library, not under Manager Meeting Notes.
-  var DDQ_LIBRARY_URL = TEAM_HOST + TEAM_SITE + "/Shared%20Documents/Forms/AllItems.aspx";
 
   function srctag(cls, label) {
     return '<span class="srctag ' + cls + '">' + label + "</span>";
@@ -2159,8 +2752,8 @@
     var rows = DDQ_TEMPLATES.map(function (t) {
       return '<tr><td class="notescell">' + icon("paper", 12) + " " + esc(t[0]) + "</td>" +
         "<td>" + t[1] + "</td>" +
-        '<td class="notescell"><a href="' + DDQ_LIBRARY_URL + '" target="_blank" rel="noopener" ' +
-        'data-tip="Team site: Shared Documents">Link</a></td></tr>';
+        '<td class="notescell"><a href="' + esc(t[2]) + '" target="_blank" rel="noopener" ' +
+        'data-tip="Opens the template in SharePoint">Link</a></td></tr>';
     }).join("");
     return '<div class="box"><div class="box-head"><h3>DDQ templates</h3>' + srctag("srctag-sp", "Sharepoint") +
       '</div><div class="tablewrap"><table>' +
@@ -2316,6 +2909,280 @@
       "<tbody>" + body + "</tbody></table></div></div>";
   }
 
+  // ---------- investment content ----------
+
+  var CONTENT_SECTIONS = {
+    qir: {
+      label: "Quarterly Investment Reviews",
+      verb: "Attach review",
+      blurb: "The quarterly investment review pack for each quarter. Attach the final document, or link to " +
+        "where it lives, so the current and past editions are always to hand.",
+      site: "https://luminwealth.co.uk/quarterly-investment-review/",
+      siteLabel: "Client-facing QIR page on luminwealth.co.uk"
+    },
+    studies: {
+      label: "Investment Studies",
+      verb: "Attach study",
+      blurb: "Longer-form research studies produced by the investment team. Attach the document, or link to " +
+        "its home on the website or SharePoint.",
+      site: "https://luminwealth.co.uk/studies/",
+      siteLabel: "Published studies on luminwealth.co.uk"
+    },
+    adhoc: {
+      label: "Ad Hoc Client Releases",
+      verb: "Attach document",
+      blurb: "One-off client communications outside the regular cycle - market updates, event-driven notes " +
+        "and holding statements. Attach the released document with its release date."
+    },
+    media: {
+      label: "Media Coverage",
+      verb: "Add coverage",
+      blurb: "Press mentions, articles quoting the team and other coverage of Lumin the team chooses to keep. " +
+        "Attach a copy (PDF, image or document) or add a link to the piece."
+    }
+  };
+
+  function contentEntries(key) {
+    return (state.content[key] || []).slice().sort(function (a, b) { return a.date < b.date ? 1 : -1; });
+  }
+
+  function findContentEntry(id) {
+    var found = null;
+    Object.keys(state.content).forEach(function (k) {
+      state.content[k].forEach(function (d) { if (d.id === id) found = d; });
+    });
+    Object.keys(state.folders).forEach(function (k) {
+      state.folders[k].forEach(function (f) {
+        f.links.forEach(function (d) { if (d.id === id) found = d; });
+      });
+    });
+    return found;
+  }
+
+  function fmtSize(bytes) {
+    if (!bytes) return "";
+    if (bytes < 1024) return bytes + " B";
+    if (bytes < 1048576) return Math.round(bytes / 1024) + " KB";
+    return (bytes / 1048576).toFixed(1) + " MB";
+  }
+
+  function renderContentSection(key) {
+    var cfg = CONTENT_SECTIONS[key];
+    var entries = contentEntries(key);
+
+    var head = '<div class="panel-head"><h2>' + esc(cfg.label) + " (" + entries.length + ")</h2>" +
+      '<button class="btn" data-act="add-content" data-key="' + key + '">' + icon("upload") + " " + esc(cfg.verb) + "</button></div>" +
+      '<p class="blurb">' + cfg.blurb + (dirHandle
+        ? ' Documents and attachments save into the connected workspace folder ("' + esc(dirHandle.name) + '").'
+        : " Documents sit in this browser's workspace and travel with Export / Import " +
+          "workspace - keep files small and treat SharePoint or the website as the master copy.") +
+      (cfg.site ? ' <a href="' + cfg.site + '" target="_blank" rel="noopener">' + esc(cfg.siteLabel) + "</a>." : "") +
+      "</p>";
+
+    if (!entries.length) {
+      return head + '<div class="empty">Nothing filed here yet - use "' + esc(cfg.verb) + '" to add the first document.</div>';
+    }
+
+    var rows = contentRows(entries, "arm-content", 'data-key="' + key + '"');
+    return head + entryTable(cfg.label, rows);
+  }
+
+  // Shared by the Investment Content sections and the year folders: one row
+  // per document, with the two-step delete carrying whatever extra data
+  // attributes the delete handler needs.
+  function contentRows(entries, delAct, delAttrs) {
+    return entries.map(function (d) {
+      var armed = view.armed === "content:" + d.id;
+      var att = d.file
+        ? '<button class="linklike" data-dl="' + d.id + '" data-tip="Download ' + esc(d.file.name) + '">' +
+          icon("paper", 12) + " " + esc(d.file.name) + "</button>" +
+          ' <span class="notes-n">' + fmtSize(d.file.size) + "</span>"
+        : d.link
+          ? '<a href="' + esc(d.link) + '" target="_blank" rel="noopener">' + icon("ext", 12) + " Open link</a>"
+          : '<span style="color:var(--ink-3)">-</span>';
+      return "<tr><td>" + esc(fmtDate(d.date)) + "</td>" +
+        "<td>" + esc(d.title) + (d.note ? '<span class="fact-sub">' + esc(d.note) + "</span>" : "") + "</td>" +
+        "<td>" + esc(d.who || "-") + "</td>" +
+        '<td class="notescell">' + att + "</td>" +
+        '<td class="num"><button class="btn btn-ghost btn-sm' + (armed ? " btn-danger" : "") +
+        '" data-act="' + delAct + '" data-id="' + d.id + '" ' + delAttrs + ">" +
+        (armed ? "Confirm delete" : "Delete") + "</button></td></tr>";
+    }).join("");
+  }
+
+  function entryTable(caption, rows) {
+    return '<div class="box"><div class="tablewrap"><table>' +
+      '<caption class="sr">' + esc(caption) + "</caption>" +
+      "<thead><tr><th>Date</th><th>Title</th><th>By</th><th>Attachment</th><th></th></tr></thead>" +
+      "<tbody>" + rows + "</tbody></table></div></div>";
+  }
+
+  // ---------- year folders (Fact Sheet, Quant Scores) ----------
+
+  var FOLDER_SECTIONS = {
+    factsheet: {
+      label: "Fact Sheet",
+      blurb: "Model portfolio fact sheets filed by year. Open a year, then attach the final document or add " +
+        "a link to the master copy on SharePoint."
+    },
+    quant: {
+      label: "Quant Scores",
+      blurb: "The quarterly Master Quant Fund Review workbooks, filed by year. The Q3 2026 master workbook " +
+        "sits in the 2026 folder and opens on the Investment Team SharePoint site - every future quarterly " +
+        "review is saved to the same SharePoint folder, so link new editions from there.",
+      site: QUANT_MASTER_URL,
+      siteLabel: "Master Quant Fund Review Q3 2026 on SharePoint"
+    }
+  };
+
+  function folderDocCount(key) {
+    return (state.folders[key] || []).reduce(function (a, f) { return a + f.links.length; }, 0);
+  }
+
+  function getFolder(key, fid) {
+    return (state.folders[key] || []).filter(function (f) { return f.id === fid; })[0] || null;
+  }
+
+  function renderFolderSection(key) {
+    var cfg = FOLDER_SECTIONS[key];
+    var open = view.openFolder ? getFolder(key, view.openFolder) : null;
+    if (open) return renderFolderDetail(key, cfg, open);
+
+    var folders = (state.folders[key] || []).slice().sort(function (a, b) {
+      return a.name.localeCompare(b.name, undefined, { numeric: true });
+    });
+
+    var head = '<div class="panel-head"><h2>' + esc(cfg.label) + " (" + folders.length +
+      " folder" + (folders.length === 1 ? "" : "s") + ")</h2>" +
+      '<button class="btn" data-act="add-folder" data-key="' + key + '">' + icon("plus") + " New folder</button></div>" +
+      '<p class="blurb">' + cfg.blurb + (dirHandle
+        ? ' Documents and attachments save into the connected workspace folder ("' + esc(dirHandle.name) + '").'
+        : " Documents sit in this browser's workspace and travel with Export / Import " +
+          "workspace - keep files small and treat SharePoint as the master copy.") +
+      (cfg.site ? ' <a href="' + cfg.site + '" target="_blank" rel="noopener">' + esc(cfg.siteLabel) + "</a>." : "") +
+      "</p>";
+
+    if (!folders.length) {
+      return head + '<div class="empty">No folders yet - use "New folder" to create the first one.</div>';
+    }
+
+    var cards = folders.map(function (f) {
+      var n = f.links.length;
+      return '<button class="foldercard" data-act="open-folder" data-key="' + key + '" data-fid="' + f.id + '">' +
+        "<strong>" + icon("folder", 15) + " " + esc(f.name) + "</strong>" +
+        "<span>" + (n ? n + " document" + (n === 1 ? "" : "s") : "Empty") + "</span></button>";
+    }).join("");
+
+    return head + '<div class="foldergrid">' + cards + "</div>";
+  }
+
+  function renderFolderDetail(key, cfg, folder) {
+    var entries = folder.links.slice().sort(function (a, b) { return a.date < b.date ? 1 : -1; });
+    var armedFolder = view.armed === "folder:" + folder.id;
+
+    var head = '<button class="crumb" data-act="back-folders">' + icon("back") + " All folders</button>" +
+      '<div class="panel-head"><h2>' + esc(cfg.label) + " - " + esc(folder.name) +
+      " (" + entries.length + ")</h2>" +
+      '<button class="btn" data-act="add-folder-file" data-key="' + key + '" data-fid="' + folder.id + '">' +
+      icon("upload") + " Add file</button>" +
+      '<button class="btn btn-ghost' + (armedFolder ? " btn-danger" : "") + '" style="margin-left:0" ' +
+      'data-act="arm-folder" data-key="' + key + '" data-fid="' + folder.id + '">' +
+      (armedFolder ? "Confirm delete" : "Delete folder") + "</button></div>" +
+      '<p class="blurb">Attach the file itself, or add a link to where it lives on SharePoint or the website.</p>';
+
+    if (!entries.length) {
+      return head + '<div class="empty">Nothing in ' + esc(folder.name) + ' yet - use "Add file" to add the first document or link.</div>';
+    }
+
+    var rows = contentRows(entries, "arm-fentry", 'data-key="' + key + '" data-fid="' + folder.id + '"');
+    return head + entryTable(cfg.label + " - " + folder.name, rows);
+  }
+
+  // Every published issue of "lumin news", Lumin's regular client publication.
+  // URLs are the published PDFs on luminwealth.co.uk (verified Aug 2026); the
+  // label carries the season where the site names one, otherwise the month the
+  // issue was published.
+  var LUMIN_NEWS_ISSUES = [
+    [17, "Spring 2026", "https://luminwealth.co.uk/wp-content/uploads/2026/05/lumin_news17_Spring_2026.pdf"],
+    [16, "Winter 2026", "https://luminwealth.co.uk/wp-content/uploads/2026/01/lumin_news_winter2026.pdf"],
+    [15, "Autumn 2025", "https://luminwealth.co.uk/wp-content/uploads/2025/09/lumin_news_15_autumn-2025.pdf"],
+    [14, "May 2025", "https://luminwealth.co.uk/wp-content/uploads/2021/05/lumin_news14_25_EN_online.pdf"],
+    [13, "January 2025", "https://luminwealth.co.uk/wp-content/uploads/2025/01/lumin_news13_25_EN.pdf"],
+    [12, "September 2024", "https://luminwealth.co.uk/wp-content/uploads/2024/09/lumin_news12_24_EN_Online.pdf"],
+    [11, "April 2024", "https://luminwealth.co.uk/wp-content/uploads/2024/04/lumin_news11_24_EN.pdf"],
+    [10, "Winter 2024", "https://luminwealth.co.uk/wp-content/uploads/2024/01/lumin_news_10_winter_2024.pdf"],
+    [9, "September 2023", "https://luminwealth.co.uk/wp-content/uploads/2023/09/lumin_news9_23_EN_low.pdf"],
+    [8, "May 2023", "https://luminwealth.co.uk/wp-content/uploads/2023/05/lumin_news8_23_EN_Web.pdf"],
+    [7, "January 2023", "https://luminwealth.co.uk/wp-content/uploads/2023/01/lumin_news7_22_EN.pdf"],
+    [6, "September 2022", "https://luminwealth.co.uk/wp-content/uploads/2022/09/lumin_news6_22_EN.pdf"],
+    [5, "Summer 2022", "https://luminwealth.co.uk/wp-content/uploads/2022/06/lumin_news_5_summer_2022.pdf"],
+    [4, "April 2022", "https://luminwealth.co.uk/wp-content/uploads/2022/04/lumin_news4_22_EN_low_res.pdf"],
+    [3, "January 2022", "https://luminwealth.co.uk/wp-content/uploads/2022/01/lumin_news3_21_EN.pdf"],
+    [2, "September 2021", "https://luminwealth.co.uk/wp-content/uploads/2021/09/lumin_news2_21_EN.pdf"],
+    [1, "June 2021", "https://luminwealth.co.uk/wp-content/uploads/2021/06/luminnews-EN_newsletter_June_2021.pdf"]
+  ];
+
+  function renderLuminNews() {
+    var links = [
+      ["Knowledge Hub", "https://luminwealth.co.uk/blog/", "Articles and guides from the team"],
+      ["Weekly Investment Insights", "https://luminwealth.co.uk/weekly_investment_insights/", "The weekly markets note"],
+      ["Quarterly Investment Review", "https://luminwealth.co.uk/quarterly-investment-review/", "The client-facing QIR page"]
+    ];
+
+    var rows = LUMIN_NEWS_ISSUES.map(function (i) {
+      return '<tr><td class="notescell"><a href="' + i[2] + '" target="_blank" rel="noopener" ' +
+        'data-tip="Open the published PDF on luminwealth.co.uk">' +
+        icon("paper", 12) + " lumin news - Issue " + i[0] + "</a></td>" +
+        "<td>" + esc(i[1]) + "</td></tr>";
+    }).join("");
+
+    return '<div class="panel-head"><h2>Lumin News Articles (' + LUMIN_NEWS_ISSUES.length + ")</h2></div>" +
+      '<p class="blurb">Every issue of <a href="https://luminwealth.co.uk/lumin-news/" target="_blank" rel="noopener">lumin news</a>, ' +
+      "Lumin's regular client publication of financial planning ideas. Each issue opens the published PDF on " +
+      "luminwealth.co.uk in a new browser tab - the website is the master copy, so nothing is duplicated here. " +
+      'The latest issue also goes out by email; the sign-up form is on the <a href="https://luminwealth.co.uk/newsletter-download/" ' +
+      'target="_blank" rel="noopener">newsletter page</a>.</p>' +
+      '<div class="box" style="margin-bottom:20px"><div class="tablewrap"><table>' +
+      '<caption class="sr">Published issues of lumin news</caption>' +
+      "<thead><tr><th>Issue</th><th>Published</th></tr></thead>" +
+      "<tbody>" + rows + "</tbody></table></div></div>" +
+      '<div class="side-title" style="margin-bottom:10px">Elsewhere on luminwealth.co.uk</div>' +
+      '<div class="linkgrid">' + links.map(function (l) {
+        return '<a class="linkcard" href="' + l[1] + '" target="_blank" rel="noopener">' +
+          "<strong>" + icon("ext", 14) + " " + esc(l[0]) + "</strong>" +
+          "<span>" + esc(l[2]) + "</span></a>";
+      }).join("") + "</div>";
+  }
+
+  function triggerDownload(href, name) {
+    var a = document.createElement("a");
+    a.href = href;
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  }
+
+  function downloadContentFile(file) {
+    if (file.stored) {
+      // written (or queued) as a real file in the workspace folder
+      if (pendingFiles[file.stored]) {
+        var url0 = URL.createObjectURL(pendingFiles[file.stored]);
+        triggerDownload(url0, file.name);
+        setTimeout(function () { URL.revokeObjectURL(url0); }, 4000);
+        return;
+      }
+      if (!dirHandle) { toast("Connect the workspace folder to open this attachment"); return; }
+      readAttachment(file.stored).then(function (f) {
+        var url = URL.createObjectURL(f);
+        triggerDownload(url, file.name);
+        setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+      }).catch(function () { toast("Attachment not found in the workspace folder"); });
+      return;
+    }
+    triggerDownload(file.data, file.name);
+  }
+
   // All compared rebalances share one table with the open snapshot: the union
   // of every date's funds in one fixed order, so each fund sits on exactly the
   // same row in every date column. Exits and entries show as "-".
@@ -2331,6 +3198,10 @@
         }
         e.weights[si] += r.weight;
       });
+    });
+    // A fund with no weight at the oldest compared date was added since then.
+    list.forEach(function (e) {
+      e.isNew = e.weights[0] < 0.005;
     });
     return list.sort(function (a, b) {
       return classRank(a.asset) - classRank(b.asset) ||
@@ -2372,7 +3243,9 @@
 
     var body = rows.map(function (r) {
       var cells = '<td><span class="legend-item"><span class="swatch" style="background:' +
-        classColour(r.asset) + '"></span>' + esc(r.fund) + "</span></td>";
+        classColour(r.asset) + '"></span>' + esc(r.fund) +
+        (r.isNew ? ' <span class="chip chip-new" data-tip="Not held at ' +
+          esc(fmtDate(snaps[0].date)) + '">New</span>' : "") + "</span></td>";
       snaps.forEach(function (s, i) {
         var w = r.weights[i];
         cells += '<td class="num">' + (w ? fmtPct(w, 2) : '<span style="color:var(--ink-3)">-</span>') + "</td>";
@@ -2663,6 +3536,21 @@
       return;
     }
 
+    if (CONTENT_SECTIONS[view.tab]) {
+      main.innerHTML = renderContentSection(view.tab);
+      return;
+    }
+
+    if (FOLDER_SECTIONS[view.tab]) {
+      main.innerHTML = renderFolderSection(view.tab);
+      return;
+    }
+
+    if (view.tab === "lumin-news") {
+      main.innerHTML = renderLuminNews();
+      return;
+    }
+
     if (view.tab !== "portfolios") {
       var tab = NAV_ITEMS.filter(function (t) { return t.id === view.tab; })[0];
       main.innerHTML = renderPlaceholder(tab ? tab.label : "This section");
@@ -2698,10 +3586,25 @@
         if (!parsed || !Array.isArray(parsed.portfolios)) throw new Error("shape");
         state.portfolios = parsed.portfolios;
         if (Array.isArray(parsed.events)) state.events = parsed.events;
+        if (parsed.content) {
+          var content = emptyContent();
+          Object.keys(content).forEach(function (k) {
+            if (Array.isArray(parsed.content[k])) content[k] = parsed.content[k];
+          });
+          state.content = content;
+        }
+        if (parsed.folders) {
+          var folders = seedFolders();
+          Object.keys(folders).forEach(function (k) {
+            if (Array.isArray(parsed.folders[k])) folders[k] = parsed.folders[k];
+          });
+          state.folders = folders;
+        }
         saveState();
         view.openId = null;
         view.openSnap = null;
         view.compare = [];
+        view.openFolder = null;
         render();
         toast("Workspace loaded - " + parsed.portfolios.length + " portfolios");
       } catch (e) {
@@ -2713,7 +3616,11 @@
 
   function offerDownload(filename, data) {
     if (!window.claude || !window.claude.downloads) {
-      toast("Downloads are not available in this view");
+      // opened as a plain local file - hand the browser a normal download
+      var blob = new Blob([data], { type: "text/plain;charset=utf-8" });
+      var url = URL.createObjectURL(blob);
+      triggerDownload(url, filename);
+      setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
       return;
     }
     window.claude.downloads.save({ filename: filename, data: data })
@@ -2739,18 +3646,19 @@
     snap.rows.forEach(function (r) {
       lines.push('"' + r.fund.replace(/"/g, '""') + '","' + r.isin + '","' + r.asset + '",' + r.weight.toFixed(4));
     });
-    var name = (p.range + "-" + p.risk + "-" + snap.date).replace(/[^A-Za-z0-9._-]/g, "-");
+    var name = (p.range + "-" + (p.platform ? p.platform + "-" : "") + p.risk + "-" + snap.date)
+      .replace(/[^A-Za-z0-9._-]/g, "-");
     offerDownload(name + ".csv", lines.join("\n"));
   }
 
   // One row per fund per model, so the register can be pivoted in Excel.
   function exportFundCsv() {
     var q = function (s) { return '"' + String(s == null ? "" : s).replace(/"/g, '""') + '"'; };
-    var lines = ["Fund Name,ISIN,Asset Class,Range,Risk Level,Weight %,Effective Date,Manager Notes"];
-    filterFunds(fundRegister()).forEach(function (e) {
+    var lines = ["Fund Name,ISIN,Asset Class,Range,Platform,Risk Level,Weight %,Effective Date,Manager Notes"];
+    filterFunds(fundRegister(view.fundPlatform)).forEach(function (e) {
       var notes = (e.notes || []).map(function (n) { return n[1]; }).join(" | ");
       e.holdings.forEach(function (h) {
-        lines.push([q(e.fund), q(e.isin), q(e.asset), q(h.range),
+        lines.push([q(e.fund), q(e.isin), q(e.asset), q(h.range), q(h.platformName),
           q(h.risk), h.weight.toFixed(4), q(h.date), q(notes)].join(","));
       });
     });
@@ -2778,16 +3686,59 @@
   // ---------- events ----------
 
   document.getElementById("sidebarNav").addEventListener("click", function (e) {
+    var fan = e.target.closest("[data-fan]");
+    if (fan) {
+      view.contentOpen = fan.getAttribute("aria-expanded") !== "true";
+      renderNav();
+      return;
+    }
     var btn = e.target.closest("[data-tab]");
     if (!btn) return;
     view.tab = btn.getAttribute("data-tab");
     view.armed = null;
     view.meetingsFund = null;
     view.fundPage = null;
+    view.openFolder = null;
     render();
   });
 
+  // ---------- light / dark mode ----------
+
+  var THEME_KEY = KEY + ".theme";
+
+  function currentTheme() {
+    var t = document.documentElement.getAttribute("data-theme");
+    if (t === "dark" || t === "light") return t;
+    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+
+  function paintThemeBtn() {
+    var btn = document.getElementById("themeBtn");
+    var next = currentTheme() === "dark" ? "light" : "dark";
+    btn.innerHTML = icon(next === "dark" ? "moon" : "sun");
+    btn.setAttribute("aria-label", "Switch to " + next + " mode");
+    btn.setAttribute("data-tip", "Switch to " + next + " mode");
+  }
+
+  document.getElementById("themeBtn").addEventListener("click", function () {
+    var next = currentTheme() === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", next);
+    try { localStorage.setItem(THEME_KEY, next); } catch (e) { /* private mode - not persisted */ }
+    paintThemeBtn();
+  });
+
   document.getElementById("refreshBtn").addEventListener("click", function () {
+    if (dirHandle) {
+      readFolder().then(function (parsed) {
+        var merged = mergeDisk(parsed);
+        view.armed = null;
+        render();
+        toast(merged
+          ? "Merged " + merged + " update" + (merged === 1 ? "" : "s") + " from the workspace folder"
+          : "Workspace folder is up to date");
+      }).catch(function () { toast("Could not read the workspace folder"); });
+      return;
+    }
     loadState();
     document.getElementById("initials").value = state.initials;
     view.armed = null;
@@ -2804,6 +3755,14 @@
   document.getElementById("main").addEventListener("click", function (e) {
     // let notes links open instead of toggling the row they sit in
     if (e.target.closest("a[href]")) return;
+
+    // attachment on an Investment Content row: hand the stored file back as a download
+    var dl = e.target.closest("[data-dl]");
+    if (dl) {
+      var doc = findContentEntry(dl.getAttribute("data-dl"));
+      if (doc && doc.file) downloadContentFile(doc.file);
+      return;
+    }
 
     // notes link on a fund row: jump to Meeting Notes with that fund pinned at the top
     var gotoNotes = e.target.closest("[data-goto-notes]");
@@ -2928,6 +3887,52 @@
     } else if (act === "cal-today") {
       var now = new Date();
       view.calY = now.getFullYear(); view.calM = now.getMonth(); render();
+    } else if (act === "add-content") {
+      openContentDlg(actEl.getAttribute("data-key"));
+    } else if (act === "add-folder") {
+      openFolderDlg(actEl.getAttribute("data-key"));
+    } else if (act === "open-folder") {
+      view.openFolder = actEl.getAttribute("data-fid");
+      view.armed = null;
+      render();
+      window.scrollTo(0, 0);
+    } else if (act === "back-folders") {
+      view.openFolder = null; view.armed = null; render();
+    } else if (act === "add-folder-file") {
+      openContentDlg(actEl.getAttribute("data-key"), actEl.getAttribute("data-fid"));
+    } else if (act === "arm-folder") {
+      var fkey = actEl.getAttribute("data-key");
+      var fid = actEl.getAttribute("data-fid");
+      if (view.armed === "folder:" + fid) {
+        var gone = getFolder(fkey, fid);
+        state.folders[fkey] = state.folders[fkey].filter(function (f) { return f.id !== fid; });
+        view.openFolder = null; view.armed = null; saveState(); render();
+        toast(gone ? 'Folder "' + gone.name + '" deleted' : "Folder deleted");
+      } else {
+        view.armed = "folder:" + fid; render();
+      }
+    } else if (act === "arm-fentry") {
+      var ekey = actEl.getAttribute("data-key");
+      var efid = actEl.getAttribute("data-fid");
+      var eid = actEl.getAttribute("data-id");
+      if (view.armed === "content:" + eid) {
+        var fldr = getFolder(ekey, efid);
+        if (fldr) fldr.links = fldr.links.filter(function (d) { return d.id !== eid; });
+        view.armed = null; saveState(); render();
+        toast("Entry deleted");
+      } else {
+        view.armed = "content:" + eid; render();
+      }
+    } else if (act === "arm-content") {
+      var did = actEl.getAttribute("data-id");
+      if (view.armed === "content:" + did) {
+        var dkey = actEl.getAttribute("data-key");
+        state.content[dkey] = state.content[dkey].filter(function (d) { return d.id !== did; });
+        view.armed = null; saveState(); render();
+        toast("Entry deleted");
+      } else {
+        view.armed = "content:" + did; render();
+      }
     } else if (act === "clear-notes-focus") {
       view.meetingsFund = null; render();
     } else if (act === "restore-seed") {
@@ -2957,6 +3962,19 @@
     if (e.target.id === "fundRegion") {
       view.fundRegion = e.target.value;
       view.openFund = null;
+      render();
+    }
+    if (e.target.id === "fundPlatform") {
+      view.fundPlatform = e.target.value;
+      view.openFund = null;
+      render();
+    }
+    if (e.target.id === "pfRange") {
+      view.pfRange = e.target.value;
+      render();
+    }
+    if (e.target.id === "pfPlatform") {
+      view.pfPlatform = e.target.value;
       render();
     }
   });
@@ -3114,6 +4132,137 @@
     toast(existing ? "Entry updated" : "Entry added");
   });
 
+  // investment content dialog
+
+  var pendingContentFile = null;
+  var CONTENT_FILE_LIMIT = 2.5 * 1024 * 1024;   // base64 in localStorage
+  var FOLDER_FILE_LIMIT = 25 * 1024 * 1024;     // real file in the workspace folder
+
+  // With a folderId the dialog files the entry into that year folder
+  // (Fact Sheet / Quant Scores); without one it goes to an Investment
+  // Content section as before.
+  function openContentDlg(key, folderId) {
+    var heading;
+    if (folderId != null) {
+      var section = FOLDER_SECTIONS[key];
+      var folder = getFolder(key, folderId);
+      if (!section || !folder) return;
+      view.contentTarget = { kind: "folder", key: key, folderId: folderId };
+      heading = "Add file - " + section.label + " / " + folder.name;
+    } else {
+      var cfg = CONTENT_SECTIONS[key];
+      if (!cfg) return;
+      view.contentTarget = { kind: "content", key: key };
+      heading = cfg.verb + " - " + cfg.label;
+    }
+    pendingContentFile = null;
+    document.getElementById("cHeading").textContent = heading;
+    document.getElementById("cTitle").value = "";
+    document.getElementById("cDate").value = new Date().toISOString().slice(0, 10);
+    document.getElementById("cNote").value = "";
+    document.getElementById("cLink").value = "";
+    document.getElementById("cFileHint").textContent = dirHandle
+      ? "Files up to 25 MB are saved into the workspace folder's attachments - for anything larger, paste a link instead."
+      : "Files up to 2.5 MB are stored in the workspace - for anything larger, paste a link instead.";
+    document.getElementById("contentDlg").showModal();
+  }
+
+  document.getElementById("cFile").addEventListener("change", function (e) {
+    var file = e.target.files && e.target.files[0];
+    e.target.value = "";
+    if (!file) return;
+    if (file.size > (dirHandle ? FOLDER_FILE_LIMIT : CONTENT_FILE_LIMIT)) {
+      pendingContentFile = null;
+      document.getElementById("cFileHint").textContent =
+        file.name + " is " + fmtSize(file.size) + " - too large to store here. Paste a link to it instead.";
+      return;
+    }
+    function ready() {
+      document.getElementById("cFileHint").textContent = "Ready to attach " + file.name + " (" + fmtSize(file.size) + ").";
+      var t = document.getElementById("cTitle");
+      if (!t.value.trim()) t.value = file.name.replace(/\.[a-z0-9]{2,5}$/i, "");
+    }
+    if (dirHandle) {
+      // connected: keep the raw blob and write it to attachments/ on save
+      pendingContentFile = { name: file.name, type: file.type, size: file.size, blob: file };
+      ready();
+      return;
+    }
+    var reader = new FileReader();
+    reader.onload = function () {
+      pendingContentFile = { name: file.name, type: file.type, size: file.size, data: String(reader.result) };
+      ready();
+    };
+    reader.readAsDataURL(file);
+  });
+
+  document.getElementById("contentDlg").addEventListener("close", function (e) {
+    if (e.target.returnValue !== "save") return;
+    var target = view.contentTarget;
+    if (!target) return;
+    var title = document.getElementById("cTitle").value.trim();
+    if (!title) { toast("An entry needs a title"); return; }
+
+    var attached = pendingContentFile;
+    var entry = {
+      id: uid(),
+      title: title,
+      date: document.getElementById("cDate").value,
+      who: state.initials,
+      note: document.getElementById("cNote").value.trim(),
+      link: attached ? "" : document.getElementById("cLink").value.trim(),
+      file: attached
+    };
+    if (attached && attached.blob) {
+      // connected workspace folder: queue the binary and keep metadata only
+      var stored = entry.id + "__" + safeName(attached.name);
+      pendingFiles[stored] = attached.blob;
+      entry.file = { name: attached.name, type: attached.type, size: attached.size, stored: stored };
+    }
+
+    if (target.kind === "folder") {
+      var folder = getFolder(target.key, target.folderId);
+      if (!folder) return;
+      folder.links.push(entry);
+    } else {
+      if (!CONTENT_SECTIONS[target.key]) return;
+      state.content[target.key].push(entry);
+    }
+    pendingContentFile = null;
+    saveState();
+    render();
+    toast(attached ? title + " attached (" + fmtSize(attached.size) + ")" : "Entry added");
+  });
+
+  // new-folder dialog (Fact Sheet / Quant Scores)
+
+  function openFolderDlg(key) {
+    if (!FOLDER_SECTIONS[key]) return;
+    view.folderTarget = key;
+    document.getElementById("fHeading").textContent = "New folder - " + FOLDER_SECTIONS[key].label;
+    // Suggest the next year on from the folders already there.
+    var years = (state.folders[key] || []).map(function (f) { return parseInt(f.name, 10); })
+      .filter(function (n) { return !isNaN(n); });
+    document.getElementById("fName").value = years.length ? String(Math.max.apply(null, years) + 1) : "";
+    document.getElementById("folderDlg").showModal();
+  }
+
+  document.getElementById("folderDlg").addEventListener("close", function (e) {
+    if (e.target.returnValue !== "save") return;
+    var key = view.folderTarget;
+    if (!key || !FOLDER_SECTIONS[key]) return;
+    var name = document.getElementById("fName").value.trim();
+    if (!name) { toast("A folder needs a name"); return; }
+    var dupe = state.folders[key].some(function (f) {
+      return f.name.toLowerCase() === name.toLowerCase();
+    });
+    if (dupe) { toast('There is already a "' + name + '" folder'); return; }
+    state.folders[key].push({ id: uid(), name: name, links: [] });
+    saveState();
+    render();
+    toast('Folder "' + name + '" created');
+  });
+
   // keyboard access for the day cells (divs, not buttons)
   document.getElementById("main").addEventListener("keydown", function (e) {
     if (e.key !== "Enter" && e.key !== " ") return;
@@ -3155,7 +4304,13 @@
   document.body.appendChild(transferInput);
 
   document.getElementById("scopePill").addEventListener("click", function () {
-    toast("Entries live in this browser only - use Export / Import workspace to move them");
+    if (!fsSupported()) {
+      toast("Entries live in this browser only - use Export / Import workspace to move them");
+      return;
+    }
+    if (dirHandle) { disconnectFolder(); return; }
+    if (savedHandle) { reconnectFolder(savedHandle); return; }
+    connectFolder();
   });
 
   // export / import controls in the header
@@ -3179,7 +4334,10 @@
 
   loadState();
   document.getElementById("initials").value = state.initials;
+  paintThemeBtn();
+  paintScopePill();
   renderFootnote();
   render();
+  initFolderStorage();
 })();
 </script>

@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "fund-dashboard",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 5173
+    },
+    {
+      "name": "static-dashboard",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8321"],
+      "port": 8321
+    }
+  ]
+}
