@@ -36,104 +36,6 @@
     --mono: ui-monospace, "Cascadia Mono", "Segoe UI Mono", Consolas, "Liberation Mono", monospace;
   }
 
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --ground: #0F1318;
-      --surface: #171B21;
-      --surface-2: #1E242B;
-      --ink: #E8ECF1;
-      --ink-2: #AEB8C4;
-      --ink-3: #8794A2;
-      --line: #29313A;
-      --line-strong: #3A444F;
-      --accent: #6BA4E8;
-      --accent-soft: #1A2635;
-      --btn: #E8ECF1;
-      --btn-ink: #12171C;
-      --good: #1FA378;
-      --warn: #C2851A;
-      --crit: #D96A6E;
-      --warn-soft: #2A2214;
-      --crit-soft: #2C1A1B;
-      --c-eq: #4E8FDB;
-      --c-fi: #1FA378;
-      --c-dv: #C2851A;
-      --c-ca: #26A0BC;
-      --c-un: #7E8A98;
-    --nav-bg: #16294C;
-    --nav-ink: #FFFFFF;
-    --nav-ink-2: #B8C8E2;
-    --nav-ink-3: #7B93B8;
-    --nav-hover: rgba(255, 255, 255, .08);
-    --nav-active: rgba(255, 255, 255, .14);
-      --shadow: 0 1px 2px rgba(0, 0, 0, .4);
-    }
-  }
-
-  :root[data-theme="dark"] {
-    --ground: #0F1318;
-    --surface: #171B21;
-    --surface-2: #1E242B;
-    --ink: #E8ECF1;
-    --ink-2: #AEB8C4;
-    --ink-3: #8794A2;
-    --line: #29313A;
-    --line-strong: #3A444F;
-    --accent: #6BA4E8;
-    --accent-soft: #1A2635;
-    --btn: #E8ECF1;
-    --btn-ink: #12171C;
-    --good: #1FA378;
-    --warn: #C2851A;
-    --crit: #D96A6E;
-    --warn-soft: #2A2214;
-    --crit-soft: #2C1A1B;
-    --c-eq: #4E8FDB;
-    --c-fi: #1FA378;
-    --c-dv: #C2851A;
-    --c-ca: #26A0BC;
-    --c-un: #7E8A98;
-    --nav-bg: #16294C;
-    --nav-ink: #FFFFFF;
-    --nav-ink-2: #B8C8E2;
-    --nav-ink-3: #7B93B8;
-    --nav-hover: rgba(255, 255, 255, .08);
-    --nav-active: rgba(255, 255, 255, .14);
-    --shadow: 0 1px 2px rgba(0, 0, 0, .4);
-  }
-
-  :root[data-theme="light"] {
-    --ground: #F4F6F7;
-    --surface: #FCFCFB;
-    --surface-2: #F0F3F5;
-    --ink: #16202B;
-    --ink-2: #4E5A68;
-    --ink-3: #77828F;
-    --line: #E0E5EA;
-    --line-strong: #CBD3DB;
-    --accent: #1F5FA8;
-    --accent-soft: #EAF1F9;
-    --btn: #16202B;
-    --btn-ink: #FFFFFF;
-    --good: #12805C;
-    --warn: #C07A12;
-    --crit: #B4353A;
-    --warn-soft: #FBF3E4;
-    --crit-soft: #FBECEC;
-    --c-eq: #1F5FA8;
-    --c-fi: #12805C;
-    --c-dv: #C07A12;
-    --c-ca: #1E93A8;
-    --c-un: #8A93A0;
-    --nav-bg: #1D3D73;
-    --nav-ink: #FFFFFF;
-    --nav-ink-2: #C6D4E9;
-    --nav-ink-3: #8AA3C6;
-    --nav-hover: rgba(255, 255, 255, .09);
-    --nav-active: rgba(255, 255, 255, .16);
-    --shadow: 0 1px 2px rgba(22, 32, 43, .05), 0 1px 3px rgba(22, 32, 43, .04);
-  }
-
   * { box-sizing: border-box; }
 
   body {
@@ -247,12 +149,6 @@
   .content { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; }
 
   .navgroup { display: flex; flex-direction: column; gap: 1px; }
-  .navgroup-title {
-    font-size: 10.5px; font-weight: 700;
-    text-transform: uppercase; letter-spacing: .14em;
-    color: var(--nav-ink-3);
-    padding: 0 22px; margin-bottom: 9px;
-  }
 
   .navitem {
     display: flex; align-items: center; gap: 8px;
@@ -306,7 +202,6 @@
     }
     .sidebar nav { flex-direction: row; align-items: center; gap: 20px; }
     .navgroup { flex-direction: row; align-items: center; gap: 3px; }
-    .navgroup-title { padding: 0 4px 0 0; margin: 0; white-space: nowrap; }
     .navitem { width: auto; margin: 0; white-space: nowrap; }
     .nav-fan { flex-direction: row; gap: 3px; }
     .navitem.nav-sub { width: auto; margin: 0; padding: 8px 12px; }
@@ -569,7 +464,14 @@
   .bullets { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 7px; font-size: 13px; }
   .bullets ul { margin: 6px 0 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; color: var(--ink-2); }
 
-  .sparkline { width: 100%; height: 170px; color: var(--ink); display: block; }
+  .mschart { width: 100%; height: auto; display: block; }
+  .mschart .ms-val { font: 600 12px var(--sans); fill: var(--ink); font-variant-numeric: tabular-nums; }
+  .mschart .ms-lab { font: 600 10.5px var(--sans); fill: var(--ink-3); letter-spacing: .05em; text-transform: uppercase; }
+  .mschart .ms-na { font: 500 11px var(--sans); fill: var(--ink-3); }
+  .ms-wrap { display: flex; flex-direction: column; gap: 16px; }
+  .ms-asof { font-size: 11px; color: var(--ink-3); white-space: nowrap; }
+  .ms-foot { font-size: 11.5px; color: var(--ink-3); line-height: 1.5; }
+  .srctag-ms { background: #D5232A; color: #fff; }
 
   .fundlink {
     background: none; border: none; padding: 0; cursor: pointer;
@@ -720,6 +622,34 @@
   .filebtn { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
   .filebtn input { display: none; }
 
+  /* ---------- calendar attachments ---------- */
+
+  .att-list { display: flex; flex-direction: column; gap: 6px; }
+  .att-chip {
+    display: flex; align-items: center; gap: 8px;
+    padding: 6px 10px; border: 1px solid var(--line); border-radius: 6px;
+    background: var(--surface-2); font-size: 12.5px;
+  }
+  .att-chip svg { flex: none; opacity: .7; }
+  .att-name {
+    background: none; border: none; padding: 0; cursor: pointer;
+    font: inherit; color: var(--accent); text-align: left;
+    min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .att-name:hover { text-decoration: underline; }
+  .att-size { flex: none; color: var(--ink-3); font-size: 11.5px; font-variant-numeric: tabular-nums; }
+  .att-rm {
+    margin-left: auto; flex: none;
+    background: none; border: none; cursor: pointer;
+    color: var(--ink-3); font-size: 15px; line-height: 1; padding: 0 2px;
+  }
+  .att-rm:hover { color: var(--crit); }
+  .cal-evt .clip { flex: none; display: inline-flex; opacity: .75; }
+  .up-att {
+    flex: none; display: inline-flex; align-items: center; gap: 3px;
+    font-size: 11px; color: var(--ink-3); font-variant-numeric: tabular-nums;
+  }
+
   /* ---------- misc ---------- */
 
   /* ---------- investment content ---------- */
@@ -798,16 +728,6 @@
   }
 </style>
 
-<script>
-// Apply the saved theme before the page paints, so there is no light/dark flash.
-(function () {
-  try {
-    var t = localStorage.getItem("lumin.fund-research.v1.theme");
-    if (t === "dark" || t === "light") document.documentElement.setAttribute("data-theme", t);
-  } catch (e) { /* private mode - follow the system preference */ }
-})();
-</script>
-
 <div class="shell">
 <aside class="sidebar">
   <nav id="sidebarNav" aria-label="Sections"></nav>
@@ -833,7 +753,6 @@
       <div class="subtitle">Shared fund-of-funds research hub &middot; Internal scoring 1-4 (lower is better)</div>
     </div>
     <div class="topbar-right">
-      <button class="btn btn-ghost" id="themeBtn" aria-label="Switch between light and dark mode"></button>
       <span class="field-label">Your initials</span>
       <input type="text" class="initials-input" id="initials" maxlength="4" placeholder="e.g. JD" aria-label="Your initials">
       <button class="btn" id="refreshBtn">
@@ -972,6 +891,18 @@
         <label for="eNote">Details <span class="hint">optional - location, attendees, agenda</span></label>
         <input type="text" id="eNote" placeholder="e.g. Boardroom / Teams link in invite">
       </div>
+      <div class="fieldset">
+        <label>Attachments <span class="hint">optional - presentations, agendas, factsheets</span></label>
+        <div class="att-list" id="eAttList"></div>
+        <div class="row" style="align-items:center">
+          <label class="btn btn-ghost btn-sm filebtn">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+            Attach file
+            <input type="file" id="eFile" multiple accept=".pdf,.ppt,.pptx,.pps,.ppsx,.odp,.key,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg,.gif,.txt,.csv,.eml,.msg">
+          </label>
+          <span class="hint" id="eFileHint"></span>
+        </div>
+      </div>
     </div>
     <div class="dlg-foot">
       <button type="button" class="btn btn-danger" id="eDelete" style="margin-right:auto;display:none">Delete</button>
@@ -1049,6 +980,7 @@
 
   var NAV = [
     {
+      id: "hub",
       group: "Investment Hub",
       items: [
         { id: "portfolios", label: "Portfolios" },
@@ -1058,6 +990,7 @@
       ]
     },
     {
+      id: "research",
       group: "Research",
       items: [
         { id: "meetings", label: "Meeting Notes" },
@@ -1067,6 +1000,7 @@
       ]
     },
     {
+      id: "tasks",
       group: "Tasks",
       items: [
         { id: "research-tasks", label: "Research Tasks" },
@@ -1075,8 +1009,8 @@
       ]
     },
     {
+      id: "content",
       group: "Investment Content",
-      fan: true,
       items: [
         { id: "qir", label: "Quarterly Investment Reviews" },
         { id: "studies", label: "Investment Studies" },
@@ -1108,7 +1042,8 @@
     ext: '<path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>',
     folder: '<path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/>',
     sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
-    moon: '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/>'
+    moon: '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/>',
+    clip: '<path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/>'
   };
 
   var CLASSES = [
@@ -1686,7 +1621,7 @@
     fundQuery: "", fundClass: "", fundRegion: "", fundPlatform: "", openFund: null, fundPage: null,
     calY: new Date().getFullYear(), calM: new Date().getMonth(),
     editEvent: null, meetingsFund: null,
-    contentOpen: false, contentTarget: null,
+    navOpen: { hub: true, research: true, tasks: true, content: false }, contentTarget: null,
     openFolder: null, folderTarget: null
   };
 
@@ -2022,6 +1957,17 @@
     Object.keys(state.folders).forEach(function (k) {
       state.folders[k].forEach(function (f) { visit(f.links); });
     });
+    state.events.forEach(function (ev) {
+      (ev.atts || []).forEach(function (a) {
+        if (!a.data || a.stored) return;
+        var stored = uid() + "__" + safeName(a.name);
+        try {
+          pendingFiles[stored] = dataUrlToBlob(a.data);
+          a.stored = stored;
+          delete a.data;
+        } catch (e) { /* leave this one as base64 */ }
+      });
+    });
   }
 
   function adoptFolder(handle) {
@@ -2279,25 +2225,22 @@
     };
 
     document.getElementById("sidebarNav").innerHTML = NAV.map(function (g) {
+      var open = !!view.navOpen[g.id];
       var items = g.items.map(function (t) {
         var n = counts[t.id];
-        return '<button class="navitem' + (g.fan ? " nav-sub" : "") + '" aria-current="' + (t.id === view.tab) +
+        return '<button class="navitem nav-sub" aria-current="' + (t.id === view.tab) +
           '" data-tab="' + t.id + '"><span>' + esc(t.label) + "</span>" +
           (n == null ? "" : '<span class="n">' + n + "</span>") + "</button>";
       }).join("");
 
-      if (!g.fan) {
-        return '<div class="navgroup"><div class="navgroup-title">' + esc(g.group) + "</div>" + items + "</div>";
-      }
-
-      // Fan-out group: a clickable parent that expands to its sections. The
+      // Every group is a clickable parent that expands to its sections. The
       // parent shows as current when a hidden child is the active tab.
       var childActive = g.items.some(function (t) { return t.id === view.tab; });
       return '<div class="navgroup">' +
-        '<button class="navitem nav-parent" data-fan="1" aria-expanded="' + view.contentOpen +
-        '" aria-current="' + (childActive && !view.contentOpen) + '"><span>' + esc(g.group) + "</span>" +
+        '<button class="navitem nav-parent" data-fan="' + g.id + '" aria-expanded="' + open +
+        '" aria-current="' + (childActive && !open) + '"><span>' + esc(g.group) + "</span>" +
         '<span class="chev">' + icon("chev", 13) + "</span></button>" +
-        (view.contentOpen ? '<div class="nav-fan">' + items + "</div>" : "") +
+        (open ? '<div class="nav-fan">' + items + "</div>" : "") +
         "</div>";
     }).join("");
   }
@@ -2318,6 +2261,9 @@
       "against the workbook before relying on them, and treat any snapshot flagged as not totalling 100% as suspect. " +
       "Manager notes open the Research / Manager Meeting Notes folder on the Investment Team SharePoint site " +
       "and need the reader to be signed in with access to that site. " +
+      "Performance and Sharpe ratio figures on fund pages are fetched live from Morningstar's public data service, " +
+      "matched by ISIN, and are indicative only - verify against FE Analytics or Morningstar Direct before " +
+      "relying on them. " +
       "AI-generated content must be reviewed by a qualified individual before informing any regulated activity or client communication.";
   }
 
@@ -2498,13 +2444,17 @@
     });
   }
 
-  // Equity region, inferred from the fund name. Order matters: "Global Emerging
-  // Markets" must land on EM, "Developed Europe ex-U.K." on Europe, and
-  // "MSCI World ex USA" on Global, before the UK/US catch-alls get a look.
-  var EQ_REGIONS = ["UK", "US", "Europe ex-UK", "Japan", "Asia Pacific", "Emerging Markets", "Global"];
+  // Equity bucket, inferred from the fund name, listed in the order the filter
+  // offers them. Order matters twice over: Specialist (sector and thematic
+  // funds) must win before any regional catch-all - "Polar Capital Global
+  // Insurance" is Specialist, not Global - then "Global Emerging Markets" must
+  // land on EM, "Developed Europe ex-U.K." on Europe, and "MSCI World ex USA"
+  // on Global, before the UK/US catch-alls get a look.
+  var EQ_REGIONS = ["Global", "UK", "US", "Europe ex-UK", "Emerging Markets", "Japan", "Asia Pacific", "Specialist"];
 
   function fundRegion(name) {
     var s = String(name || "").toLowerCase();
+    if (/insurance|health|environment|natural resources|private equity|infrastructure|propert|real estate|commodit|gold|technolog|biotech|clean energy|\bwater\b/.test(s)) return "Specialist";
     if (/emerging|\bem\b/.test(s)) return "Emerging Markets";
     if (/pacific|\basia\b/.test(s)) return "Asia Pacific";
     if (/japan/.test(s)) return "Japan";
@@ -2586,15 +2536,6 @@
     return p;
   }
 
-  function notesCell(e) {
-    if (!e.notes || !e.notes.length) return '<span style="color:var(--ink-3)">-</span>';
-    var files = e.notes.reduce(function (a, n) { return a + n[2]; }, 0);
-    var label = e.notes.length === 1 ? e.notes[0][0] : e.notes.length + " folders";
-    return '<button class="noteslink" data-goto-notes="' + esc(e.key) + '" ' +
-      'data-tip="View under Meeting Notes">' +
-      icon("paper", 12) + " " + esc(label) + ' <span class="notes-n">' + files + "</span></button>";
-  }
-
   function renderFundBreakdown(e) {
     var cells = e.holdings.map(function (h) {
       var label = h.range + " " + h.risk + (h.platformName ? " - " + h.platformName : "");
@@ -2611,7 +2552,7 @@
         }).join("") + "</div>";
     }
 
-    return '<tr class="breakdown"><td colspan="8"><div class="breakdown-inner">' + notes +
+    return '<tr class="breakdown"><td colspan="7"><div class="breakdown-inner">' + notes +
       '<div class="side-title">Held in ' + e.count + " model" + (e.count === 1 ? "" : "s") + "</div>" +
       '<div class="wgrid">' + cells + "</div>" +
       "</div></td></tr>";
@@ -2629,16 +2570,14 @@
     var all = fundRegister(view.fundPlatform);
 
     var shown = visiblePortfolios();
-    var withNotes = all.filter(function (e) { return e.notes && e.notes.length; }).length;
 
     var head = '<div class="panel-head"><h2>Funds (' + all.length + ")</h2>" +
       '<button class="btn btn-ghost" data-act="export-funds"' + (all.length ? "" : " disabled") + ">" +
       icon("down") + " Export register</button></div>" +
       '<p class="blurb">Every distinct fund in the latest allocation of the ' + shown.length +
       " model portfolio" + (shown.length === 1 ? "" : "s") + " under Portfolios. " +
-      "Manager notes link straight to the research folder on the shared drive (" +
-      withNotes + " of " + all.length + " funds have notes filed). " +
-      "Click a fund name to open its research page, or anywhere else on the row " +
+      "Click a fund name to open its research page - live Morningstar performance and Sharpe ratio, " +
+      "plus the manager meeting notes filed for it - or anywhere else on the row " +
       "to see which models hold it and at what weight.</p>";
 
     if (!all.length) {
@@ -2682,7 +2621,6 @@
       var tr = '<tr class="fundrow" data-fund="' + esc(e.key) + '" aria-expanded="' + open + '">' +
         '<td class="fundname"><button class="fundlink" data-fundpage="' + esc(e.key) +
         '" data-tip="Open the fund research page">' + esc(e.fund) + "</button></td>" +
-        '<td class="notescell">' + notesCell(e) + "</td>" +
         '<td class="isin">' + esc(e.isin || "-") + "</td>" +
         '<td><span class="legend-item"><span class="swatch" style="background:' + classColour(e.asset) + '"></span>' +
         esc(e.asset) + "</span>" +
@@ -2699,7 +2637,7 @@
     return head + toolbar +
       '<div class="box"><div class="tablewrap"><table>' +
       '<caption class="sr">Fund register across all model portfolios</caption>' +
-      "<thead><tr><th>Fund name</th><th>Manager notes</th><th>ISIN</th><th>Asset class</th>" +
+      "<thead><tr><th>Fund name</th><th>ISIN</th><th>Asset class</th>" +
       '<th class="num">Models</th><th>Ranges</th>' +
       '<th class="num">Min</th><th class="num">Max</th></tr></thead>' +
       "<tbody>" + body + "</tbody></table></div></div>";
@@ -2725,27 +2663,177 @@
       '<span class="fact-menu" aria-hidden="true">&#9776;</span></div>';
   }
 
-  // Deterministic per-fund placeholder line until FE Analytics data is wired in.
-  function sparkSvg(key, variant) {
-    var seed = variant * 7919;
-    for (var i = 0; i < key.length; i++) seed = (seed * 31 + key.charCodeAt(i)) & 0x7fffffff;
-    function rnd() { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed / 0x7fffffff; }
-    var pts = [], n = 14;
-    for (var j = 0; j < n; j++) {
-      var x = 10 + (j / (n - 1)) * 84;
-      var y = 76 - (j / (n - 1)) * 46 + (rnd() * 22 - 11);
-      pts.push(x.toFixed(1) + "," + Math.max(14, Math.min(86, y)).toFixed(1));
-    }
-    return '<svg class="sparkline" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">' +
-      '<path d="M10 8 V90 H94" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>' +
-      '<polyline points="' + pts.join(" ") + '" fill="none" stroke="currentColor" stroke-width="2.5" ' +
-      'stroke-linejoin="round" stroke-linecap="round"/></svg>';
+  // ---------- Morningstar live data ----------
+  // Fetched straight from Morningstar's public screener API when a fund's
+  // research page opens (the endpoint allows cross-origin reads, so this works
+  // even with the dashboard opened as a local file). Results are cached in
+  // this browser so revisits paint instantly, then refreshed in the background
+  // once older than MS_TTL.
+
+  var MS_URL = "https://lt.morningstar.com/api/rest.svc/klr5zyak8x/security/screener";
+  var MS_FIELDS = "SecId|Name|ISIN|Universe|ClosePrice|PriceCurrency|GBRReturnM0|GBRReturnM3|GBRReturnM6|" +
+    "GBRReturnM12|GBRReturnM36|GBRReturnM60|SharpeM12|SharpeM36|SharpeM60|StandardDeviationM36|" +
+    "OngoingCharge|Yield_M12|CategoryName";
+  var MS_KEY = "lumin.mstar.v1";
+  var MS_TTL = 12 * 60 * 60 * 1000;
+
+  var msCache = {};
+  try { msCache = JSON.parse(localStorage.getItem(MS_KEY)) || {}; } catch (e0) { msCache = {}; }
+  var msInflight = {};
+  var msFailed = {};   // isin -> true after a failed fetch; cleared by Retry
+
+  function msSaveCache() {
+    try { localStorage.setItem(MS_KEY, JSON.stringify(msCache)); } catch (e) { /* quota */ }
   }
 
-  function chartBox(title, key, variant) {
-    return '<div class="box"><div class="box-head"><h3>' + title + "</h3>" +
-      srctag("srctag-fe", "FE Analytics") + "</div>" +
-      '<div class="box-body">' + sparkSvg(key, variant) + "</div></div>";
+  // ETFs come back once per exchange listing - prefer London, then a GBP line.
+  function msPickRow(rows, isin) {
+    var match = (rows || []).filter(function (r) { return (r.ISIN || "").toUpperCase() === isin; });
+    if (!match.length) return null;
+    var xlon = match.filter(function (r) { return /XLON/.test(r.Universe || ""); })[0];
+    var gbp = match.filter(function (r) { return /^GB/.test(r.PriceCurrency || ""); })[0];
+    return xlon || gbp || match[0];
+  }
+
+  function fetchMstar(isin) {
+    if (msInflight[isin]) return msInflight[isin];
+    var url = MS_URL + "?page=1&pageSize=10&outputType=json&version=1&languageId=en-GB&currencyId=GBP" +
+      "&securityDataPoints=" + encodeURIComponent(MS_FIELDS) + "&term=" + encodeURIComponent(isin);
+    var req = fetch(url)
+      .then(function (r) {
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        return r.json();
+      })
+      .then(function (js) {
+        msCache[isin] = { at: Date.now(), row: msPickRow(js.rows, isin) };
+        delete msFailed[isin];
+        delete msInflight[isin];
+        msSaveCache();
+        return msCache[isin];
+      })
+      .catch(function (err) {
+        delete msInflight[isin];
+        msFailed[isin] = true;
+        throw err;
+      });
+    msInflight[isin] = req;
+    return req;
+  }
+
+  // Kick a (re)fetch for the open fund page, repainting the chart boxes when
+  // it lands. A fresh cache entry is left alone; a stale one still paints
+  // immediately and quietly updates behind the reader.
+  function ensureMstar(e) {
+    if (!e.isin) return;
+    var isin = e.isin.toUpperCase();
+    var c = msCache[isin];
+    if (c && Date.now() - c.at < MS_TTL) return;
+    if (msInflight[isin] || msFailed[isin]) return;
+    function repaint() {
+      if (view.tab !== "funds" || view.fundPage !== e.key) return;
+      var host = document.getElementById("msBoxes");
+      if (host) host.innerHTML = msBoxes(e);
+    }
+    fetchMstar(isin).then(repaint, repaint);
+  }
+
+  function msNum(v) {
+    return typeof v === "number" && isFinite(v) ? v : null;
+  }
+
+  // Bar chart around a zero line. Null values (fund too young for the period)
+  // show as a grey n/a in their slot rather than dropping the slot.
+  function msBarChart(items, pct) {
+    var W = 420, H = 190, top = 26, bottom = 34;
+    var plotH = H - top - bottom;
+    var vals = items.map(function (it) { return it.v; }).filter(function (v) { return v != null; });
+    if (!vals.length) return "";
+    var max = Math.max(0, Math.max.apply(null, vals));
+    var min = Math.min(0, Math.min.apply(null, vals));
+    var span = (max - min) || 1;
+    var y0 = top + (max / span) * plotH;
+    var slot = W / items.length;
+    var barW = Math.min(46, slot * 0.52);
+
+    var svg = '<svg class="mschart" viewBox="0 0 ' + W + " " + H + '" role="img">' +
+      '<line x1="0" y1="' + y0.toFixed(1) + '" x2="' + W + '" y2="' + y0.toFixed(1) +
+      '" stroke="var(--line-strong)" stroke-width="1"/>';
+    items.forEach(function (it, i) {
+      var cx = (slot * i + slot / 2).toFixed(1);
+      if (it.v == null) {
+        svg += '<text x="' + cx + '" y="' + (y0 - 7).toFixed(1) + '" text-anchor="middle" class="ms-na">n/a</text>';
+      } else {
+        var h = Math.abs(it.v) / span * plotH;
+        var y = it.v >= 0 ? y0 - h : y0;
+        svg += '<rect x="' + (slot * i + slot / 2 - barW / 2).toFixed(1) + '" y="' + y.toFixed(1) +
+          '" width="' + barW.toFixed(1) + '" height="' + Math.max(h, 1.5).toFixed(1) + '" rx="3" fill="' +
+          (it.v >= 0 ? "var(--good)" : "var(--crit)") + '"/>' +
+          '<text x="' + cx + '" y="' + (it.v >= 0 ? y - 7 : y + h + 15).toFixed(1) +
+          '" text-anchor="middle" class="ms-val">' +
+          (it.v > 0 && pct ? "+" : "") + it.v.toFixed(pct ? 1 : 2) + (pct ? "%" : "") + "</text>";
+      }
+      svg += '<text x="' + cx + '" y="' + (H - 10) + '" text-anchor="middle" class="ms-lab">' + it.label + "</text>";
+    });
+    return svg + "</svg>";
+  }
+
+  // The Performance and Sharpe ratio boxes for a fund page, in whatever state
+  // the Morningstar lookup is in: loading, failed, not covered, or charted.
+  function msBoxes(e) {
+    var isin = (e.isin || "").toUpperCase();
+
+    function box(title, body, headExtra) {
+      return '<div class="box"><div class="box-head"><h3>' + title + "</h3>" + (headExtra || "") +
+        srctag("srctag-ms", "Morningstar") + '</div><div class="box-body">' + body + "</div></div>";
+    }
+    function both(body) {
+      return box("Performance", body) + box("Sharpe ratio", body);
+    }
+
+    if (!isin) {
+      return both('<span class="ms-foot">No ISIN on this line, so there is nothing to look up.</span>');
+    }
+    if (msFailed[isin] && !msCache[isin]) {
+      return both('<span class="ms-foot">Could not reach Morningstar - check the connection.</span> ' +
+        '<button class="btn btn-ghost btn-sm" data-act="ms-retry" data-isin="' + esc(isin) + '">Retry</button>');
+    }
+    var c = msCache[isin];
+    if (!c) {
+      return both('<span class="ms-foot">Fetching live Morningstar data&hellip;</span>');
+    }
+    if (!c.row) {
+      return both('<span class="ms-foot">Morningstar has no entry under ' + esc(isin) + ".</span>");
+    }
+
+    var r = c.row;
+    var asof = '<span class="ms-asof">as at ' + esc(fmtDate(new Date(c.at).toISOString().slice(0, 10))) + "</span>";
+
+    var perf = msBarChart([
+      { label: "YTD", v: msNum(r.GBRReturnM0) },
+      { label: "3m", v: msNum(r.GBRReturnM3) },
+      { label: "6m", v: msNum(r.GBRReturnM6) },
+      { label: "1y", v: msNum(r.GBRReturnM12) },
+      { label: "3y pa", v: msNum(r.GBRReturnM36) },
+      { label: "5y pa", v: msNum(r.GBRReturnM60) }
+    ], true);
+    var perfFoot = '<div class="ms-foot">Total return in GBP to the latest Morningstar close; 3y and 5y annualised. ' +
+      'Matched &ldquo;' + esc(r.Name || "") + "&rdquo;" +
+      (r.CategoryName ? " (" + esc(r.CategoryName) + ")" : "") + "." +
+      (msNum(r.OngoingCharge) != null ? " OCF " + r.OngoingCharge.toFixed(2) + "%." : "") +
+      (msNum(r.Yield_M12) != null ? " Yield " + r.Yield_M12.toFixed(2) + "%." : "") + "</div>";
+
+    var sharpe = msBarChart([
+      { label: "1y", v: msNum(r.SharpeM12) },
+      { label: "3y", v: msNum(r.SharpeM36) },
+      { label: "5y", v: msNum(r.SharpeM60) }
+    ], false);
+    var sharpeFoot = '<div class="ms-foot">Risk-adjusted return - higher is better, above 1 is strong.' +
+      (msNum(r.StandardDeviationM36) != null
+        ? " 3y volatility (std dev) " + r.StandardDeviationM36.toFixed(2) + "%."
+        : "") + "</div>";
+
+    return box("Performance", (perf || '<span class="ms-foot">No return history published.</span>') + perfFoot, asof) +
+      box("Sharpe ratio", (sharpe || '<span class="ms-foot">No Sharpe history published.</span>') + sharpeFoot, asof);
   }
 
   function renderDdqBox() {
@@ -2833,7 +2921,7 @@
 
     return crumb + facts +
       '<div class="fundgrid">' +
-      '<div class="fundcol">' + summary + chartBox("Sharpe ratio", e.key, 1) + chartBox("Performance", e.key, 2) + "</div>" +
+      '<div class="fundcol">' + summary + '<div class="ms-wrap" id="msBoxes">' + msBoxes(e) + "</div></div>" +
       '<div class="fundcol">' + macro + renderDdqBox() + notesBox + "</div>" +
       "</div>";
   }
@@ -3391,13 +3479,20 @@
     return ev.start + (ev.end ? "-" + ev.end : "");
   }
 
+  function evtAtts(ev) {
+    return ev.atts && ev.atts.length ? ev.atts.length : 0;
+  }
+
   function evtPill(ev) {
     var t = evtType(ev.type);
+    var nAtt = evtAtts(ev);
     var tipText = t.label + (ev.start ? " - " + evtTime(ev) : "") +
-      (ev.who ? " - " + ev.who : "") + (ev.note ? " - " + ev.note : "");
+      (ev.who ? " - " + ev.who : "") + (ev.note ? " - " + ev.note : "") +
+      (nAtt ? " - " + nAtt + " attachment" + (nAtt === 1 ? "" : "s") : "");
     return '<button class="cal-evt evt-' + t.key + '" data-evt="' + ev.id + '" data-tip="' + esc(tipText) + '">' +
       (ev.start ? '<span class="hm">' + esc(ev.start) + "</span>" : "") +
       '<span class="t">' + esc(ev.title) + "</span>" +
+      (nAtt ? '<span class="clip">' + icon("clip", 10) + "</span>" : "") +
       (ev.who ? '<span class="who">' + esc(ev.who) + "</span>" : "") +
       "</button>";
   }
@@ -3479,6 +3574,7 @@
           '<span class="up-time">' + esc(evtTime(ev) || "all day") + "</span>" +
           '<span class="tag tag-' + t.key + '"><span class="swatch" style="background:var(' + t.varname + ')"></span>' + t.label + "</span>" +
           '<span class="up-title">' + esc(ev.title) + (ev.note ? ' <span style="color:var(--ink-3);font-weight:400">- ' + esc(ev.note) + "</span>" : "") + "</span>" +
+          (evtAtts(ev) ? '<span class="up-att" data-tip="' + evtAtts(ev) + ' attachment' + (evtAtts(ev) === 1 ? "" : "s") + '">' + icon("clip", 11) + evtAtts(ev) + "</span>" : "") +
           (ev.who ? '<span class="up-who">' + esc(ev.who) + "</span>" : "") +
           "</button>";
       }).join("") + "</div>";
@@ -3488,8 +3584,30 @@
     return head + toolbar + grid + upHtml;
   }
 
+  // Attachments being edited while the event dialog is open. Existing entries
+  // arrive as stored metadata; freshly picked files sit here as a Blob (folder
+  // connected) or data URL (browser-only) until Save commits them.
+  var pendingEventAtts = [];
+
+  function paintEventAtts() {
+    var host = document.getElementById("eAttList");
+    host.style.display = pendingEventAtts.length ? "" : "none";
+    host.innerHTML = pendingEventAtts.map(function (a, i) {
+      return '<div class="att-chip">' + icon("clip", 12) +
+        '<button type="button" class="att-name" data-attdl="' + i + '" data-tip="Download ' + esc(a.name) + '">' +
+        esc(a.name) + "</button>" +
+        '<span class="att-size">' + fmtSize(a.size || 0) + "</span>" +
+        '<button type="button" class="att-rm" data-attrm="' + i + '" aria-label="Remove attachment">&times;</button></div>';
+    }).join("");
+  }
+
   function openEventDlg(ev, dateIso) {
     view.editEvent = ev ? ev.id : null;
+    pendingEventAtts = ev && ev.atts ? ev.atts.slice() : [];
+    document.getElementById("eFileHint").textContent = dirHandle
+      ? "Files up to 25 MB each are saved into the workspace folder's attachments."
+      : "Files up to 2.5 MB each are stored in this browser - link larger decks under Details.";
+    paintEventAtts();
     document.getElementById("eHeading").textContent = ev ? "Edit calendar entry" : "New calendar entry";
     document.getElementById("eTitle").value = ev ? ev.title : "";
     document.getElementById("eDate").value = ev ? ev.date : (dateIso || todayIso());
@@ -3517,6 +3635,7 @@
         ? fundRegister().filter(function (x) { return x.key === view.fundPage; })[0] || null
         : null;
       main.innerHTML = fp ? renderFundPage(fp) : renderFunds();
+      if (fp) ensureMstar(fp);
       if (!fp) restoreSearchFocus();
       return;
     }
@@ -3688,7 +3807,7 @@
   document.getElementById("sidebarNav").addEventListener("click", function (e) {
     var fan = e.target.closest("[data-fan]");
     if (fan) {
-      view.contentOpen = fan.getAttribute("aria-expanded") !== "true";
+      view.navOpen[fan.getAttribute("data-fan")] = fan.getAttribute("aria-expanded") !== "true";
       renderNav();
       return;
     }
@@ -3700,31 +3819,6 @@
     view.fundPage = null;
     view.openFolder = null;
     render();
-  });
-
-  // ---------- light / dark mode ----------
-
-  var THEME_KEY = KEY + ".theme";
-
-  function currentTheme() {
-    var t = document.documentElement.getAttribute("data-theme");
-    if (t === "dark" || t === "light") return t;
-    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-  }
-
-  function paintThemeBtn() {
-    var btn = document.getElementById("themeBtn");
-    var next = currentTheme() === "dark" ? "light" : "dark";
-    btn.innerHTML = icon(next === "dark" ? "moon" : "sun");
-    btn.setAttribute("aria-label", "Switch to " + next + " mode");
-    btn.setAttribute("data-tip", "Switch to " + next + " mode");
-  }
-
-  document.getElementById("themeBtn").addEventListener("click", function () {
-    var next = currentTheme() === "dark" ? "light" : "dark";
-    document.documentElement.setAttribute("data-theme", next);
-    try { localStorage.setItem(THEME_KEY, next); } catch (e) { /* private mode - not persisted */ }
-    paintThemeBtn();
   });
 
   document.getElementById("refreshBtn").addEventListener("click", function () {
@@ -3761,17 +3855,6 @@
     if (dl) {
       var doc = findContentEntry(dl.getAttribute("data-dl"));
       if (doc && doc.file) downloadContentFile(doc.file);
-      return;
-    }
-
-    // notes link on a fund row: jump to Meeting Notes with that fund pinned at the top
-    var gotoNotes = e.target.closest("[data-goto-notes]");
-    if (gotoNotes) {
-      view.tab = "meetings";
-      view.meetingsFund = gotoNotes.getAttribute("data-goto-notes");
-      view.armed = null;
-      render();
-      window.scrollTo(0, 0);
       return;
     }
 
@@ -3849,6 +3932,11 @@
       document.getElementById("portfolioDlg").showModal();
     } else if (act === "back-funds") {
       view.fundPage = null; render();
+    } else if (act === "ms-retry") {
+      var isin0 = actEl.getAttribute("data-isin");
+      delete msFailed[isin0];
+      delete msCache[isin0];
+      render();
     } else if (act === "back") {
       view.openId = null; view.openSnap = null; view.compare = []; view.armed = null; render();
     } else if (act === "add-rebalance") {
@@ -4078,6 +4166,51 @@
 
   // calendar entry dialog
 
+  document.getElementById("eFile").addEventListener("change", function (e) {
+    var files = Array.prototype.slice.call(e.target.files || []);
+    e.target.value = "";
+    files.forEach(function (file) {
+      if (file.size > (dirHandle ? FOLDER_FILE_LIMIT : CONTENT_FILE_LIMIT)) {
+        toast(file.name + " is " + fmtSize(file.size) + " - too large to attach. Link it under Details instead.");
+        return;
+      }
+      if (dirHandle) {
+        // connected: keep the raw blob and write it to attachments/ on save
+        pendingEventAtts.push({ name: file.name, type: file.type, size: file.size, blob: file });
+        paintEventAtts();
+        return;
+      }
+      var reader = new FileReader();
+      reader.onload = function () {
+        pendingEventAtts.push({ name: file.name, type: file.type, size: file.size, data: String(reader.result) });
+        paintEventAtts();
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+
+  document.getElementById("eAttList").addEventListener("click", function (e) {
+    var dl = e.target.closest("[data-attdl]");
+    if (dl) {
+      var a = pendingEventAtts[Number(dl.getAttribute("data-attdl"))];
+      if (!a) return;
+      if (a.blob) {
+        // picked this session and not saved yet - hand the blob straight back
+        var u = URL.createObjectURL(a.blob);
+        triggerDownload(u, a.name);
+        setTimeout(function () { URL.revokeObjectURL(u); }, 4000);
+        return;
+      }
+      downloadContentFile(a);
+      return;
+    }
+    var rm = e.target.closest("[data-attrm]");
+    if (rm) {
+      pendingEventAtts.splice(Number(rm.getAttribute("data-attrm")), 1);
+      paintEventAtts();
+    }
+  });
+
   document.getElementById("eDelete").addEventListener("click", function () {
     var btn = this;
     if (btn.textContent !== "Confirm delete") {
@@ -4107,8 +4240,15 @@
       start: document.getElementById("eStart").value,
       end: document.getElementById("eEnd").value,
       who: document.getElementById("eWho").value.trim().toUpperCase(),
-      note: document.getElementById("eNote").value.trim()
+      note: document.getElementById("eNote").value.trim(),
+      atts: pendingEventAtts.map(function (a) {
+        if (!a.blob) return a;   // existing attachment or browser-stored data URL
+        var stored = uid() + "__" + safeName(a.name);
+        pendingFiles[stored] = a.blob;
+        return { name: a.name, type: a.type, size: a.size, stored: stored };
+      })
     };
+    pendingEventAtts = [];
     if (entry.end && entry.start && entry.end < entry.start) {
       var swap = entry.start; entry.start = entry.end; entry.end = swap;
     }
@@ -4334,7 +4474,6 @@
 
   loadState();
   document.getElementById("initials").value = state.initials;
-  paintThemeBtn();
   paintScopePill();
   renderFootnote();
   render();
