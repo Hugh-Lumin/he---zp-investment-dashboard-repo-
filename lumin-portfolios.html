@@ -446,25 +446,32 @@
   .fundname { font-weight: 550; }
   .ranges { display: flex; gap: 4px; flex-wrap: wrap; }
 
-  .minibar {
-    position: relative; height: 8px; min-width: 110px;
-    background: var(--surface-2); border-radius: 2px; overflow: hidden;
-  }
-  .minibar i {
-    position: absolute; top: 0; bottom: 0;
-    background: color-mix(in srgb, var(--accent) 45%, transparent);
-  }
-  .minibar b {
-    position: absolute; top: -2px; bottom: -2px; width: 2px;
-    background: var(--accent);
-  }
+  /* ---------- rebalance comparison ---------- */
 
-  .notescell a {
+  .snap-cmp {
+    flex: none; width: 16px; height: 16px; border-radius: 4px;
+    border: 1px solid var(--line-strong); background: var(--surface);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 11px; line-height: 1; color: transparent;
+    align-self: center;
+  }
+  .snapitem:hover .snap-cmp { border-color: var(--accent); }
+  .snap-cmp[data-on="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  .diff-up { color: var(--good); }
+  .diff-dn { color: var(--crit); }
+  .diff-0 { color: var(--ink-3); }
+
+  .notescell a, .notescell .noteslink {
     display: inline-flex; align-items: center; gap: 5px;
     color: var(--accent); text-decoration: none;
     font-size: 12.5px; white-space: nowrap;
+    background: none; border: none; padding: 0; cursor: pointer; font-family: inherit;
   }
-  .notescell a:hover { text-decoration: underline; }
+  .notescell a:hover, .notescell .noteslink:hover { text-decoration: underline; }
+
+  .notes-focus { margin-bottom: 20px; border-color: var(--accent); }
+  .notes-focus .box-head { background: var(--accent-soft); }
   .notescell svg { flex: none; opacity: .8; }
   .notes-n {
     font-size: 11px; font-weight: 650; color: var(--ink-3);
@@ -498,6 +505,52 @@
   .note-warn { background: var(--warn-soft); border-color: color-mix(in srgb, var(--warn) 30%, transparent); color: var(--ink); }
   .note-info { background: var(--surface-2); border-color: var(--line); color: var(--ink-2); }
 
+  /* ---------- fund page ---------- */
+
+  .factrow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 18px; }
+  @media (max-width: 860px) { .factrow { grid-template-columns: 1fr; } }
+  .fact {
+    border: 1.5px solid var(--accent);
+    border-radius: 10px;
+    background: var(--surface);
+    padding: 11px 14px;
+    display: flex; align-items: center; gap: 12px;
+    box-shadow: var(--shadow);
+  }
+  .fact-label {
+    font-size: 10.5px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .08em;
+    color: var(--ink-3); margin-bottom: 2px;
+  }
+  .fact-value { font-size: 14.5px; font-weight: 650; letter-spacing: -.01em; min-width: 0; }
+  .fact-sub { display: block; font-size: 11.5px; font-weight: 500; color: var(--ink-3); }
+  .fact-menu { margin-left: auto; color: var(--accent); font-size: 15px; flex: none; }
+
+  .fundgrid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 16px; align-items: start; }
+  @media (max-width: 1000px) { .fundgrid { grid-template-columns: 1fr; } }
+  .fundcol { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+
+  .srctag {
+    margin-left: auto; flex: none;
+    font-size: 10.5px; font-weight: 700; letter-spacing: .02em;
+    padding: 3px 9px; border-radius: 4px; white-space: nowrap;
+  }
+  .srctag-sp { background: var(--nav-bg); color: #fff; }
+  .srctag-fe { background: #A9D18E; color: #16202B; }
+  .srctag-ft { background: #F4B183; color: #16202B; }
+
+  .bullets { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 7px; font-size: 13px; }
+  .bullets ul { margin: 6px 0 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; color: var(--ink-2); }
+
+  .sparkline { width: 100%; height: 170px; color: var(--ink); display: block; }
+
+  .fundlink {
+    background: none; border: none; padding: 0; cursor: pointer;
+    font: inherit; font-weight: 550; color: var(--accent); text-align: left;
+  }
+  .fundlink:hover { text-decoration: underline; }
+  .region-sub { font-size: 11.5px; color: var(--ink-3); }
+
   /* ---------- calendar ---------- */
 
   .cal-toolbar {
@@ -519,40 +572,38 @@
   .tag-event { color: var(--c-dv); border-color: color-mix(in srgb, var(--c-dv) 40%, transparent); background: color-mix(in srgb, var(--c-dv) 10%, transparent); }
   .tag-internal { color: var(--c-fi); border-color: color-mix(in srgb, var(--c-fi) 40%, transparent); background: color-mix(in srgb, var(--c-fi) 10%, transparent); }
   .tag-external { color: var(--c-eq); border-color: color-mix(in srgb, var(--c-eq) 40%, transparent); background: color-mix(in srgb, var(--c-eq) 10%, transparent); }
+  .tag-other { color: var(--c-ca); border-color: color-mix(in srgb, var(--c-ca) 40%, transparent); background: color-mix(in srgb, var(--c-ca) 10%, transparent); }
 
   .cal-grid {
-    display: grid; grid-template-columns: repeat(7, 1fr);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    overflow: hidden;
-    background: var(--line);
-    gap: 1px;
-    box-shadow: var(--shadow);
+    display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 8px;
   }
   .cal-dow {
-    background: var(--surface-2);
-    padding: 7px 10px;
     font-size: 11px; font-weight: 700;
     text-transform: uppercase; letter-spacing: .1em;
-    color: var(--ink-3);
+    color: var(--ink-3); padding: 0 7px;
   }
   .cal-cell {
     background: var(--surface);
-    min-height: 108px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    box-shadow: var(--shadow);
+    height: 140px;
+    min-width: 0;
     padding: 6px 6px 8px;
     display: flex; flex-direction: column; gap: 4px;
+    overflow: hidden;
     cursor: pointer;
-    text-align: left; border: none; font: inherit; color: inherit;
+    text-align: left; font: inherit; color: inherit;
   }
-  .cal-cell:hover { background: var(--accent-soft); }
-  .cal-cell.cal-out { background: var(--ground); }
-  .cal-cell.cal-out .cal-num { color: var(--ink-3); opacity: .6; }
-  .cal-cell.cal-wkend:not(.cal-out) { background: color-mix(in srgb, var(--surface-2) 55%, var(--surface)); }
+  .cal-cell[data-day]:hover { background: var(--accent-soft); border-color: var(--line-strong); }
+  .cal-cell.cal-blank { background: none; border: none; box-shadow: none; cursor: default; }
   .cal-num {
     font-size: 12px; font-weight: 600; color: var(--ink-2);
     font-variant-numeric: tabular-nums;
     align-self: flex-start;
     padding: 1px 6px; border-radius: 999px;
+    white-space: nowrap;
   }
   .cal-cell.cal-today .cal-num { background: var(--accent); color: #fff; }
 
@@ -572,6 +623,7 @@
   .evt-event { color: var(--c-dv); border-color: color-mix(in srgb, var(--c-dv) 45%, transparent); background: color-mix(in srgb, var(--c-dv) 12%, transparent); }
   .evt-internal { color: var(--c-fi); border-color: color-mix(in srgb, var(--c-fi) 45%, transparent); background: color-mix(in srgb, var(--c-fi) 12%, transparent); }
   .evt-external { color: var(--c-eq); border-color: color-mix(in srgb, var(--c-eq) 45%, transparent); background: color-mix(in srgb, var(--c-eq) 12%, transparent); }
+  .evt-other { color: var(--c-ca); border-color: color-mix(in srgb, var(--c-ca) 45%, transparent); background: color-mix(in srgb, var(--c-ca) 12%, transparent); }
   .cal-more { font-size: 11px; color: var(--ink-3); padding: 0 7px; }
 
   .cal-upcoming { margin-top: 26px; }
@@ -603,9 +655,10 @@
   .typepick label:has(input:checked).tp-event { color: var(--c-dv); background: color-mix(in srgb, var(--c-dv) 10%, transparent); }
   .typepick label:has(input:checked).tp-internal { color: var(--c-fi); background: color-mix(in srgb, var(--c-fi) 10%, transparent); }
   .typepick label:has(input:checked).tp-external { color: var(--c-eq); background: color-mix(in srgb, var(--c-eq) 10%, transparent); }
+  .typepick label:has(input:checked).tp-other { color: var(--c-ca); background: color-mix(in srgb, var(--c-ca) 10%, transparent); }
 
   @media (max-width: 900px) {
-    .cal-cell { min-height: 74px; }
+    .cal-cell { height: 88px; }
     .cal-evt .who, .cal-evt .hm { display: none; }
   }
 
@@ -809,6 +862,7 @@
           <label class="tp-event"><input type="radio" name="eType" value="event"><span class="swatch" style="background:var(--c-dv);border-radius:50%"></span>Conference</label>
           <label class="tp-internal"><input type="radio" name="eType" value="internal" checked><span class="swatch" style="background:var(--c-fi);border-radius:50%"></span>Sales catchup</label>
           <label class="tp-external"><input type="radio" name="eType" value="external"><span class="swatch" style="background:var(--c-eq);border-radius:50%"></span>Manager meeting</label>
+          <label class="tp-other"><input type="radio" name="eType" value="other"><span class="swatch" style="background:var(--c-ca);border-radius:50%"></span>Other</label>
         </div>
       </div>
       <div class="fieldset">
@@ -1432,17 +1486,29 @@
   var state = { portfolios: [], initials: "", removed: [], events: [] };
   var view = {
     tab: "portfolios",
-    openId: null, openSnap: null, armed: null,
-    fundQuery: "", fundClass: "", openFund: null,
+    openId: null, openSnap: null, armed: null, compare: [],
+    fundQuery: "", fundClass: "", fundRegion: "", openFund: null, fundPage: null,
     calY: new Date().getFullYear(), calM: new Date().getMonth(),
-    editEvent: null
+    editEvent: null, meetingsFund: null
   };
+
+  // Team events entered by HE on 11 Aug 2026, recovered from the original
+  // working copy. Applied only on a first open (no saved state yet) so that
+  // later edits and deletions are never overridden.
+  var SEED_EVENTS = [
+    { id: "msojknse7f3nk", type: "other", title: "Fidelity and Lumin Wealth Breakfast meeting", date: "2026-08-19", start: "08:30", end: "09:30", who: "SR", note: "" },
+    { id: "msojnw5yjzrrs", type: "external", title: "Lunch: Lumin/Cohen & Steers", date: "2026-09-10", start: "12:30", end: "13:30", who: "MF, EF, JD, SR", note: "" },
+    { id: "msojosh6hbykm", type: "event", title: "Guinness Annual Conference", date: "2026-09-15", start: "09:00", end: "13:00", who: "SR", note: "" },
+    { id: "msojpy10haux2", type: "external", title: "HSBC Asset Management", date: "2026-10-15", start: "08:45", end: "10:15", who: "SR", note: "" }
+  ];
 
   function loadState() {
     var saved = { portfolios: [], initials: "", removed: [], events: [] };
+    var firstOpen = true;
     try {
       var raw = localStorage.getItem(KEY);
       if (raw) {
+        firstOpen = false;
         var parsed = JSON.parse(raw);
         if (Array.isArray(parsed.portfolios)) saved.portfolios = parsed.portfolios;
         if (typeof parsed.initials === "string") saved.initials = parsed.initials;
@@ -1455,7 +1521,7 @@
 
     state.initials = saved.initials;
     state.removed = saved.removed;
-    state.events = saved.events;
+    state.events = firstOpen ? SEED_EVENTS.slice() : saved.events;
 
     // Seeded models come from SEED_* every time; only user edits were persisted.
     var seeded = hydrateSeed().filter(function (p) {
@@ -1496,6 +1562,17 @@
       });
       return false;
     });
+
+    state.portfolios.forEach(dedupeSnapshots);
+  }
+
+  // One snapshot per date in each portfolio's rebalance history. The last entry
+  // for a date wins - user snapshots sit after the seeded ones, so a user-added
+  // rebalance on an existing date acts as a correction, not a duplicate.
+  function dedupeSnapshots(p) {
+    var byDate = {};
+    p.snapshots.forEach(function (s) { byDate[s.date] = s; });
+    p.snapshots = p.snapshots.filter(function (s) { return byDate[s.date] === s; });
   }
 
   // Writes user data only. The seeded models are far larger than the localStorage
@@ -1544,6 +1621,19 @@
 
   function sumWeights(rows) {
     return rows.reduce(function (a, r) { return a + r.weight; }, 0);
+  }
+
+  // Equities, then Fixed Interest, then Diversifiers (Cash and Unclassified after),
+  // and by weight, largest first, within each class.
+  function classRank(asset) {
+    var i = CLASS_KEYS.indexOf(asset);
+    return i < 0 ? CLASS_KEYS.length : i;
+  }
+
+  function sortRows(rows) {
+    return rows.slice().sort(function (a, b) {
+      return classRank(a.asset) - classRank(b.asset) || b.weight - a.weight;
+    });
   }
 
   // ---------- charts ----------
@@ -1665,7 +1755,7 @@
 
   function renderNav() {
     // Portfolios and Funds carry a live count; the unbuilt sections have nothing to count yet.
-    var counts = { portfolios: visiblePortfolios().length, funds: fundRegister().length, calendar: state.events.length };
+    var counts = { portfolios: visiblePortfolios().length, funds: fundRegister().length, calendar: state.events.length, meetings: meetingFolders().length, ddqs: DDQ_TEMPLATES.length };
 
     document.getElementById("sidebarNav").innerHTML = NAV.map(function (g) {
       return '<div class="navgroup"><div class="navgroup-title">' + esc(g.group) + "</div>" +
@@ -1687,8 +1777,8 @@
       "The Lumin models were extracted from the investment team's Model Portfolio Analysis workbook (V4.3.11): " +
       "one model per range and risk level, with every dated rebalance sheet it holds. They are a point-in-time copy, so check " +
       "against the workbook before relying on them, and treat any snapshot flagged as not totalling 100% as suspect. " +
-      "Manager notes open the research folder on the OneDrive shared drive and only work when this page is opened " +
-      "from disk in the same Windows session. " +
+      "Manager notes open the Research / Manager Meeting Notes folder on the Investment Team SharePoint site " +
+      "and need the reader to be signed in with access to that site. " +
       "AI-generated content must be reviewed by a qualified individual before informing any regulated activity or client communication.";
   }
 
@@ -1816,44 +1906,109 @@
       e.holdings.forEach(function (h) {
         if (e.ranges.indexOf(h.range) < 0) e.ranges.push(h.range);
       });
+      e.region = e.asset === "Equities" ? fundRegion(e.fund) : null;
       return e;
     }).sort(function (a, b) {
-      return b.count - a.count || b.avg - a.avg || a.fund.localeCompare(b.fund);
+      // Equities, then Fixed Interest, then Diversifiers; highest weight first within each class.
+      return classRank(a.asset) - classRank(b.asset) || b.max - a.max || a.fund.localeCompare(b.fund);
     });
+  }
+
+  // Equity region, inferred from the fund name. Order matters: "Global Emerging
+  // Markets" must land on EM, "Developed Europe ex-U.K." on Europe, and
+  // "MSCI World ex USA" on Global, before the UK/US catch-alls get a look.
+  var EQ_REGIONS = ["UK", "US", "Europe ex-UK", "Japan", "Asia Pacific", "Emerging Markets", "Global"];
+
+  function fundRegion(name) {
+    var s = String(name || "").toLowerCase();
+    if (/emerging|\bem\b/.test(s)) return "Emerging Markets";
+    if (/pacific|\basia\b/.test(s)) return "Asia Pacific";
+    if (/japan/.test(s)) return "Japan";
+    if (/europe/.test(s)) return "Europe ex-UK";
+    if (/global|world|all[- ]country/.test(s)) return "Global";
+    if (/\bus\b|u\.s\.|\busa\b|s&p 500|american?\b/.test(s)) return "US";
+    if (/\buk\b|u\.k\.|united kingdom|ftse (100|250|all)|woodford|undervalued assets|income maximiser/.test(s)) return "UK";
+    return "Global";
   }
 
   function filterFunds(list) {
     var q = view.fundQuery.trim().toLowerCase();
     return list.filter(function (e) {
       if (view.fundClass && e.asset !== view.fundClass) return false;
+      if (view.fundRegion && (e.asset !== "Equities" || e.region !== view.fundRegion)) return false;
       if (!q) return true;
       return (e.fund + " " + e.isin + " " + e.ranges.join(" ")).toLowerCase().indexOf(q) >= 0;
     });
   }
 
-  // Windows path -> file:// URL. Works when this page is itself opened from disk.
+  // Windows path on the synced OneDrive -> SharePoint web URL, so links open the
+  // folder or document in the browser rather than the local synced copy.
+  // "Investment team work" is a synced shortcut to the Investment Team site's
+  // Research/Manager Meeting Notes folder, so those paths must resolve to the
+  // team site (visible to the whole team), not the personal OneDrive.
+  var ONEDRIVE_LOCAL = "C:\\Users\\HughEdwards\\OneDrive - Lumin Wealth Management\\";
+  var TEAM_LOCAL = ONEDRIVE_LOCAL + "Investment team work\\";
+  var TEAM_HOST = "https://luminwealthmanagement.sharepoint.com";
+  var TEAM_SITE = "/sites/LWMInvestmentTeam";
+  var TEAM_ROOT = TEAM_SITE + "/Shared Documents/Research/Manager Meeting Notes/";
+  var MY_HOST = "https://luminwealthmanagement-my.sharepoint.com";
+  var MY_SITE = "/personal/hugh_edwards_luminwealth_co_uk";
+
+  function isDocPath(rel) {
+    return /\.[a-z0-9]{2,5}$/i.test(rel);
+  }
+
+  function encodeServerRel(serverRel) {
+    return serverRel.split("/").map(encodeURIComponent).join("/");
+  }
+
   function fileUrl(path) {
-    return "file:///" + encodeURI(String(path).replace(/\\/g, "/")).replace(/#/g, "%23");
+    var p = String(path);
+    if (p.toLowerCase().indexOf(TEAM_LOCAL.toLowerCase()) === 0) {
+      var teamRel = p.slice(TEAM_LOCAL.length).replace(/\\/g, "/");
+      var teamServerRel = TEAM_ROOT + teamRel;
+      if (isDocPath(teamRel)) {
+        // document: open in Office for the web on the team site
+        return TEAM_HOST + encodeServerRel(teamServerRel) + "?web=1";
+      }
+      // folder: open the team document library scoped to that folder
+      return TEAM_HOST + TEAM_SITE + "/Shared%20Documents/Forms/AllItems.aspx?id=" +
+        encodeURIComponent(teamServerRel);
+    }
+    if (p.toLowerCase().indexOf(ONEDRIVE_LOCAL.toLowerCase()) === 0) {
+      var rel = p.slice(ONEDRIVE_LOCAL.length).replace(/\\/g, "/");
+      var serverRel = MY_SITE + "/Documents/" + rel;
+      if (isDocPath(rel)) {
+        // document: open in Office for the web
+        return MY_HOST + encodeServerRel(serverRel) + "?web=1";
+      }
+      // folder: open the OneDrive library view scoped to that folder
+      return MY_HOST + MY_SITE + "/_layouts/15/onedrive.aspx?id=" + encodeURIComponent(serverRel);
+    }
+    // anything outside the synced OneDrive falls back to a local file:// link
+    return "file:///" + encodeURI(p.replace(/\\/g, "/")).replace(/#/g, "%23");
+  }
+
+  // Hover tooltip: show where the link goes on SharePoint, not the local synced path.
+  function fileTip(path) {
+    var p = String(path);
+    if (p.toLowerCase().indexOf(TEAM_LOCAL.toLowerCase()) === 0) {
+      return "Investment Team site: Research/Manager Meeting Notes/" +
+        p.slice(TEAM_LOCAL.length).replace(/\\/g, "/");
+    }
+    if (p.toLowerCase().indexOf(ONEDRIVE_LOCAL.toLowerCase()) === 0) {
+      return "OneDrive: " + p.slice(ONEDRIVE_LOCAL.length).replace(/\\/g, "/");
+    }
+    return p;
   }
 
   function notesCell(e) {
     if (!e.notes || !e.notes.length) return '<span style="color:var(--ink-3)">-</span>';
     var files = e.notes.reduce(function (a, n) { return a + n[2]; }, 0);
     var label = e.notes.length === 1 ? e.notes[0][0] : e.notes.length + " folders";
-    return '<a href="' + esc(fileUrl(e.notes[0][1])) + '" target="_blank" rel="noopener" ' +
-      'data-tip="' + esc(e.notes.map(function (n) { return n[1]; }).join("  |  ")) + '">' +
-      icon("paper", 12) + " " + esc(label) + ' <span class="notes-n">' + files + "</span></a>";
-  }
-
-  function spreadBar(e, scale) {
-    if (!scale) return "";
-    var lo = (e.min / scale) * 100;
-    var hi = (e.max / scale) * 100;
-    var av = (e.avg / scale) * 100;
-    return '<div class="minibar" data-tip="' + esc("min " + fmtPct(e.min) + " / avg " +
-      fmtPct(e.avg) + " / max " + fmtPct(e.max)) + '">' +
-      '<i style="left:' + lo.toFixed(2) + "%;width:" + Math.max(hi - lo, 1.2).toFixed(2) + '%"></i>' +
-      '<b style="left:' + av.toFixed(2) + '%"></b></div>';
+    return '<button class="noteslink" data-goto-notes="' + esc(e.key) + '" ' +
+      'data-tip="View under Meeting Notes">' +
+      icon("paper", 12) + " " + esc(label) + ' <span class="notes-n">' + files + "</span></button>";
   }
 
   function renderFundBreakdown(e) {
@@ -1872,7 +2027,7 @@
         }).join("") + "</div>";
     }
 
-    return '<tr class="breakdown"><td colspan="9"><div class="breakdown-inner">' + notes +
+    return '<tr class="breakdown"><td colspan="8"><div class="breakdown-inner">' + notes +
       '<div class="side-title">Held in ' + e.count + " model" + (e.count === 1 ? "" : "s") + "</div>" +
       '<div class="wgrid">' + cells + "</div>" +
       "</div></td></tr>";
@@ -1888,18 +2043,25 @@
       '<button class="btn btn-ghost" data-act="export-funds"' + (all.length ? "" : " disabled") + ">" +
       icon("down") + " Export register</button></div>" +
       '<p class="blurb">Every distinct fund in the latest allocation of the ' + shown.length +
-      " model portfolio" + (shown.length === 1 ? "" : "s") + " under Portfolios, with the spread of weights " +
-      "it is held at. Manager notes link straight to the research folder on the shared drive (" +
+      " model portfolio" + (shown.length === 1 ? "" : "s") + " under Portfolios. " +
+      "Manager notes link straight to the research folder on the shared drive (" +
       withNotes + " of " + all.length + " funds have notes filed). " +
-      "Click a fund to see which models hold it and at what weight.</p>";
+      "Click a fund name to open its research page, or anywhere else on the row " +
+      "to see which models hold it and at what weight.</p>";
 
     if (!all.length) {
       return head + '<div class="empty">No funds yet - add allocations to a portfolio first.</div>';
     }
 
+    // Cash is deliberately not offered as a filter
+    if (view.fundClass === "Cash") view.fundClass = "";
     var classes = [];
-    all.forEach(function (e) { if (classes.indexOf(e.asset) < 0) classes.push(e.asset); });
+    all.forEach(function (e) { if (e.asset !== "Cash" && classes.indexOf(e.asset) < 0) classes.push(e.asset); });
     classes.sort(function (a, b) { return CLASS_KEYS.indexOf(a) - CLASS_KEYS.indexOf(b); });
+
+    var regions = [];
+    all.forEach(function (e) { if (e.region && regions.indexOf(e.region) < 0) regions.push(e.region); });
+    regions.sort(function (a, b) { return EQ_REGIONS.indexOf(a) - EQ_REGIONS.indexOf(b); });
 
     var toolbar = '<div class="toolbar">' +
       '<div class="grow"><input type="text" id="fundSearch" placeholder="Search fund name, ISIN or range" ' +
@@ -1907,10 +2069,13 @@
       '<select id="fundClass" aria-label="Filter by asset class"><option value="">All asset classes</option>' +
       classes.map(function (c) {
         return '<option value="' + esc(c) + '"' + (view.fundClass === c ? " selected" : "") + ">" + esc(c) + "</option>";
+      }).join("") + "</select>" +
+      '<select id="fundRegion" aria-label="Filter equities by region"><option value="">All regions - equities</option>' +
+      regions.map(function (r) {
+        return '<option value="' + esc(r) + '"' + (view.fundRegion === r ? " selected" : "") + ">" + esc(r) + "</option>";
       }).join("") + "</select></div>";
 
     var rows = filterFunds(all);
-    var scale = all.reduce(function (a, e) { return Math.max(a, e.max); }, 0);
 
     if (!rows.length) {
       return head + toolbar + '<div class="empty">No funds match that filter.</div>';
@@ -1919,16 +2084,17 @@
     var body = rows.map(function (e) {
       var open = view.openFund === e.key;
       var tr = '<tr class="fundrow" data-fund="' + esc(e.key) + '" aria-expanded="' + open + '">' +
-        '<td class="fundname">' + esc(e.fund) + "</td>" +
+        '<td class="fundname"><button class="fundlink" data-fundpage="' + esc(e.key) +
+        '" data-tip="Open the fund research page">' + esc(e.fund) + "</button></td>" +
         '<td class="notescell">' + notesCell(e) + "</td>" +
         '<td class="isin">' + esc(e.isin || "-") + "</td>" +
         '<td><span class="legend-item"><span class="swatch" style="background:' + classColour(e.asset) + '"></span>' +
-        esc(e.asset) + "</span></td>" +
+        esc(e.asset) + "</span>" +
+        (e.region ? '<div class="region-sub">' + esc(e.region) + "</div>" : "") + "</td>" +
         '<td class="num">' + e.count + "</td>" +
         '<td><span class="ranges">' + e.ranges.map(function (r) {
           return '<span class="chip ' + chipClass(r) + '">' + esc(r) + "</span>";
         }).join("") + "</span></td>" +
-        "<td>" + spreadBar(e, scale) + "</td>" +
         '<td class="num">' + fmtPct(e.min, 2) + "</td>" +
         '<td class="num">' + fmtPct(e.max, 2) + "</td></tr>";
       return tr + (open ? renderFundBreakdown(e) : "");
@@ -1938,9 +2104,300 @@
       '<div class="box"><div class="tablewrap"><table>' +
       '<caption class="sr">Fund register across all model portfolios</caption>' +
       "<thead><tr><th>Fund name</th><th>Manager notes</th><th>ISIN</th><th>Asset class</th>" +
-      '<th class="num">Models</th><th>Ranges</th><th>Weight spread</th>' +
+      '<th class="num">Models</th><th>Ranges</th>' +
       '<th class="num">Min</th><th class="num">Max</th></tr></thead>' +
       "<tbody>" + body + "</tbody></table></div></div>";
+  }
+
+  // ---------- fund research page ----------
+
+  var DDQ_TEMPLATES = [
+    ["Equity fund DDQ template", "Word"],
+    ["Fixed income fund DDQ template", "Word"],
+    ["Passive / index fund DDQ template", "Word"],
+    ["ESG & stewardship questionnaire", "Word"],
+    ["Operational due diligence (ODD) template", "Excel"]
+  ];
+
+  // Blank templates live in the team document library, not under Manager Meeting Notes.
+  var DDQ_LIBRARY_URL = TEAM_HOST + TEAM_SITE + "/Shared%20Documents/Forms/AllItems.aspx";
+
+  function srctag(cls, label) {
+    return '<span class="srctag ' + cls + '">' + label + "</span>";
+  }
+
+  function fact(label, valueHtml) {
+    return '<div class="fact"><div style="min-width:0"><div class="fact-label">' + label + "</div>" +
+      '<div class="fact-value">' + valueHtml + "</div></div>" +
+      '<span class="fact-menu" aria-hidden="true">&#9776;</span></div>';
+  }
+
+  // Deterministic per-fund placeholder line until FE Analytics data is wired in.
+  function sparkSvg(key, variant) {
+    var seed = variant * 7919;
+    for (var i = 0; i < key.length; i++) seed = (seed * 31 + key.charCodeAt(i)) & 0x7fffffff;
+    function rnd() { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed / 0x7fffffff; }
+    var pts = [], n = 14;
+    for (var j = 0; j < n; j++) {
+      var x = 10 + (j / (n - 1)) * 84;
+      var y = 76 - (j / (n - 1)) * 46 + (rnd() * 22 - 11);
+      pts.push(x.toFixed(1) + "," + Math.max(14, Math.min(86, y)).toFixed(1));
+    }
+    return '<svg class="sparkline" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">' +
+      '<path d="M10 8 V90 H94" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>' +
+      '<polyline points="' + pts.join(" ") + '" fill="none" stroke="currentColor" stroke-width="2.5" ' +
+      'stroke-linejoin="round" stroke-linecap="round"/></svg>';
+  }
+
+  function chartBox(title, key, variant) {
+    return '<div class="box"><div class="box-head"><h3>' + title + "</h3>" +
+      srctag("srctag-fe", "FE Analytics") + "</div>" +
+      '<div class="box-body">' + sparkSvg(key, variant) + "</div></div>";
+  }
+
+  function renderDdqBox() {
+    var rows = DDQ_TEMPLATES.map(function (t) {
+      return '<tr><td class="notescell">' + icon("paper", 12) + " " + esc(t[0]) + "</td>" +
+        "<td>" + t[1] + "</td>" +
+        '<td class="notescell"><a href="' + DDQ_LIBRARY_URL + '" target="_blank" rel="noopener" ' +
+        'data-tip="Team site: Shared Documents">Link</a></td></tr>';
+    }).join("");
+    return '<div class="box"><div class="box-head"><h3>DDQ templates</h3>' + srctag("srctag-sp", "Sharepoint") +
+      '</div><div class="tablewrap"><table>' +
+      '<caption class="sr">Due diligence questionnaire templates</caption>' +
+      "<thead><tr><th>Template</th><th>Type</th><th>Link</th></tr></thead>" +
+      "<tbody>" + rows + "</tbody></table></div></div>";
+  }
+
+  function renderDdqs() {
+    return '<div class="panel-head"><h2>DDQs</h2></div>' +
+      '<p class="blurb">Blank due diligence questionnaire templates for new and existing funds. ' +
+      "Completed DDQs are filed alongside the manager meeting notes on the Investment Team SharePoint site " +
+      "and linked from each fund's research page.</p>" + renderDdqBox();
+  }
+
+  function renderFundPage(e) {
+    var models = visiblePortfolios().length;
+
+    // Weight in L50 - prefer the Core range if the fund sits in more than one L50.
+    var l50 = null;
+    e.holdings.forEach(function (h) {
+      if (h.risk !== "L50") return;
+      if (!l50 || (h.range === "Core" && l50.range !== "Core")) l50 = h;
+    });
+    var latest = e.holdings.reduce(function (a, h) { return !a || h.date > a ? h.date : a; }, null);
+
+    var crumb = '<button class="crumb" data-act="back-funds">' + icon("back") + " All funds</button>";
+
+    var facts = '<div class="factrow">' +
+      fact("Fund name", esc(e.fund) +
+        (e.isin ? '<span class="fact-sub">' + esc(e.isin) + "</span>" : "")) +
+      fact("Asset class", esc(e.asset) +
+        (e.region ? '<span class="fact-sub">' + esc(e.region) + "</span>" : "")) +
+      fact("Weight in L50", l50
+        ? fmtPct(l50.weight, 2) + '<span class="fact-sub">' + esc(l50.range + " L50, " + fmtDate(l50.date)) + "</span>"
+        : 'Not held<span class="fact-sub">No L50 model holds this fund</span>') +
+      "</div>";
+
+    var summary = '<div class="box"><div class="box-head"><h3>AI summary</h3>' +
+      srctag("srctag-sp", "M* / Sharepoint") + '</div><div class="box-body">' +
+      '<ul class="bullets">' +
+      "<li>Held in <strong>" + e.count + "</strong> of the " + models + " Lumin models" +
+      (e.ranges.length ? " (" + e.ranges.map(esc).join(", ") + ")" : "") + ".</li>" +
+      "<li>Weights range from " + fmtPct(e.min, 2) + " to " + fmtPct(e.max, 2) +
+      ", averaging " + fmtPct(e.avg, 2) + ".</li>" +
+      (latest ? "<li>Latest model allocation dated " + esc(fmtDate(latest)) + ".</li>" : "") +
+      "<li>Flows have been XX over past 12m and 36m.</li>" +
+      "<li>X% dividend yield.</li>" +
+      "</ul></div></div>";
+
+    var macro = '<div class="box"><div class="box-head"><h3>Macro environment</h3>' +
+      srctag("srctag-ft", "FT") + '</div><div class="box-body"><ul class="bullets">' +
+      "<li>Fund expected to perform strongly in inflationary periods<ul>" +
+      "<li>Latest US print +xx% vs expectation</li>" +
+      "<li>Latest UK print +xx% vs expectation</li></ul></li>" +
+      "<li>Fund expected to perform in times of growth<ul>" +
+      "<li>US jobs data +xxk vs expectation</li>" +
+      "<li>US mortgage applications +xx% vs expectation</li>" +
+      "<li>US home sales +xx% vs expectation</li>" +
+      "<li>US PMI +xx% vs expectation</li>" +
+      "<li>More forward / backward looking indicators...</li></ul></li>" +
+      "</ul></div></div>";
+
+    var noteRows = (e.notes || []).map(function (n) {
+      var isDoc = /\.[a-z0-9]{2,5}$/i.test(n[1]);
+      return "<tr><td>" + (isDoc ? "Document" : "Folder") + "</td>" +
+        "<td>" + esc(n[0]) + ' <span class="notes-n">' + n[2] + "</span></td>" +
+        '<td class="notescell"><a href="' + esc(fileUrl(n[1])) + '" target="_blank" rel="noopener" ' +
+        'data-tip="' + esc(fileTip(n[1])) + '">Link</a></td></tr>';
+    }).join("");
+    var notesBox = '<div class="box"><div class="box-head"><h3>Notes</h3>' + srctag("srctag-sp", "Sharepoint") + "</div>" +
+      (noteRows
+        ? '<div class="tablewrap"><table><caption class="sr">Meeting notes for ' + esc(e.fund) + "</caption>" +
+          "<thead><tr><th>Type</th><th>Title</th><th>Link</th></tr></thead><tbody>" + noteRows + "</tbody></table></div>"
+        : '<div class="box-body"><span style="color:var(--ink-3)">No meeting notes filed for this fund yet.</span></div>') +
+      "</div>";
+
+    return crumb + facts +
+      '<div class="fundgrid">' +
+      '<div class="fundcol">' + summary + chartBox("Sharpe ratio", e.key, 1) + chartBox("Performance", e.key, 2) + "</div>" +
+      '<div class="fundcol">' + macro + renderDdqBox() + notesBox + "</div>" +
+      "</div>";
+  }
+
+  // ---------- meeting notes ----------
+
+  // Every distinct notes location on the shared drive, with the fund share classes it covers.
+  // Several SEED_NOTES entries share one folder (different share classes), so dedupe by path.
+  function meetingFolders() {
+    var map = {};
+    Object.keys(SEED_NOTES).forEach(function (idx) {
+      var fund = SEED_FUNDS[Number(idx)];
+      SEED_NOTES[idx].forEach(function (n) {
+        var e = map[n[1]];
+        if (!e) e = map[n[1]] = { label: n[0], path: n[1], files: n[2], funds: [] };
+        if (fund && e.funds.indexOf(fund[0]) < 0) e.funds.push(fund[0]);
+      });
+    });
+    return Object.keys(map).map(function (k) { return map[k]; })
+      .sort(function (a, b) { return a.label.localeCompare(b.label); });
+  }
+
+  // Highlighted box shown at the top of Meeting Notes after following a fund's notes link.
+  function renderMeetingsFocus() {
+    if (!view.meetingsFund) return "";
+    var fe = fundRegister().filter(function (x) { return x.key === view.meetingsFund; })[0];
+    if (!fe || !fe.notes || !fe.notes.length) return "";
+
+    var files = fe.notes.reduce(function (a, n) { return a + n[2]; }, 0);
+    var links = fe.notes.map(function (n) {
+      return '<a class="wcell" href="' + esc(fileUrl(n[1])) + '" target="_blank" rel="noopener" ' +
+        'data-tip="' + esc(fileTip(n[1])) + '">' +
+        "<span>" + esc(n[0]) + '</span><span class="w">' + n[2] + "</span></a>";
+    }).join("");
+
+    return '<div class="box notes-focus"><div class="box-head"><h3>' + esc(fe.fund) + "</h3>" +
+      (fe.isin ? '<span class="pill">' + esc(fe.isin) + "</span>" : "") +
+      '<span class="pill">' + files + " file" + (files === 1 ? "" : "s") + "</span>" +
+      '<button class="btn btn-ghost btn-sm" style="margin-left:auto" data-act="clear-notes-focus" ' +
+      'aria-label="Clear highlighted fund">&times;</button></div>' +
+      '<div class="box-body"><div class="wgrid">' + links + "</div></div></div>";
+  }
+
+  function renderMeetings() {
+    var folders = meetingFolders();
+    var files = folders.reduce(function (a, f) { return a + f.files; }, 0);
+
+    var head = '<div class="panel-head"><h2>Meeting notes (' + folders.length + ")</h2></div>" +
+      '<p class="blurb">Fund manager meeting notes filed under Research / Manager Meeting Notes on the Investment Team SharePoint site - ' +
+      files + " documents across " + folders.length + " locations. " +
+      "Links open the folder (or document) on the team site in a new browser tab - you need to be signed in " +
+      "with access to that site. The same notes are linked from each fund's row under Funds.</p>";
+
+    var focus = renderMeetingsFocus();
+
+    if (!folders.length) {
+      return head + focus + '<div class="empty">No meeting notes filed yet.</div>';
+    }
+
+    var body = folders.map(function (f) {
+      var isDoc = /\.docx?$/i.test(f.path);
+      return "<tr>" +
+        '<td class="notescell"><a href="' + esc(fileUrl(f.path)) + '" target="_blank" rel="noopener" ' +
+        'data-tip="' + esc(fileTip(f.path)) + '">' + icon("paper", 12) + " " + esc(f.label) + "</a></td>" +
+        "<td>" + (isDoc ? "Document" : "Folder") + "</td>" +
+        '<td class="num">' + f.files + "</td>" +
+        "<td>" + f.funds.map(function (n) { return esc(n); }).join("<br>") + "</td></tr>";
+    }).join("");
+
+    return head + focus + '<div class="box"><div class="tablewrap"><table>' +
+      '<caption class="sr">Fund manager meeting notes on the shared drive</caption>' +
+      '<thead><tr><th>Notes</th><th>Type</th><th class="num">Files</th><th>Fund share classes covered</th></tr></thead>' +
+      "<tbody>" + body + "</tbody></table></div></div>";
+  }
+
+  // All compared rebalances share one table with the open snapshot: the union
+  // of every date's funds in one fixed order, so each fund sits on exactly the
+  // same row in every date column. Exits and entries show as "-".
+  function comparisonRows(snaps, baseIdx) {
+    var map = {}, list = [];
+    snaps.forEach(function (s, si) {
+      s.rows.forEach(function (r) {
+        var k = (r.isin || r.fund).toUpperCase();
+        var e = map[k];
+        if (!e) {
+          e = map[k] = { fund: r.fund, isin: r.isin, asset: r.asset, weights: snaps.map(function () { return 0; }) };
+          list.push(e);
+        }
+        e.weights[si] += r.weight;
+      });
+    });
+    return list.sort(function (a, b) {
+      return classRank(a.asset) - classRank(b.asset) ||
+        b.weights[baseIdx] - a.weights[baseIdx] ||
+        Math.max.apply(null, b.weights) - Math.max.apply(null, a.weights) ||
+        a.fund.localeCompare(b.fund);
+    });
+  }
+
+  function diffCell(w, base) {
+    var diff = w - base;
+    var flat = Math.abs(diff) < 0.005;
+    var cls = flat ? "diff-0" : (diff > 0 ? "diff-up" : "diff-dn");
+    var txt = flat ? "-" : (diff > 0 ? "+" : "-") + fmtPct(Math.abs(diff), 2);
+    return '<td class="num ' + cls + '">' + txt + "</td>";
+  }
+
+  function renderComparison(current, cmpSnaps) {
+    // Columns run oldest on the left to newest on the right, with the open
+    // snapshot in its chronological place; +/- still compares each other
+    // date against the open snapshot.
+    var snaps = [current].concat(cmpSnaps).sort(function (a, b) {
+      return a.date < b.date ? -1 : a.date > b.date ? 1 : 0;
+    });
+    var baseIdx = snaps.indexOf(current);
+    var rows = comparisonRows(snaps, baseIdx);
+
+    var bars = snaps.map(function (s) {
+      return '<div><div class="side-title">' + esc(fmtDate(s.date)) + (s === current ? " (open)" : "") + "</div>" +
+        allocBar(s.rows) + "</div>";
+    }).join("");
+
+    var head = "<thead><tr><th>Fund</th>" +
+      snaps.map(function (s) {
+        return s === current
+          ? '<th class="num">' + esc(fmtDate(s.date)) + " (open)</th>"
+          : '<th class="num">' + esc(fmtDate(s.date)) + '</th><th class="num">+/-</th>';
+      }).join("") + "</tr></thead>";
+
+    var body = rows.map(function (r) {
+      var cells = '<td><span class="legend-item"><span class="swatch" style="background:' +
+        classColour(r.asset) + '"></span>' + esc(r.fund) + "</span></td>";
+      snaps.forEach(function (s, i) {
+        var w = r.weights[i];
+        cells += '<td class="num">' + (w ? fmtPct(w, 2) : '<span style="color:var(--ink-3)">-</span>') + "</td>";
+        if (i !== baseIdx) cells += diffCell(w, r.weights[baseIdx]);
+      });
+      return "<tr>" + cells + "</tr>";
+    }).join("");
+
+    var foot = "<tfoot><tr><td>Total</td>" +
+      snaps.map(function (s, i) {
+        return '<td class="num">' + fmtPct(sumWeights(s.rows), 2) + "</td>" + (i === baseIdx ? "" : "<td></td>");
+      }).join("") + "</tr></tfoot>";
+
+    var pills = snaps.filter(function (s) { return s !== current; }).map(function (s) {
+      return '<span class="pill">' + esc(fmtDate(s.date)) +
+        ' <button class="noteslink" data-uncmp="' + s.id +
+        '" aria-label="Remove ' + esc(fmtDate(s.date)) + ' from the comparison">&times;</button></span>';
+    }).join("");
+
+    return '<div class="box"><div class="box-head"><h3>Rebalance comparison</h3>' + pills +
+      '<span class="card-meta" style="margin-left:auto">+/- is each date vs the open snapshot</span></div>' +
+      '<div class="box-body">' + bars +
+      '<div class="tablewrap"><table>' +
+      '<caption class="sr">Rebalance comparison, one row per fund across every compared date</caption>' +
+      head + "<tbody>" + body + "</tbody>" + foot + "</table></div></div></div>";
   }
 
   function renderDetail(p) {
@@ -1969,15 +2426,21 @@
 
     var side = '<div><div class="side-title">Rebalance history</div><div class="snaplist">' +
       snaps.map(function (s) {
+        var on = view.compare.indexOf(s.id) >= 0;
         return '<button class="snapitem" data-snap="' + s.id + '" aria-current="' + (current && s.id === current.id) + '">' +
+          '<span class="snap-cmp" data-cmp="' + s.id + '" data-on="' + on +
+          '" role="checkbox" aria-checked="' + on + '" title="Compare this date">&#10003;</span>' +
           '<span class="d">' + esc(fmtDate(s.date)) + "</span>" +
           '<span class="n">' + s.rows.length + "</span></button>";
-      }).join("") + "</div></div>";
+      }).join("") + "</div>" +
+      (snaps.length > 1
+        ? '<p style="margin:8px 2px 0;font-size:11.5px;color:var(--ink-3)">Tick dates to compare them with the open snapshot - every fund on one row across all dates.</p>'
+        : "") + "</div>";
 
     var total = sumWeights(current.rows);
     var off = Math.abs(total - 100) > 0.5;
 
-    var rowsHtml = current.rows.slice().sort(function (a, b) { return b.weight - a.weight; })
+    var rowsHtml = sortRows(current.rows)
       .map(function (r) {
         return "<tr><td>" + esc(r.fund) + "</td>" +
           '<td class="isin">' + esc(r.isin || "-") + "</td>" +
@@ -2007,7 +2470,12 @@
       fmtPct(total, 2) + "</td></tr></tfoot></table></div>" +
       "</div></div>";
 
-    return html + '<div class="split">' + side + main + "</div>";
+    var cmpSnaps = view.compare
+      .map(function (id) { return snaps.filter(function (s) { return s.id === id; })[0]; })
+      .filter(function (s) { return s && s.id !== current.id; });
+
+    return html + '<div class="split">' + side +
+      (cmpSnaps.length ? renderComparison(current, cmpSnaps) : main) + "</div>";
   }
 
   // ---------- calendar ----------
@@ -2015,7 +2483,8 @@
   var EVT_TYPES = [
     { key: "event", label: "Conference", varname: "--c-dv" },
     { key: "internal", label: "Sales catchup", varname: "--c-fi" },
-    { key: "external", label: "Manager meeting", varname: "--c-eq" }
+    { key: "external", label: "Manager meeting", varname: "--c-eq" },
+    { key: "other", label: "Other", varname: "--c-ca" }
   ];
 
   function evtType(key) {
@@ -2069,6 +2538,7 @@
     var head = '<div class="panel-head"><h2>Team calendar</h2>' +
       '<button class="btn" data-act="add-event">' + icon("plus") + " Add entry</button></div>" +
       '<p class="blurb">The investment team schedule - manager meetings, conferences and sales catchups. ' +
+      "Working days only - anything dated on a weekend still shows in the list below the grid. " +
       "Click a day to add an entry, or click an entry to edit or delete it. " +
       "Set your initials in the top bar and new entries are tagged to you automatically.</p>";
 
@@ -2081,26 +2551,32 @@
         return '<span class="tag tag-' + t.key + '"><span class="swatch" style="background:var(' + t.varname + ')"></span>' + t.label + "</span>";
       }).join("") + "</div></div>";
 
-    var dows = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-    var cells = dows.map(function (d) { return '<div class="cal-dow">' + d + "</div>"; }).join("");
+    // Working days only, Monday to Friday. Leading blanks keep each day under
+    // its weekday column; weekend-dated entries still appear in the list below.
+    var dows = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+    var cells = dows.map(function (n) { return '<div class="cal-dow">' + n + "</div>"; }).join("");
 
+    var lastDay = new Date(y, m + 1, 0).getDate();
     var first = new Date(y, m, 1);
-    var lead = (first.getDay() + 6) % 7; // Monday-first
-    var start = new Date(y, m, 1 - lead);
+    while ((first.getDay() + 6) % 7 > 4) first = new Date(y, m, first.getDate() + 1);
+    var lead = (first.getDay() + 6) % 7; // Monday-first offset of the first weekday
 
-    for (var i = 0; i < 42; i++) {
-      var d = new Date(start.getFullYear(), start.getMonth(), start.getDate() + i);
-      if (i === 35 && d.getMonth() !== m) break; // skip an entirely out-of-month sixth week
-      var iso = isoDate(d.getFullYear(), d.getMonth(), d.getDate());
-      var out = d.getMonth() !== m;
-      var dow = (d.getDay() + 6) % 7;
+    for (var b0 = 0; b0 < lead; b0++) {
+      cells += '<div class="cal-cell cal-blank" aria-hidden="true"></div>';
+    }
+
+    for (var day = first.getDate(); day <= lastDay; day++) {
+      var d = new Date(y, m, day);
+      var dow = (d.getDay() + 6) % 7; // Monday-first
+      if (dow > 4) continue;
+      var iso = isoDate(y, m, day);
       var evs = eventsOn(iso);
-      var shown = evs.slice(0, 4);
+      var shown = evs.slice(0, 3);
 
-      cells += '<div class="cal-cell' + (out ? " cal-out" : "") +
-        (iso === today ? " cal-today" : "") + (dow > 4 ? " cal-wkend" : "") +
+      cells += '<div class="cal-cell' +
+        (iso === today ? " cal-today" : "") +
         '" data-day="' + iso + '" role="button" tabindex="0" aria-label="' + esc(fmtDate(iso)) + '">' +
-        '<span class="cal-num">' + d.getDate() + "</span>" +
+        '<span class="cal-num">' + day + "</span>" +
         shown.map(evtPill).join("") +
         (evs.length > shown.length ? '<span class="cal-more">+' + (evs.length - shown.length) + " more</span>" : "") +
         "</div>";
@@ -2164,13 +2640,26 @@
     var main = document.getElementById("main");
 
     if (view.tab === "funds") {
-      main.innerHTML = renderFunds();
-      restoreSearchFocus();
+      var fp = view.fundPage
+        ? fundRegister().filter(function (x) { return x.key === view.fundPage; })[0] || null
+        : null;
+      main.innerHTML = fp ? renderFundPage(fp) : renderFunds();
+      if (!fp) restoreSearchFocus();
+      return;
+    }
+
+    if (view.tab === "ddqs") {
+      main.innerHTML = renderDdqs();
       return;
     }
 
     if (view.tab === "calendar") {
       main.innerHTML = renderCalendar();
+      return;
+    }
+
+    if (view.tab === "meetings") {
+      main.innerHTML = renderMeetings();
       return;
     }
 
@@ -2212,6 +2701,7 @@
         saveState();
         view.openId = null;
         view.openSnap = null;
+        view.compare = [];
         render();
         toast("Workspace loaded - " + parsed.portfolios.length + " portfolios");
       } catch (e) {
@@ -2292,6 +2782,8 @@
     if (!btn) return;
     view.tab = btn.getAttribute("data-tab");
     view.armed = null;
+    view.meetingsFund = null;
+    view.fundPage = null;
     render();
   });
 
@@ -2312,6 +2804,26 @@
   document.getElementById("main").addEventListener("click", function (e) {
     // let notes links open instead of toggling the row they sit in
     if (e.target.closest("a[href]")) return;
+
+    // notes link on a fund row: jump to Meeting Notes with that fund pinned at the top
+    var gotoNotes = e.target.closest("[data-goto-notes]");
+    if (gotoNotes) {
+      view.tab = "meetings";
+      view.meetingsFund = gotoNotes.getAttribute("data-goto-notes");
+      view.armed = null;
+      render();
+      window.scrollTo(0, 0);
+      return;
+    }
+
+    // fund name link: open that fund's research page
+    var fundPageBtn = e.target.closest("[data-fundpage]");
+    if (fundPageBtn) {
+      view.fundPage = fundPageBtn.getAttribute("data-fundpage");
+      render();
+      window.scrollTo(0, 0);
+      return;
+    }
 
     var fundRow = e.target.closest("[data-fund]");
     if (fundRow) {
@@ -2338,7 +2850,25 @@
     if (open) {
       view.openId = open.getAttribute("data-open");
       view.openSnap = null;
+      view.compare = [];
       view.armed = null;
+      render();
+      return;
+    }
+
+    var cmpEl = e.target.closest("[data-cmp]");
+    if (cmpEl) {
+      var cid = cmpEl.getAttribute("data-cmp");
+      var at = view.compare.indexOf(cid);
+      if (at >= 0) view.compare.splice(at, 1); else view.compare.push(cid);
+      render();
+      return;
+    }
+
+    var unEl = e.target.closest("[data-uncmp]");
+    if (unEl) {
+      var uid0 = unEl.getAttribute("data-uncmp");
+      view.compare = view.compare.filter(function (id) { return id !== uid0; });
       render();
       return;
     }
@@ -2358,8 +2888,10 @@
 
     if (act === "add-portfolio") {
       document.getElementById("portfolioDlg").showModal();
+    } else if (act === "back-funds") {
+      view.fundPage = null; render();
     } else if (act === "back") {
-      view.openId = null; view.openSnap = null; view.armed = null; render();
+      view.openId = null; view.openSnap = null; view.compare = []; view.armed = null; render();
     } else if (act === "add-rebalance") {
       document.getElementById("rDate").value = new Date().toISOString().slice(0, 10);
       document.getElementById("rPaste").value = "";
@@ -2370,7 +2902,7 @@
     } else if (act === "delete-portfolio") {
       if (p.seed && state.removed.indexOf(p.id) < 0) state.removed.push(p.id);
       state.portfolios = state.portfolios.filter(function (x) { return x.id !== p.id; });
-      view.openId = null; view.armed = null; saveState(); render();
+      view.openId = null; view.compare = []; view.armed = null; saveState(); render();
       toast("Portfolio deleted");
     } else if (act === "arm-snap") {
       var s0 = currentSnap(p); if (s0) { view.armed = "snap:" + s0.id; render(); }
@@ -2378,6 +2910,7 @@
       var s1 = currentSnap(p);
       if (s1) {
         p.snapshots = p.snapshots.filter(function (x) { return x.id !== s1.id; });
+        view.compare = view.compare.filter(function (id) { return id !== s1.id; });
         view.openSnap = null; view.armed = null; saveState(); render();
         toast("Snapshot deleted");
       }
@@ -2395,6 +2928,8 @@
     } else if (act === "cal-today") {
       var now = new Date();
       view.calY = now.getFullYear(); view.calM = now.getMonth(); render();
+    } else if (act === "clear-notes-focus") {
+      view.meetingsFund = null; render();
     } else if (act === "restore-seed") {
       var n = state.removed.length;
       state.removed = [];
@@ -2416,6 +2951,11 @@
   document.getElementById("main").addEventListener("change", function (e) {
     if (e.target.id === "fundClass") {
       view.fundClass = e.target.value;
+      view.openFund = null;
+      render();
+    }
+    if (e.target.id === "fundRegion") {
+      view.fundRegion = e.target.value;
       view.openFund = null;
       render();
     }
@@ -2493,6 +3033,13 @@
       return;
     }
 
+    // one rebalance per date - saving onto an existing date replaces it
+    var replaced = p.snapshots.some(function (s) { return s.date === date; });
+    if (replaced) {
+      p.snapshots = p.snapshots.filter(function (s) { return s.date !== date; });
+      view.compare = [];
+    }
+
     p.snapshots.push({
       id: uid(),
       date: date,
@@ -2506,6 +3053,7 @@
     render();
 
     var msg = parsed.rows.length + " holdings saved";
+    if (replaced) msg += " - replaced the existing " + fmtDate(date) + " rebalance";
     if (parsed.errors.length) msg += " - " + parsed.errors.length + " row(s) skipped";
     toast(msg);
   });
