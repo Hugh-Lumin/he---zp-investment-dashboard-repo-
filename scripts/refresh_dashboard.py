@@ -27,6 +27,8 @@ REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 HOME = os.path.expanduser("~")
 
 NOTES_PATH = os.path.join(REPO, "data", "notes_map.json")
+FACTS_PATH = os.path.join(REPO, "data", "funds.json")
+DOCS_PATH = os.path.join(REPO, "data", "documents_index.json")
 RUN_LOG = os.path.join(REPO, "data", "run_log.json")
 
 # Where the OneDrive client puts SharePoint content, for whichever user runs
@@ -410,8 +412,15 @@ def extract(path):
     return out, warns
 
 
-def emit_block(models_in, notes_map, source_label, meta=None):
-    """Compact-encode the models + manager notes into the SEED_* JS block."""
+def emit_block(models_in, notes_map, source_label, meta=None, facts=None, docs=None):
+    """Compact-encode the models + manager notes into the SEED_* JS block.
+
+    facts: the parsed data/funds.json (fund register - fees, yield, house,
+    website per fund), seeded as SEED_FACTS so fund pages show workbook
+    facts instead of hand-baked placeholders.
+    docs: the parsed data/documents_index.json (scanned SharePoint
+    document listings per dashboard section), seeded as SEED_DOCS.
+    """
     # The platform list keeps every platform seen in the workbook (the UI offers
     # them all), even though Core models are seeded from the canonical one only.
     all_plats = sorted({(m["platform"], m["platformName"]) for m in models_in})
@@ -501,6 +510,27 @@ def emit_block(models_in, notes_map, source_label, meta=None):
 
     b.write("  // Fund manager meeting notes on the shared drive, keyed by fund index.\n")
     b.write("  var SEED_NOTES = " + j(notes_out) + ";\n\n")
+
+    # Fund register facts (from extract_funds.py via data/funds.json):
+    # one record per fund, share classes grouped. The UI looks funds up
+    # by ISIN (per share class) or by name.
+    facts = facts or {}
+    b.write("  // Fund register facts from the workbook (data/funds.json). Decimal fractions.\n")
+    b.write("  var SEED_FACTS = " + j(facts.get("funds", [])) + ";\n")
+    b.write("  var SEED_FACTS_META = " + j({
+        "generatedAt": facts.get("generatedAt", ""),
+        "sourceSheet": facts.get("sourceSheet", ""),
+        "effectiveDate": facts.get("effectiveDate", ""),
+    }) + ";\n\n")
+
+    # Scanned document listings (data/documents_index.json): dashboard
+    # section id -> [{title, url, modified, year}], newest first.
+    docs = docs or {}
+    b.write("  // Scanned SharePoint document listings, keyed by section id.\n")
+    b.write("  var SEED_DOCS = " + j(docs.get("sections", {})) + ";\n")
+    b.write("  var SEED_DOCS_META = " + j({
+        "scannedAt": docs.get("scannedAt", ""),
+    }) + ";\n\n")
 
     b.write("  var SEED_MODELS = [\n")
     for m in out_models:
@@ -648,7 +678,25 @@ def main():
     if not notes_map:
         print("note: %s missing - manager-notes links will be empty" % NOTES_PATH)
 
-    block, stats = emit_block(models, notes_map, source_label, meta)
+    facts = json.load(open(FACTS_PATH, encoding="utf-8")) if os.path.exists(FACTS_PATH) else {}
+    if not facts:
+        print("note: %s missing - fund pages will show no register facts. "
+              "Run scripts/extract_funds.py." % FACTS_PATH)
+
+    docs = json.load(open(DOCS_PATH, encoding="utf-8")) if os.path.exists(DOCS_PATH) else {}
+    if not docs:
+        print("note: %s missing - seeded document listings will be empty. "
+              "Run scripts/scan_documents.py." % DOCS_PATH)
+
+    block, stats = emit_block(models, notes_map, source_label, meta,
+                              facts=facts, docs=docs)
+
+    # A fund register cut from an older rebalance than the model data is
+    # stale - fees/usage flags may be wrong. Soft warning, not a gate.
+    if facts and facts.get("effectiveDate") and facts["effectiveDate"] != stats["latest"]:
+        warns.append("funds.json is from rebalance %s but model data is %s - "
+                     "re-run scripts/extract_funds.py"
+                     % (facts["effectiveDate"], stats["latest"]))
 
     print("funds %(funds)d | dates %(dates)d | platforms %(platforms)d | "
           "models %(models)d | snapshots %(snapshots)d | notes links %(notes)d" % stats)

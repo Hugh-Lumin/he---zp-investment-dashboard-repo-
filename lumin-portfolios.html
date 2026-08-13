@@ -622,6 +622,39 @@
   .filebtn { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
   .filebtn input { display: none; }
 
+  /* ---------- in-dashboard link viewer ---------- */
+
+  dialog.linkdlg {
+    max-width: min(1180px, calc(100vw - 48px));
+    width: calc(100vw - 48px);
+    height: calc(100vh - 64px);
+    display: flex; flex-direction: column;
+  }
+  dialog.linkdlg:not([open]) { display: none; }
+  .linkdlg-head {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px; border-bottom: 1px solid var(--line);
+    background: var(--surface-2); border-radius: 10px 10px 0 0; flex: none;
+  }
+  .linkdlg-title {
+    font-size: 13.5px; font-weight: 650; min-width: 0;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .linkdlg-domain { flex: none; }
+  .linkdlg-close {
+    flex: none; background: none; border: none; cursor: pointer;
+    color: var(--ink-3); font-size: 20px; line-height: 1; padding: 2px 6px;
+  }
+  .linkdlg-close:hover { color: var(--ink); }
+  .linkdlg-body { flex: 1; min-height: 0; display: flex; background: var(--surface); border-radius: 0 0 10px 10px; }
+  .linkdlg-body iframe { flex: 1; border: none; border-radius: 0 0 10px 10px; background: #fff; }
+  .linkdlg-blocked {
+    flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 14px; padding: 30px; text-align: center;
+  }
+  .linkdlg-blocked strong { font-size: 15px; }
+  .linkdlg-blocked span { color: var(--ink-3); font-size: 13px; max-width: 460px; }
+
   /* ---------- calendar attachments ---------- */
 
   .att-list { display: flex; flex-direction: column; gap: 6px; }
@@ -985,6 +1018,19 @@
   </form>
 </dialog>
 
+<dialog id="linkDlg" class="linkdlg" aria-label="Link viewer">
+  <div class="linkdlg-head">
+    <span class="linkdlg-title" id="linkDlgTitle"></span>
+    <span class="pill linkdlg-domain" id="linkDlgDomain"></span>
+    <a class="btn btn-ghost btn-sm" id="linkDlgExt" href="#" target="_blank" rel="noopener" style="margin-left:auto">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+      Open in new tab
+    </a>
+    <button class="linkdlg-close" id="linkDlgClose" aria-label="Close">&times;</button>
+  </div>
+  <div class="linkdlg-body" id="linkDlgBody"></div>
+</dialog>
+
 <script>
 (function () {
   "use strict";
@@ -1070,7 +1116,7 @@
   var CLASS_KEYS = CLASSES.map(function (c) { return c.key; });
 
   // ---------- seeded Lumin model data ----------
-  // Extracted from 'Copy of Model Portfolio Analysis - V4.3.11.xlsx' (SharePoint via OneDrive sync), workbook saved 2026-08-13 12:00, refreshed 2026-08-13 12:17.
+  // Extracted from 'Copy of Model Portfolio Analysis - V4.3.11.xlsx' (SharePoint via OneDrive sync), workbook saved 2026-08-13 12:00, refreshed 2026-08-13 13:54.
   // Weights are model allocations in %, largest first. No client data.
   // SEED_MODELS: [rangeIdx, platformIdx, risk, [[dateIdx, [[fundIdx, weight], ...]], ...]]
 
@@ -1254,6 +1300,14 @@
 
   // Fund manager meeting notes on the shared drive, keyed by fund index.
   var SEED_NOTES = {"52":[["Artemis Global EM","https://luminwealthmanagement.sharepoint.com/sites/LWMInvestmentTeam/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FLWMInvestmentTeam%2FShared%20Documents%2FResearch%2FManager%20Meeting%20Notes%2FEquities%2FArtemis%20Global%20EM",3]],"128":[["Artemis Global EM","https://luminwealthmanagement.sharepoint.com/sites/LWMInvestmentTeam/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FLWMInvestmentTeam%2FShared%20Documents%2FResearch%2FManager%20Meeting%20Notes%2FEquities%2FArtemis%20Global%20EM",3]],"65":[["Baillie Gifford EM Growth","https://luminwealthmanagement.sharepoint.com/sites/LWMInvestmentTeam/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FLWMInvestmentTeam%2FShared%20Documents%2FResearch%2FManager%20Meeting%20Notes%2FEquities%2FBaillie%20Gifford%20EM%20Growth",4]],"98":[["Baillie Gifford EM Growth","https://luminwealthmanagement.sharepoint.com/sites/LWMInvestmentTeam/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FLWMInvestmentTeam%2FShared%20Documents%2FResearch%2FManager%20Meeting%20Notes%2FEquities%2FBaillie%20Gifford%20EM%20Growth",4]],"169":[["Chikara Japan","https://luminwealthmanagement.sharepoint.com/sites/LWMInvestmentTeam/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FLWMInvestmentTeam%2FShared%20Documents%2FResearch%2FManager%20Meeting%20Notes%2FEquities%2FChikara%20Japan",1]],"32":[["Fidelity Global Dividend","https://luminwealthmanagement.sharepoint.com/sites/LWMInvestmentTeam/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FLWMInvestmentTeam%2FShared%20Documents%2FResearch%2FManager%20Meeting%20Notes%2FEquities%2FFidelity%20Global%20Dividend",5]],"9":[["Fidelity Global Dividend","https://luminwealthmanagement.sharepoint.com/sites/LWMInvestmentTeam/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FLWMInvestmentTeam%2FShared%20Documents%2FResearch%2FManager%20Meeting%20Notes%2FEquities%2FFidelity%20Global%20Dividend",5]],"61":[["Fidelity Global Healthcare","https://luminwealthmanagement.sharepoint.com/sites/LWMInvestmentTeam/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FLWMInvestmentTeam%2FShared%20Documents%2FResearch%2FManager%20Meeting%20Notes%2FEquities%2FFidelity%20Global%20Healthcare",1]],"59":[["GAM UK Equity Fund","https://luminwealthmanagement.sharepoint.com/sites/LWMInvestmentTeam/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FLWMInvestmentTeam%2FShared%20Documents%2FResearch%2FManager%20Meeting%20Notes%2FEquities%2FGAM%20UK%20Equity%20Fund",2]],"40":[["HPVE","https://luminwealthmanagement.sharepoint.com/sites/LWMInvestmentTeam/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FLWMInvestmentTeam%2FShared%20Documents%2FResearch%2FManager%20Meeting%20Notes%2FEquities%2FHPVE",8]],"99":[["Invesco Pacific","https://luminwealthmanagement.sharepoint.com/sites/LWMInvestmentTeam/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FLWMInvestmentTeam%2FShared%20Documents%2FResearch%2FManager%20Meeting%20Notes%2FEquities%2FInvesco%20Pacific",1]],"72":[["Invesco Pacific","https://luminwealthmanagement.sharepoint.com/sites/LWMInvestmentTeam/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FLWMInvestmentTeam%2FShared%20Documents%2FResearch%2FManager%20Meeting%20Notes%2FEquities%2FInvesco%20Pacific",1]],"64":[["JPM Japan","https://luminwealthmanagement.sharepoint.com/sites/LWMInvestmentTeam/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FLWMInvestmentTeam%2FShared%20Documents%2FResearch%2FManager%20Meeting%20Notes%2FEquities%2FJPM%20Japan",1]],"67":[["JPM Natural Resources","https://luminwealthmanagement.sharepoint.com/sites/LWMInvestmentTeam/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FLWMInvestmentTeam%2FShared%20Documents%2FResearch%2FManager%20Meeting%20Notes%2FEquities%2FJPM%20Natural%20Resources",2]],"129":[["Janus Henderson Healthcare","https://luminwealthmanagement.sharepoint.com/sites/LWMInvestmentTeam/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FLWMInvestmentTeam%2FShared%20Documents%2FResearch%2FManager%20Meeting%20Notes%2FEquities%2FJanus%20Henderson%20Healthcare",1]],"37":[["Jupiter Strategic Bond","https://luminwealthmanagement.sharepoint.com/sites/LWMInvestmentTeam/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FLWMInvestmentTeam%2FShared%20Documents%2FResearch%2FManager%20Meeting%20Notes%2FEquities%2FJupiter%20Strategic%20Bond",1]],"66":[["Jupiter UK Special Situations","https://luminwealthmanagement.sharepoint.com/sites/LWMInvestmentTeam/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FLWMInvestmentTeam%2FShared%20Documents%2FResearch%2FManager%20Meeting%20Notes%2FEquities%2FJupiter%20UK%20Special%20Situations",2]],"62":[["Liontrust Sustainable Future European Growth","https://luminwealthmanagement.sharepoint.com/sites/LWMInvestmentTeam/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FLWMInvestmentTeam%2FShared%20Documents%2FResearch%2FManager%20Meeting%20Notes%2FEquities%2FLiontrust%20Sustainable%20Future%20European%20Growth",3]],"113":[["M&G Japan","https://luminwealthmanagement.sharepoint.com/sites/LWMInvestmentTeam/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FLWMInvestmentTeam%2FShared%20Documents%2FResearch%2FManager%20Meeting%20Notes%2FEquities%2FM%26G%20Japan",3]],"69":[["M&G Japan","https://luminwealthmanagement.sharepoint.com/sites/LWMInvestmentTeam/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FLWMInvestmentTeam%2FShared%20Documents%2FResearch%2FManager%20Meeting%20Notes%2FEquities%2FM%26G%20Japan",3]],"41":[["Man GLG Undervalued Assets","https://luminwealthmanagement.sharepoint.com/sites/LWMInvestmentTeam/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FLWMInvestmentTeam%2FShared%20Documents%2FResearch%2FManager%20Meeting%20Notes%2FEquities%2FMan%20GLG%20Undervalued%20Assets",5]],"58":[["Ninety One Global Environment","https://luminwealthmanagement.sharepoint.com/sites/LWMInvestmentTeam/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FLWMInvestmentTeam%2FShared%20Documents%2FResearch%2FManager%20Meeting%20Notes%2FEquities%2FNinety%20One%20Global%20Environment",2]],"120":[["PineBridge Global Focus Equity Fund","https://luminwealthmanagement.sharepoint.com/sites/LWMInvestmentTeam/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FLWMInvestmentTeam%2FShared%20Documents%2FResearch%2FManager%20Meeting%20Notes%2FEquities%2FPineBridge%20Global%20Focus%20Equity%20Fund",6]],"50":[["Polar Capital Global Insurance","https://luminwealthmanagement.sharepoint.com/sites/LWMInvestmentTeam/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FLWMInvestmentTeam%2FShared%20Documents%2FResearch%2FManager%20Meeting%20Notes%2FEquities%2FPolar%20Capital%20Global%20Insurance",13]],"103":[["Polar Capital Healthcare","https://luminwealthmanagement.sharepoint.com/sites/LWMInvestmentTeam/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FLWMInvestmentTeam%2FShared%20Documents%2FResearch%2FManager%20Meeting%20Notes%2FEquities%2FPolar%20Capital%20Healthcare",1],["Polar Capital Healthcare Opportunities Fund 16.01.25","https://luminwealthmanagement.sharepoint.com/sites/LWMInvestmentTeam/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FLWMInvestmentTeam%2FShared%20Documents%2FResearch%2FManager%20Meeting%20Notes%2FEquities%2FPolar%20Capital%20Healthcare%20Opportunities%20Fund%2016.01.25.docx",1]],"130":[["Premier Miton US Opps","https://luminwealthmanagement.sharepoint.com/sites/LWMInvestmentTeam/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FLWMInvestmentTeam%2FShared%20Documents%2FResearch%2FManager%20Meeting%20Notes%2FEquities%2FPremier%20Miton%20US%20Opps",6]],"55":[["Premier Miton US Opps","https://luminwealthmanagement.sharepoint.com/sites/LWMInvestmentTeam/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FLWMInvestmentTeam%2FShared%20Documents%2FResearch%2FManager%20Meeting%20Notes%2FEquities%2FPremier%20Miton%20US%20Opps",6]],"95":[["Redwheel Next Gen EM","https://luminwealthmanagement.sharepoint.com/sites/LWMInvestmentTeam/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FLWMInvestmentTeam%2FShared%20Documents%2FResearch%2FManager%20Meeting%20Notes%2FEquities%2FRedwheel%20Next%20Gen%20EM",4]],"60":[["Redwheel Next Gen EM","https://luminwealthmanagement.sharepoint.com/sites/LWMInvestmentTeam/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FLWMInvestmentTeam%2FShared%20Documents%2FResearch%2FManager%20Meeting%20Notes%2FEquities%2FRedwheel%20Next%20Gen%20EM",4]],"165":[["Schroder Income Maximiser","https://luminwealthmanagement.sharepoint.com/sites/LWMInvestmentTeam/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FLWMInvestmentTeam%2FShared%20Documents%2FResearch%2FManager%20Meeting%20Notes%2FEquities%2FSchroder%20Income%20Maximiser.docx",1]],"38":[["Stewart WW Sustainability","https://luminwealthmanagement.sharepoint.com/sites/LWMInvestmentTeam/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FLWMInvestmentTeam%2FShared%20Documents%2FResearch%2FManager%20Meeting%20Notes%2FEquities%2FStewart%20WW%20Sustainability",3]],"57":[["Vanguard Global EM","https://luminwealthmanagement.sharepoint.com/sites/LWMInvestmentTeam/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FLWMInvestmentTeam%2FShared%20Documents%2FResearch%2FManager%20Meeting%20Notes%2FEquities%2FVanguard%20Global%20EM",4]],"110":[["Vanguard Global EM","https://luminwealthmanagement.sharepoint.com/sites/LWMInvestmentTeam/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FLWMInvestmentTeam%2FShared%20Documents%2FResearch%2FManager%20Meeting%20Notes%2FEquities%2FVanguard%20Global%20EM",4]]};
+
+  // Fund register facts from the workbook (data/funds.json). Decimal fractions.
+  var SEED_FACTS = [{"name":"Aberdeen Short-Dated Inflation Linked","assetClass":"Fixed Interest","mgmt":"Passive","ranges":["Core","ESG","Passive"],"shareClasses":[{"label":"N Acc","isin":"GB00BDFZ6S09","ocf":0.001,"ocfDate":"2026-05-06","amc":0.001,"platforms":["WZ"]},{"label":"B Acc","isin":"GB00BGMK1733","ocf":0.0014,"ocfDate":"2025-05-06","amc":0.001,"platforms":["WZ"]}],"yield":0.0383,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"","region":"Global","house":"Aberdeen","website":"https://www.aberdeeninvestments.com/en-gb/investor/funds"},{"name":"Amundi MSCI EM SRI PAB Index","assetClass":"Equities","mgmt":"Passive","ranges":["ESG"],"shareClasses":[{"label":"","isin":"LU2089234475","ocf":0.0025,"ocfDate":"2026-05-06","amc":0.0015,"platforms":[]}],"yield":null,"yieldDate":null,"contactPhone":"","contactEmail":"","notes":"","region":"Asia & EM","house":"Amundi","website":"https://www.amundi.co.uk/professional/product-explorer"},{"name":"Amundi MSCI United Kingdom SRI PAB Index","assetClass":"Equities","mgmt":"Passive","ranges":["ESG"],"shareClasses":[{"label":"","isin":"LU2269164153","ocf":0.0018,"ocfDate":"2026-05-06","amc":0.0008,"platforms":[]}],"yield":null,"yieldDate":null,"contactPhone":"","contactEmail":"","notes":"","region":"UK","house":"Amundi","website":"https://www.amundi.co.uk/professional/product-explorer"},{"name":"Artemis Global Income Fund","assetClass":"Equities","mgmt":"Active","ranges":["Income"],"shareClasses":[{"label":"I Inc","isin":"GB00B5N99561","ocf":0.00825,"ocfDate":"2026-05-06","amc":0.0075,"platforms":[]}],"yield":0.0255,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"Using historic yield","region":"Global","house":"Artemis","website":"https://www.artemisfunds.com/en/gbr/adviser/funds"},{"name":"Artemis SmartGARP Global Emerging Markets","assetClass":"Equities","mgmt":"Active","ranges":["Core"],"shareClasses":[{"label":"e","isin":"GB00BNQNJ512","ocf":0.0069,"ocfDate":"2026-05-06","amc":0.006,"platforms":["WZ"]},{"label":"I Inc GBP","isin":"GB00BW9HL249","ocf":0.0084,"ocfDate":"2026-05-06","amc":0.0075,"platforms":["WZ"]}],"yield":0.0278,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"Using historic yield","region":"Asia & EM","house":"Artemis","website":"https://www.artemisfunds.com/en/gbr/adviser/funds"},{"name":"Artemis UK Smaller Companies","assetClass":"Equities","mgmt":"Active","ranges":["Core"],"shareClasses":[{"label":"I Acc","isin":"GB00B2PLJL57","ocf":0.0086,"ocfDate":"2026-05-06","amc":0.0075,"platforms":["WZ"]}],"yield":0.0225,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"Using historic yield","region":"UK","house":"Artemis","website":"https://www.artemisfunds.com/en/gbr/adviser/funds"},{"name":"BNP Paribas Easy ECPI Global ESG Infrastructure ETF","assetClass":"Diversifiers","mgmt":"Passive","ranges":["ESG"],"shareClasses":[{"label":"","isin":"IE0006O3TTP9","ocf":0.0031,"ocfDate":"2026-05-06","amc":0.0031,"platforms":[]}],"yield":0.0267,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"","region":"Global","house":"BNP Paribas","website":"https://www.bnpparibas-am.com/en-gb/professional/fund-explorer/"},{"name":"BNY Mellon US Equity Income Fund","assetClass":"Equities","mgmt":"Active","ranges":["Income"],"shareClasses":[{"label":"W Inc GBP","isin":"IE00BD5M7551","ocf":0.0084,"ocfDate":"2026-05-06","amc":0.0075,"platforms":[]}],"yield":0.0176,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"","region":"US","house":"BNY Mellon","website":"https://www.bny.com/investments/uk/en/intermediary/funds.html"},{"name":"CG Absolute Return","assetClass":"Diversifiers","mgmt":"Active","ranges":["Core"],"shareClasses":[{"label":"M Inc GBP","isin":"IE00BYQ69B30","ocf":0.0047,"ocfDate":"2026-02-06","amc":0.0035,"platforms":["WZ"]}],"yield":0.0267,"yieldDate":"2026-02-06","contactPhone":"","contactEmail":"","notes":"","region":"Global","house":"CG","website":"https://cgasset.com/funds/"},{"name":"Chikara Japan Income & Growth","assetClass":"Equities","mgmt":"Active","ranges":["Income"],"shareClasses":[{"label":"S Inc GBP","isin":"IE00BKRC2Z78","ocf":0.0105,"ocfDate":"2026-05-06","amc":0.0075,"platforms":[]}],"yield":0.026,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"","region":"Japan","house":"Chikara","website":"https://chikarainvestments.com/funds/"},{"name":"Cohen & Steers Diversified Real Assets Fund","assetClass":"Diversifiers","mgmt":"Active","ranges":["Core"],"shareClasses":[{"label":"FX GBP","isin":"LU1821812770","ocf":0.0055,"ocfDate":"2026-05-06","amc":0.0045,"platforms":["WZ"]}],"yield":0.0364,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"","region":"Global","house":"Cohen & Steers","website":"https://www.cohenandsteers.com/funds/"},{"name":"Cohen & Steers Diversified Real Assets Fund (GBP Hdg)","assetClass":"Diversifiers","mgmt":"Active","ranges":["Income"],"shareClasses":[{"label":"F Inc GBP (Hedged)","isin":"LU2313907409","ocf":0.0055,"ocfDate":"2026-05-06","amc":0.0045,"platforms":[]}],"yield":0.0364,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"","region":"Global","house":"Cohen & Steers","website":"https://www.cohenandsteers.com/funds/"},{"name":"Cohen & Steers Short Duration Preferred Income","assetClass":"Fixed Interest","mgmt":"Active","ranges":["Income"],"shareClasses":[{"label":"F Inc GBP (Hedged)","isin":"LU2581459927","ocf":0.0035,"ocfDate":"2026-05-06","amc":0.0035,"platforms":[]}],"yield":0.0494,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"","region":"Global","house":"Cohen & Steers","website":"https://www.cohenandsteers.com/funds/"},{"name":"Dimensional US Small Companies","assetClass":"Equities","mgmt":"Active","ranges":["Core"],"shareClasses":[{"label":"Acc GBP","isin":"IE00B0701B00","ocf":0.0036,"ocfDate":"2026-05-06","amc":0.0036,"platforms":["WZ"]}],"yield":"-","yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"","region":"US","house":"Dimensional","website":"https://www.dimensional.com/gb-en"},{"name":"Fidelity Global Dividend","assetClass":"Equities","mgmt":"Active","ranges":["Core"],"shareClasses":[{"label":"W Inc","isin":"GB00B7778087","ocf":0.0091,"ocfDate":"2026-05-06","amc":0.0075,"platforms":["WZ"]},{"label":"R Acc","isin":"GB00BP68CM89","ocf":0.0076,"ocfDate":"2026-05-06","amc":0.0075,"platforms":["WZ"]}],"yield":0.0251,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"Using historic yield","region":"Global","house":"Fidelity","website":"https://www.fidelity.co.uk/funds/"},{"name":"Fidelity Index World","assetClass":"Equities","mgmt":"Passive","ranges":["Core"],"shareClasses":[{"label":"P Inc","isin":"GB00BP8RYB62","ocf":0.0012,"ocfDate":"2026-05-06","amc":0.0012,"platforms":["WZ"]}],"yield":0.0126,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"Using historic yield","region":"Global","house":"Fidelity","website":"https://www.fidelity.co.uk/funds/"},{"name":"HSBC FTSE EPRA NAREIT Developed UCITS ETF","assetClass":"Diversifiers","mgmt":"Passive","ranges":["Passive"],"shareClasses":[{"label":"","isin":"IE00B5L01S80","ocf":0.0024,"ocfDate":"2026-05-06","amc":0.0024,"platforms":[]}],"yield":0.0373,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"","region":"Global","house":"HSBC","website":"https://www.assetmanagement.hsbc.co.uk/en/intermediary/investment-expertise/etfs"},{"name":"Invesco S&P 500 Equal Weight","assetClass":"Equities","mgmt":"Passive","ranges":["Core"],"shareClasses":[{"label":"UCITS ETF Acc","isin":"IE00BNGJJT35","ocf":0.002,"ocfDate":"2026-02-09","amc":0.002,"platforms":["WZ"]}],"yield":0,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"","region":"US","house":"Invesco","website":"https://www.invesco.com/uk/en/financial-products.html"},{"name":"iShares $ High Yield Corp Bond ESG UCITS ETF","assetClass":"Fixed Interest","mgmt":"Passive","ranges":["ESG"],"shareClasses":[{"label":"","isin":"IE0003NVF3Y3","ocf":0.0027,"ocfDate":"2026-05-06","amc":0.0027,"platforms":[]}],"yield":0.0831,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"12m trailing yield","region":"Global","house":"iShares","website":"https://www.ishares.com/uk"},{"name":"iShares Core Global Aggregate Bond","assetClass":"Fixed Interest","mgmt":"Active","ranges":["Core"],"shareClasses":[{"label":"GBP Hedged (Dist)","isin":"IE00BF540Y54","ocf":0.001,"ocfDate":"2026-05-06","amc":0.001,"platforms":["WZ"]}],"yield":0.0314,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"","region":"Global","house":"iShares","website":"https://www.ishares.com/uk"},{"name":"iShares Environment & Low Carbon Tilt Real Estate Index Fund","assetClass":"Diversifiers","mgmt":"Passive","ranges":["ESG"],"shareClasses":[{"label":"","isin":"GB00B5BFJG71","ocf":0.0012,"ocfDate":"2026-05-06","amc":0.001,"platforms":[]}],"yield":0.0255,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"","region":"Global","house":"iShares","website":"https://www.ishares.com/uk"},{"name":"iShares Global Aggregate Bond ESG SRI UCITS ETF","assetClass":"Fixed Interest","mgmt":"Passive","ranges":["ESG"],"shareClasses":[{"label":"","isin":"IE000ZXYID24","ocf":0.001,"ocfDate":"2026-05-06","amc":0.001,"platforms":[]}],"yield":0.001,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"","region":"Global","house":"iShares","website":"https://www.ishares.com/uk"},{"name":"iShares Global High Yield Corp Bond","assetClass":"Fixed Interest","mgmt":"Passive","ranges":["Passive"],"shareClasses":[{"label":"UCITS ETF GBP Hegded","isin":"IE00BJSFQX44","ocf":0.0055,"ocfDate":"2026-05-06","amc":0.0055,"platforms":[]}],"yield":0.05,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"12 month trailing distribution dividend yield","region":"Global","house":"iShares","website":"https://www.ishares.com/uk"},{"name":"iShares Index Linked Gilt Index Fund (UK)","assetClass":"Fixed Interest","mgmt":"Passive","ranges":["Core"],"shareClasses":[{"label":"D Acc","isin":"GB00B83RVT96","ocf":0.0011,"ocfDate":"2026-05-06","amc":0.001,"platforms":["WZ"]}],"yield":0,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"","region":"UK","house":"iShares","website":"https://www.ishares.com/uk"},{"name":"iShares Japan Equity ESG Screened and Optimised Index Fund","assetClass":"Equities","mgmt":"Passive","ranges":["ESG"],"shareClasses":[{"label":"","isin":"GB00BN090851","ocf":0.0009,"ocfDate":"2026-05-06","amc":0.0007,"platforms":[]}],"yield":0.0172,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"","region":"Japan","house":"iShares","website":"https://www.ishares.com/uk"},{"name":"iShares MSCI World Health Care Sector Advanced","assetClass":"Equities","mgmt":"Passive","ranges":["ESG"],"shareClasses":[{"label":"","isin":"IE0009QS7W62","ocf":0.0018,"ocfDate":"2026-05-06","amc":0.0018,"platforms":[]}],"yield":null,"yieldDate":null,"contactPhone":"","contactEmail":"","notes":"","region":"Global","house":"iShares","website":"https://www.ishares.com/uk"},{"name":"iShares UK Gilts All Stocks Index (UK) D Inc","assetClass":"Fixed Interest","mgmt":"Passive","ranges":["Core"],"shareClasses":[{"label":"","isin":"GB00B89VCR08","ocf":0.0011,"ocfDate":"2026-05-06","amc":0.001,"platforms":["WZ"]}],"yield":null,"yieldDate":null,"contactPhone":"","contactEmail":"","notes":"","region":"UK","house":"iShares","website":"https://www.ishares.com/uk"},{"name":"iShares £ Ultrashort Bond ETF","assetClass":"Fixed Interest","mgmt":"Passive","ranges":["ESG","Passive"],"shareClasses":[{"label":"","isin":"IE00BCRY6441","ocf":0.0009,"ocfDate":"2025-05-06","amc":0.0009,"platforms":[]}],"yield":0.043,"yieldDate":"2025-05-06","contactPhone":"","contactEmail":"","notes":"","region":"Global","house":"iShares","website":"https://www.ishares.com/uk"},{"name":"Janus Henderson Life Sciences","assetClass":"Equities","mgmt":"Active","ranges":["Core"],"shareClasses":[{"label":"","isin":"GB00BPXXDJ03","ocf":0.0081,"ocfDate":"2026-05-06","amc":0.0065,"platforms":["WZ"]}],"yield":"-","yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"","region":"US","house":"Janus Henderson","website":"https://www.janushenderson.com/en-gb/adviser/funds/"},{"name":"JPM Emerging Markets Income","assetClass":"Equities","mgmt":"Active","ranges":["Income"],"shareClasses":[{"label":"C Inc","isin":"GB00B5N1BC33","ocf":0.009,"ocfDate":"2026-05-06","amc":0.0075,"platforms":[]}],"yield":0.0284,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"","region":"Asia & EM","house":"JPM","website":"https://am.jpmorgan.com/gb/en/asset-management/adv/products/fund-explorer/"},{"name":"L&G Emerging Markets Government Bond (USD) Index","assetClass":"Fixed Interest","mgmt":"Passive","ranges":["Passive"],"shareClasses":[{"label":"","isin":"IE000Z3FSB21","ocf":0.0022,"ocfDate":"2026-05-06","amc":0.0022,"platforms":[]}],"yield":0.0647,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"Gross redemption yield","region":"Asia & EM","house":"L&G","website":"https://fundcentres.lgim.com/"},{"name":"L&G Emerging Markets Government Bond (USD) Screened Index","assetClass":"Fixed Interest","mgmt":"Passive","ranges":["ESG"],"shareClasses":[{"label":"","isin":"IE000GWGMO62","ocf":0.0019,"ocfDate":"2026-05-06","amc":0.0019,"platforms":[]}],"yield":0.0609,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"Gross redemption yield","region":"Asia & EM","house":"L&G","website":"https://fundcentres.lgim.com/"},{"name":"L&G Global Equity Index","assetClass":"Equities","mgmt":"Passive","ranges":["Core","Passive"],"shareClasses":[{"label":"I Inc","isin":"GB00B84K1975","ocf":0.0013,"ocfDate":"2026-05-06","amc":0.0013,"platforms":["WZ","ARC"]},{"label":"C Acc","isin":"GB00BPN60094","ocf":0.0008,"ocfDate":"2026-05-06","amc":0.0008,"platforms":["WZ","ARC"]}],"yield":0.014,"yieldDate":"2026-05-06","contactPhone":"0346 070 8684","contactEmail":"","notes":"They don't have (or at least won't quote) an AMC. Quoting historic yield","region":"Global","house":"L&G","website":"https://fundcentres.lgim.com/"},{"name":"L&G Global Infrastructure Index Fund","assetClass":"Diversifiers","mgmt":"Passive","ranges":["Passive"],"shareClasses":[{"label":"I-Class GBP Acc","isin":"GB00BF0TZG22","ocf":0.003,"ocfDate":"2026-05-06","amc":0.003,"platforms":[]}],"yield":0.024,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"Using historic yield","region":"Global","house":"L&G","website":"https://fundcentres.lgim.com/"},{"name":"L&G Japan Index Trust","assetClass":"Equities","mgmt":"Passive","ranges":["Passive"],"shareClasses":[{"label":"C ACC","isin":"GB00BG0QP828","ocf":0.0008,"ocfDate":"2026-05-06","amc":0.0008,"platforms":[]}],"yield":0.019,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"Using historic yield","region":"Japan","house":"L&G","website":"https://fundcentres.lgim.com/"},{"name":"L&G S&P 500 US Equal Weight Index","assetClass":"Equities","mgmt":"Passive","ranges":["Core","Passive"],"shareClasses":[{"label":"","isin":"GB00BSWT8L75","ocf":0.0015,"ocfDate":"2026-05-06","amc":0.0015,"platforms":["WZ"]},{"label":"C Acc GBP","isin":"GB00BSWT8Q21","ocf":0.001,"ocfDate":"2026-05-06","amc":0.001,"platforms":["WZ"]}],"yield":0.018,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"Using historic yield","region":"US","house":"L&G","website":"https://fundcentres.lgim.com/"},{"name":"L&G Strategic Bond","assetClass":"Fixed Interest","mgmt":"Active","ranges":["Core","Income"],"shareClasses":[{"label":"I Acc","isin":"GB00B1TWMW95","ocf":0.0063,"ocfDate":"2026-05-06","amc":0.0063,"platforms":["WZ"]},{"label":"I Inc","isin":"GB00B1TWMY10","ocf":0.0063,"ocfDate":"2026-05-06","amc":0.0063,"platforms":[]},{"label":"C Acc","isin":"GB00BYWRC554","ocf":0.005,"ocfDate":"2026-05-06","amc":0.005,"platforms":["WZ"]}],"yield":0.065,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"Equity yield used","region":"Global","house":"L&G","website":"https://fundcentres.lgim.com/"},{"name":"L&G UK 100 Index Trust","assetClass":"Equities","mgmt":"Passive","ranges":["Core"],"shareClasses":[{"label":"I Inc","isin":"GB00B0CNH494","ocf":0.001,"ocfDate":"2026-05-06","amc":0.001,"platforms":["WZ","ARC"]}],"yield":0.03,"yieldDate":"2026-05-06","contactPhone":"0348 070 8684","contactEmail":"","notes":"They don't have (or at least won't quote) an AMC. Quoting historic yield","region":"UK","house":"L&G","website":"https://fundcentres.lgim.com/"},{"name":"M&G Japan","assetClass":"Equities","mgmt":"Active","ranges":["Core"],"shareClasses":[{"label":"I Acc","isin":"GB00B74CQP79","ocf":0.0047,"ocfDate":"2026-05-06","amc":0.0047,"platforms":["WZ"]}],"yield":0.0135,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"Using historic yield","region":"Japan","house":"M&G","website":"https://www.mandg.com/investments/professional-investor/en-gb/funds"},{"name":"Morgan Stanley EMD Opportunities","assetClass":"Fixed Interest","mgmt":"Active","ranges":["Core","Income"],"shareClasses":[{"label":"","isin":"LU2617254367","ocf":0.0078,"ocfDate":"2026-05-06","amc":0.0065,"platforms":["WZ"]}],"yield":0.084,"yieldDate":"2026-01-21","contactPhone":"","contactEmail":"","notes":"Using 12m yield","region":"Asia & EM","house":"Morgan Stanley","website":"https://www.morganstanley.com/im/en-gb/intermediary-investor/funds-and-performance.html"},{"name":"PIMCO GIS Income Fund","assetClass":"Fixed Interest","mgmt":"Active","ranges":["Income"],"shareClasses":[{"label":"GBP H Inst Inc","isin":"IE00B8RHFL59","ocf":0.0055,"ocfDate":"2025-05-06","amc":0.0055,"platforms":[]}],"yield":0.0622,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"","region":"Global","house":"PIMCO","website":"https://www.pimco.co.uk/en-gb/investments/gis"},{"name":"PineBridge Global Equity","assetClass":"Equities","mgmt":"Active","ranges":["Core"],"shareClasses":[{"label":"","isin":"IE000SZPPNQ2","ocf":0.0062,"ocfDate":"2026-05-06","amc":0.0051,"platforms":["WZ"]}],"yield":null,"yieldDate":null,"contactPhone":"","contactEmail":"","notes":"","region":"Global","house":"PineBridge","website":"https://www.pinebridge.com/en/investment-strategies"},{"name":"Polar Capital Global Insurance","assetClass":"Equities","mgmt":"Active","ranges":["Core"],"shareClasses":[{"label":"I Acc GBP","isin":"IE00B5339C57","ocf":0.0082,"ocfDate":"2026-05-06","amc":0.0075,"platforms":["WZ","Ascentric","ARC"]}],"yield":0.019,"yieldDate":"2026-05-06","contactPhone":"2072272700","contactEmail":"","notes":"Yield Unknown. Performance Fees: 10% of outperformance against MSCI Daily TR World Net Insurance Index","region":"Global","house":"Polar Capital","website":"https://www.polarcapital.co.uk/gb/professional/Our-Funds/"},{"name":"Premier Miton Strategic Monthly Income","assetClass":"Fixed Interest","mgmt":"Active","ranges":["Income"],"shareClasses":[{"label":"","isin":"GB00BMWVS003","ocf":0.0045,"ocfDate":"2026-05-06","amc":0.0045,"platforms":[]}],"yield":0.0555,"yieldDate":"2025-05-06","contactPhone":"","contactEmail":"","notes":"","region":"Global","house":"Premier Miton","website":"https://www.premiermiton.com/funds/"},{"name":"Premier Miton Tellworth UK Select","assetClass":"Diversifiers","mgmt":"Active","ranges":["Core"],"shareClasses":[{"label":"A Acc GBP","isin":"GB00BNY7YM73","ocf":0.0092,"ocfDate":"2025-05-06","amc":0.0075,"platforms":["WZ"]}],"yield":0.0098,"yieldDate":"2026-02-09","contactPhone":"","contactEmail":"","notes":"","region":"UK","house":"Premier Miton","website":"https://www.premiermiton.com/funds/"},{"name":"Redwheel Next Generation Emerging Markets","assetClass":"Equities","mgmt":"Active","ranges":["Core"],"shareClasses":[{"label":"I Acc GBP","isin":"LU1940965699","ocf":0.0081,"ocfDate":"2026-02-06","amc":0.006,"platforms":["WZ"]},{"label":"R GBP","isin":"LU1940965939","ocf":0.014,"ocfDate":"2025-02-12","amc":0.01,"platforms":["WZ"]}],"yield":0,"yieldDate":"2026-02-06","contactPhone":"","contactEmail":"","notes":"","region":"Global","house":"Redwheel","website":"https://www.redwheel.com/uk/en/professional/funds/"},{"name":"Royal London Short Term Fixed Income","assetClass":"Fixed Interest","mgmt":"Active","ranges":["Core","Income"],"shareClasses":[{"label":"","isin":"GB00BMNR1H58","ocf":0.0015,"ocfDate":"2025-05-06","amc":0.0015,"platforms":["WZ"]}],"yield":0.0426,"yieldDate":"2025-05-06","contactPhone":"","contactEmail":"","notes":"","region":"Global","house":"Royal London","website":"https://www.rlam.com/uk/intermediaries/our-funds/"},{"name":"Schroder Income Maximiser","assetClass":"Equities","mgmt":"Active","ranges":["Income"],"shareClasses":[{"label":"L Inc","isin":"GB00BDD2F083","ocf":0.0084,"ocfDate":"2025-05-06","amc":0.0068,"platforms":[]}],"yield":0.0697,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"","region":"UK","house":"Schroder","website":"https://www.schroders.com/en-gb/uk/intermediary/funds-and-strategies/funds-in-focus/"},{"name":"Schroder US Equity Income Maximiser","assetClass":"Equities","mgmt":"Active","ranges":["Income"],"shareClasses":[{"label":"L Inc","isin":"GB00BYP25698","ocf":0.0039,"ocfDate":"2026-05-06","amc":0.003,"platforms":[]}],"yield":0.045,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"Using historic yield","region":"US","house":"Schroder","website":"https://www.schroders.com/en-gb/uk/intermediary/funds-and-strategies/funds-in-focus/"},{"name":"TM Gravis UK Infrastructure Income","assetClass":"Diversifiers","mgmt":"Active","ranges":["Income"],"shareClasses":[{"label":"","isin":"GB00BYVB3Q65","ocf":0.0065,"ocfDate":"2026-05-06","amc":0.0065,"platforms":[]}],"yield":0.0647,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"Trailing dividend","region":"UK","house":"TM Gravis","website":"https://www.graviscapital.com/funds"},{"name":"TrinityBridge Select Fixed Income","assetClass":"Fixed Interest","mgmt":"Active","ranges":["Core","Income"],"shareClasses":[{"label":"X Acc","isin":"GB00BD6DSC14","ocf":0.0048,"ocfDate":"2026-05-06","amc":0.0048,"platforms":["WZ"]},{"label":"X Inc","isin":"GB00BD6R7Y87","ocf":0.0047,"ocfDate":"2026-05-06","amc":0.0047,"platforms":["WZ"]}],"yield":0.0449,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"Using dist. Yield","region":"Global","house":"TrinityBridge","website":"https://www.trinitybridge.com/investment-solutions"},{"name":"UBS MSCI World Small Cap Socially Responsible UCITS ETF","assetClass":"Equities","mgmt":"Passive","ranges":["ESG"],"shareClasses":[{"label":"","isin":"IE00BKSCBW67","ocf":0.0023,"ocfDate":"2026-05-06","amc":0.0023,"platforms":[]}],"yield":0.0192,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"","region":"Global","house":"UBS","website":"https://www.ubs.com/uk/en/assetmanagement/funds.html"},{"name":"UBS MSCI World SRI ETF","assetClass":"Equities","mgmt":"Passive","ranges":["ESG"],"shareClasses":[{"label":"","isin":"IE00BK72HH44","ocf":0.0019,"ocfDate":"2026-05-06","amc":0.0019,"platforms":[]}],"yield":0.0158,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"","region":"Global","house":"UBS","website":"https://www.ubs.com/uk/en/assetmanagement/funds.html"},{"name":"Vanguard Emerging Markets Stock Index Fund","assetClass":"Equities","mgmt":"Passive","ranges":["Passive"],"shareClasses":[{"label":"IP GBP Acc","isin":"IE00BPT2BB99","ocf":0.0016,"ocfDate":"2026-05-06","amc":0.0016,"platforms":[]}],"yield":0.023,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"Equity yield used","region":"Asia & EM","house":"Vanguard","website":"https://www.vanguardinvestor.co.uk/"},{"name":"Vanguard ESG Developed European Index","assetClass":"Equities","mgmt":"Passive","ranges":["ESG"],"shareClasses":[{"label":"","isin":"IE00B76VTL96","ocf":0.0014,"ocfDate":"2026-05-06","amc":0.0014,"platforms":[]}],"yield":0.0268,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"","region":"Global","house":"Vanguard","website":"https://www.vanguardinvestor.co.uk/"},{"name":"Vanguard FTSE 100","assetClass":"Equities","mgmt":"Passive","ranges":["Core"],"shareClasses":[{"label":"(GBP) Distributing ETF","isin":"IE00B810Q511","ocf":0.0009,"ocfDate":"2026-05-06","amc":0.0009,"platforms":["WZ","Ascentric"]}],"yield":0.0301,"yieldDate":"2026-05-06","contactPhone":"0800 917 5508","contactEmail":"","notes":"Yield is dist. yield. Assume OCF=AMC","region":"UK","house":"Vanguard","website":"https://www.vanguardinvestor.co.uk/"},{"name":"Vanguard FTSE All World","assetClass":"Equities","mgmt":"Passive","ranges":["Core"],"shareClasses":[{"label":"ETF (GBP)","isin":"IE00B3RBWM25","ocf":0.0019,"ocfDate":"2026-05-06","amc":0.0019,"platforms":["WZ","Ascentric"]}],"yield":0.0144,"yieldDate":"2026-05-06","contactPhone":"0800 917 5509","contactEmail":"","notes":"Yield is Equity Yield from Factsheet. Assume OCF=AMC","region":"Global","house":"Vanguard","website":"https://www.vanguardinvestor.co.uk/"},{"name":"Vanguard FTSE All-World High Dividend Yield UCITS ETF","assetClass":"Equities","mgmt":"Passive","ranges":["Income"],"shareClasses":[{"label":"","isin":"IE00B8GKDB10","ocf":0.0029,"ocfDate":"2026-05-06","amc":0.0029,"platforms":[]}],"yield":0.032,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"Equity yield used","region":"Global","house":"Vanguard","website":"https://www.vanguardinvestor.co.uk/"},{"name":"Vanguard FTSE Developed Europe ex-U.K. Index","assetClass":"Equities","mgmt":"Passive","ranges":["Core","Passive"],"shareClasses":[{"label":"Acc GBP","isin":"GB00B5B71H80","ocf":0.0012,"ocfDate":"2026-05-06","amc":0.0012,"platforms":["WZ"]},{"label":"IP GBP Acc","isin":"GB00BPN5P014","ocf":0.0008,"ocfDate":"2024-10-09","amc":0.0008,"platforms":["WZ"]}],"yield":0.0233,"yieldDate":"2025-10-21","contactPhone":"","contactEmail":"","notes":"Equity yield used","region":"Europe","house":"Vanguard","website":"https://www.vanguardinvestor.co.uk/"},{"name":"Vanguard FTSE U.K. All Share Index","assetClass":"Equities","mgmt":"Passive","ranges":["Core","Passive"],"shareClasses":[{"label":"IP Acc","isin":"GB00BPN5P907","ocf":0.0005,"ocfDate":"2026-05-06","amc":0.0005,"platforms":["WZ"]}],"yield":0.037,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"Equity yield used","region":"UK","house":"Vanguard","website":"https://www.vanguardinvestor.co.uk/"},{"name":"Vanguard FTSE UK Equity Income Index","assetClass":"Equities","mgmt":"Passive","ranges":["Income"],"shareClasses":[{"label":"Inst Plus Inc GBP","isin":"GB00BPN5NV83","ocf":0.0012,"ocfDate":"2026-05-06","amc":0.0012,"platforms":[]}],"yield":0.043,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"","region":"UK","house":"Vanguard","website":"https://www.vanguardinvestor.co.uk/"},{"name":"Vanguard Global Bond Index","assetClass":"Fixed Interest","mgmt":"Passive","ranges":["Core","Passive"],"shareClasses":[{"label":"GBP Hedged Acc","isin":"IE00B50W2R13","ocf":0.0015,"ocfDate":"2026-05-06","amc":0.0015,"platforms":["WZ"]},{"label":"IP Acc","isin":"IE00BPT2BQ43","ocf":0.001,"ocfDate":"2026-05-06","amc":0.001,"platforms":["WZ"]}],"yield":0.0319,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"Using average coupon as yield","region":"Global","house":"Vanguard","website":"https://www.vanguardinvestor.co.uk/"},{"name":"Vanguard Global Emerging Markets","assetClass":"Equities","mgmt":"Active","ranges":["Core"],"shareClasses":[{"label":"A Acc GBP","isin":"GB00BZ82ZY13","ocf":0.0078,"ocfDate":"2025-02-12","amc":0.0078,"platforms":["WZ"]}],"yield":0.034,"yieldDate":"2025-02-12","contactPhone":"","contactEmail":"","notes":"","region":"Global","house":"Vanguard","website":"https://www.vanguardinvestor.co.uk/"},{"name":"Vanguard Global Small-Cap Index Fund","assetClass":"Equities","mgmt":"Passive","ranges":["Passive"],"shareClasses":[{"label":"IP GBP Acc","isin":"IE00BPT2BD14","ocf":0.0024,"ocfDate":"2026-05-06","amc":0.0024,"platforms":[]}],"yield":0.019,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"Equity yield used","region":"Global","house":"Vanguard","website":"https://www.vanguardinvestor.co.uk/"},{"name":"Vanguard U.K. Government Bond Index","assetClass":"Fixed Interest","mgmt":"Passive","ranges":["Core","ESG","Income","Passive"],"shareClasses":[{"label":"Inst Plus Inc","isin":"IE00BPT2BR59","ocf":0.0006,"ocfDate":"2026-05-06","amc":0.0006,"platforms":[]},{"label":"IP Acc","isin":"IE00BPT2BS66","ocf":0.0006,"ocfDate":"2026-05-06","amc":0.0006,"platforms":["WZ"]}],"yield":0.033,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"Using average coupon as yield","region":"UK","house":"Vanguard","website":"https://www.vanguardinvestor.co.uk/"},{"name":"Vanguard U.S. 500 Stock Index Fund","assetClass":"Equities","mgmt":"Passive","ranges":["Passive"],"shareClasses":[{"label":"IP USD Acc","isin":"IE00BFPM9T72","ocf":0.0006,"ocfDate":"2026-05-06","amc":0.0006,"platforms":[]}],"yield":0.012,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"Equity yield used","region":"US","house":"Vanguard","website":"https://www.vanguardinvestor.co.uk/"},{"name":"Vanguard UK Investment Grade Bond Index","assetClass":"Fixed Interest","mgmt":"Passive","ranges":["Income"],"shareClasses":[{"label":"IP Acc","isin":"IE00BPT2BT73","ocf":0.0006,"ocfDate":"2026-05-06","amc":0.0006,"platforms":["WZ"]}],"yield":0.046,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"Using average coupon as yield","region":"UK","house":"Vanguard","website":"https://www.vanguardinvestor.co.uk/"},{"name":"Vanguard UK Short-Term Investment Grade Index","assetClass":"Fixed Interest","mgmt":"Passive","ranges":["Core","ESG","Passive"],"shareClasses":[{"label":"Plus Acc GBP","isin":"IE00B9M1BB17","ocf":0.0012,"ocfDate":"2026-05-06","amc":0.0012,"platforms":["WZ"]},{"label":"Acc GBP","isin":"IE00BPT2BX10","ocf":0.0005,"ocfDate":"2026-05-06","amc":0.0005,"platforms":["WZ"]}],"yield":0.0427,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"Using average coupon as yield","region":"UK","house":"Vanguard","website":"https://www.vanguardinvestor.co.uk/"},{"name":"Xtrackers MSCI USA ESG UCITS ETF","assetClass":"Equities","mgmt":"Passive","ranges":["ESG"],"shareClasses":[{"label":"","isin":"IE00BFMNPS42","ocf":0.0015,"ocfDate":"2026-05-06","amc":0.0015,"platforms":[]}],"yield":0.0103,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"","region":"US","house":"Xtrackers","website":"https://etf.dws.com/en-gb/"},{"name":"Xtrackers MSCI World ex USA","assetClass":"Equities","mgmt":"Passive","ranges":["Core","Passive"],"shareClasses":[{"label":"1C","isin":"IE0006WW1TQ4","ocf":0.0015,"ocfDate":"2026-05-06","amc":0.0015,"platforms":["WZ"]}],"yield":0.0261,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"Using the MSCI ACWI ex US tracker div yield as FE shows no dividend for the fund","region":"Global","house":"Xtrackers","website":"https://etf.dws.com/en-gb/"},{"name":"Xtrackers MSCI World Health Care","assetClass":"Equities","mgmt":"Passive","ranges":["Passive"],"shareClasses":[{"label":"","isin":"IE00BM67HK77","ocf":0.0025,"ocfDate":"2026-05-06","amc":0.0025,"platforms":[]}],"yield":0.0181,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"Using MSCI world health care dividend yield","region":"Global","house":"Xtrackers","website":"https://etf.dws.com/en-gb/"},{"name":"Xtrackers S&P 500 Equal Weight ESG UCITS ETF","assetClass":"Equities","mgmt":"Passive","ranges":["ESG"],"shareClasses":[{"label":"","isin":"IE0004MFRED4","ocf":0.0017,"ocfDate":"2026-05-06","amc":0.0017,"platforms":[]}],"yield":0.0191,"yieldDate":"2026-05-06","contactPhone":"","contactEmail":"","notes":"","region":"US","house":"Xtrackers","website":"https://etf.dws.com/en-gb/"}];
+  var SEED_FACTS_META = {"generatedAt":"2026-08-13 11:54","sourceSheet":"Model Weights - From 03.08.26","effectiveDate":"2026-08-03"};
+
+  // Scanned SharePoint document listings, keyed by section id.
+  var SEED_DOCS = {};
+  var SEED_DOCS_META = {"scannedAt":""};
 
   var SEED_MODELS = [
     [0,0,"L10",[
@@ -2767,7 +2821,7 @@
   ];
 
   // Provenance shown in the freshness banner. Written by refresh_dashboard.py.
-  var SEED_META = {"workbook":"Copy of Model Portfolio Analysis - V4.3.11.xlsx","savedAt":"2026-08-13 12:00","refreshedAt":"2026-08-13 12:17","latest":"2026-08-03"};
+  var SEED_META = {"workbook":"Copy of Model Portfolio Analysis - V4.3.11.xlsx","savedAt":"2026-08-13 12:00","refreshedAt":"2026-08-13 13:54","latest":"2026-08-03"};
 
   var SEED_VERSION = "v3-2026-08-03";
 
@@ -2899,7 +2953,7 @@
     fundQuery: "", fundClass: "", fundRegion: "", fundPlatform: "", openFund: null, fundPage: null,
     calY: new Date().getFullYear(), calM: new Date().getMonth(),
     editEvent: null, meetingsFund: null,
-    navOpen: { hub: true, research: true, tasks: true, content: false }, contentTarget: null,
+    navOpen: { hub: true, research: true, tasks: true, content: true }, contentTarget: null,
     openFolder: null, folderTarget: null
   };
 
@@ -3498,7 +3552,7 @@
       meetings: meetingFolders().length, ddqs: DDQ_TEMPLATES.length,
       qir: state.content.qir.length, studies: state.content.studies.length,
       adhoc: state.content.adhoc.length, media: state.content.media.length,
-      factsheet: folderDocCount("factsheet"), quant: folderDocCount("quant"),
+      factsheet: folderDocCount("factsheet") + tnFactsheetFunds().length, quant: folderDocCount("quant"),
       "lumin-news": LUMIN_NEWS_ISSUES.length
     };
 
@@ -3539,9 +3593,9 @@
       "against the workbook before relying on them, and treat any snapshot flagged as not totalling 100% as suspect. " +
       "Manager notes open the Research / Manager Meeting Notes folder on the Investment Team SharePoint site " +
       "and need the reader to be signed in with access to that site. " +
-      "Performance and Sharpe ratio figures on fund pages are fetched live from Morningstar's public data service, " +
-      "matched by ISIN, and are indicative only - verify against FE Analytics or Morningstar Direct before " +
-      "relying on them. " +
+      "Performance and Sharpe ratio figures on fund pages come from Trustnet (FE fundinfo), matched by ISIN and " +
+      "refreshed daily by the market-data job, with a live Morningstar lookup as fallback for uncovered funds; " +
+      "all are indicative only - verify against FE Analytics before relying on them. " +
       "AI-generated content must be reviewed by a qualified individual before informing any regulated activity or client communication.";
   }
 
@@ -3570,7 +3624,7 @@
     all.forEach(function (p) {
       if (p.platformName && platOpts.indexOf(p.platformName) < 0) platOpts.push(p.platformName);
     });
-    platOpts.sort(function (a, b) { return a.localeCompare(b); });
+    platOpts.sort(platSort);
     if (view.pfPlatform && platOpts.indexOf(view.pfPlatform) < 0) view.pfPlatform = "";
     if (view.pfRange && rangeOpts.indexOf(view.pfRange) < 0) view.pfRange = "";
 
@@ -3627,7 +3681,7 @@
       var group = shown.filter(function (p) { return p.range === range; })
         .sort(function (a, b) {
           var pa = String(a.platformName || ""), pb = String(b.platformName || "");
-          if (pa !== pb) return pa.localeCompare(pb);
+          if (pa !== pb) return platSort(pa, pb);   // WealthZentrum models lead each range
           var na = parseInt(String(a.risk).replace(/\D/g, ""), 10);
           var nb = parseInt(String(b.risk).replace(/\D/g, ""), 10);
           if (isNaN(na) || isNaN(nb)) return String(a.risk).localeCompare(String(b.risk));
@@ -3667,6 +3721,15 @@
     return i < 0 ? RANGE_ORDER.length : i;
   }
 
+  // WealthZentrum is the house platform - it leads every provider ordering.
+  var WZ_NAME = "WealthZentrum";
+  function platRank(name) {
+    return name === WZ_NAME ? 0 : 1;
+  }
+  function platSort(a, b) {
+    return platRank(a) - platRank(b) || a.localeCompare(b);
+  }
+
   function riskRank(risk) {
     var n = parseInt(String(risk).replace(/\D/g, ""), 10);
     return isNaN(n) ? 999 : n;
@@ -3702,7 +3765,7 @@
       var e = map[k];
       e.holdings.sort(function (a, b) {
         return rangeRank(a.range) - rangeRank(b.range) ||
-          a.platformName.localeCompare(b.platformName) ||
+          platSort(a.platformName, b.platformName) ||
           riskRank(a.risk) - riskRank(b.risk);
       });
       var ws = e.holdings.map(function (h) { return h.weight; });
@@ -3838,6 +3901,14 @@
         }).join("") + "</div>";
     }
 
+    var tn = tnEntry(e);
+    if (tn && tn.pdf) {
+      notes += '<div class="side-title"' + (e.notes && e.notes.length ? ' style="margin-top:8px"' : "") +
+        '>Factsheet</div><div class="wgrid">' +
+        '<a class="wcell" href="' + esc(tn.pdf) + '" data-lktitle="' + esc(e.fund + " - factsheet") + '">' +
+        "<span>Provider factsheet (Trustnet)</span><span class=\"w\">PDF</span></a></div>";
+    }
+
     return '<tr class="breakdown"><td colspan="7"><div class="breakdown-inner">' + notes +
       '<div class="side-title">Held in ' + e.count + " model" + (e.count === 1 ? "" : "s") + "</div>" +
       '<div class="wgrid">' + cells + "</div>" +
@@ -3850,7 +3921,7 @@
     visiblePortfolios().forEach(function (p) {
       if (p.platformName && platOpts.indexOf(p.platformName) < 0) platOpts.push(p.platformName);
     });
-    platOpts.sort(function (a, b) { return a.localeCompare(b); });
+    platOpts.sort(platSort);
     if (view.fundPlatform && platOpts.indexOf(view.fundPlatform) < 0) view.fundPlatform = "";
 
     var all = fundRegister(view.fundPlatform);
@@ -3862,9 +3933,9 @@
       icon("down") + " Export register</button></div>" +
       '<p class="blurb">Every distinct fund in the latest allocation of the ' + shown.length +
       " model portfolio" + (shown.length === 1 ? "" : "s") + " under Portfolios. " +
-      "Click a fund name to open its research page - live Morningstar performance and Sharpe ratio, " +
-      "plus the manager meeting notes filed for it - or anywhere else on the row " +
-      "to see which models hold it and at what weight.</p>";
+      "Click a fund name to open its research page - Trustnet performance and Sharpe ratio, " +
+      "the provider factsheet, FT macro coverage, plus the manager meeting notes filed for it - " +
+      "or anywhere else on the row to see which models hold it and at what weight.</p>";
 
     if (!all.length) {
       return head + '<div class="empty">No funds yet - add allocations to a portfolio first.</div>';
@@ -3947,6 +4018,229 @@
     return '<div class="fact"><div style="min-width:0"><div class="fact-label">' + label + "</div>" +
       '<div class="fact-value">' + valueHtml + "</div></div>" +
       '<span class="fact-menu" aria-hidden="true">&#9776;</span></div>';
+  }
+
+  // ---------- live market data (Trustnet / FT) ----------
+  // Written daily by scripts/fetch_market_data.py - do not edit by hand.
+  var SEED_TN = {"IE00BPT2BQ43":{"u":"O","cc":"FPD9","url":"https://www.trustnet.com/factsheets/o/fpd9/vanguard-global-bond-index-hedged-acc-gbp","asOf":"2026-08-13","name":"Vanguard Global Bond Index Hedged Acc GBP","pdf":"https://documentscdn.financialexpress.net/Literature/21D21C2C1259CA926250528E49FFCD7B/244718225.pdf","perf":{"p3m":0.2,"p6m":-0.9,"p1y":1.8,"p3y":12.4,"p5y":-3.3},"sector":"IA Global Mixed Bond","sectorPerf":{"p3m":0.3,"p6m":-0.5,"p1y":2.1,"p3y":12.7,"p5y":2.9},"quartiles":{"p3m":3,"p6m":3,"p1y":3,"p3y":3,"p5y":4},"ratios":{"vol1y":3.21,"vol3y":4.51,"alpha3y":-0.6,"beta3y":1.08,"sharpe1y":-0.0,"sharpe3y":0.01}},"IE00BPT2BS66":{"u":"O","cc":"FPD7","url":"https://www.trustnet.com/factsheets/o/fpd7/vanguard-uk-government-bond-index-acc-gbp","asOf":"2026-08-13","name":"Vanguard UK Government Bond Index Acc GBP","pdf":"https://documentscdn.financialexpress.net/Literature/1D41DCFE9ABC0E023ED9CFE3B61A128B/245331271.pdf","perf":{"p3m":1.9,"p6m":-1.6,"p1y":2.0,"p3y":8.4,"p5y":-27.1},"sector":"IA UK Gilts","sectorPerf":{"p3m":1.8,"p6m":-1.2,"p1y":2.0,"p3y":8.4,"p5y":-22.5},"quartiles":{"p3m":2,"p6m":4,"p1y":3,"p3y":3,"p5y":4},"ratios":{"vol1y":6.79,"vol3y":7.14,"alpha3y":-0.57,"beta3y":1.12,"sharpe1y":-0.0,"sharpe3y":-0.0}},"GB00BDFZ6S09":{"u":"O","cc":"PZCZ","url":"https://www.trustnet.com/factsheets/o/pzcz/abrdn-short-dated-global-inflation-linked-bond-tracker-b-acc","asOf":"2026-08-13","name":"abrdn Short Dated Global Inflation-Linked Bond Tracker B Acc","pdf":"https://documentscdn.financialexpress.net/Literature/0FF5A81CD4FA426612B68B3C8923AEC6/245326569.pdf","perf":{"p3m":-0.1,"p6m":1.2,"p1y":3.1,"p3y":13.9,"p5y":10.2},"sector":"IA Global Inflation Linked Bond","sectorPerf":{"p3m":-0.5,"p6m":0.1,"p1y":2.4,"p3y":9.0,"p5y":0.1},"quartiles":{"p3m":2,"p6m":1,"p1y":1,"p3y":1,"p5y":1},"ratios":{"vol1y":1.7,"vol3y":2.39,"alpha3y":2.74,"beta3y":0.57,"sharpe1y":-0.0,"sharpe3y":0.32}},"GB00BD6R7Y87":{"u":"O","cc":"OSLV","url":"https://www.trustnet.com/factsheets/o/oslv/trinitybridge-select-fixed-income-x-acc","asOf":"2026-08-13","name":"TrinityBridge Select Fixed Income X Acc","pdf":"https://documentscdn.financialexpress.net/Literature/7A65170B8E076E4278C575362B9DF69A/236845306.pdf","perf":{"p3m":2.1,"p6m":1.0,"p1y":4.3,"p3y":22.0,"p5y":14.7},"sector":"IA Sterling Strategic Bond","sectorPerf":{"p3m":1.2,"p6m":0.4,"p1y":3.8,"p3y":20.6,"p5y":8.2},"quartiles":{"p3m":1,"p6m":2,"p1y":2,"p3y":2,"p5y":2},"ratios":{"vol1y":3.29,"vol3y":3.78,"alpha3y":0.73,"beta3y":0.93,"sharpe1y":0.14,"sharpe3y":0.81}},"IE00BPT2BX10":{"u":"O","cc":"JBVG","url":"https://www.trustnet.com/factsheets/o/jbvg/vanguard-uk-short-term-investment-grade-bond-index-acc-gbp","asOf":"2026-08-13","name":"Vanguard UK Short-Term Investment Grade Bond Index Acc GBP","perf":{"p3m":1.9,"p6m":0.8,"p1y":3.7,"p3y":18.7,"p5y":9.6},"sector":"IA Sterling Corporate Bond","sectorPerf":{"p3m":2.0,"p6m":-0.1,"p1y":3.4,"p3y":19.7,"p5y":-0.3},"quartiles":{"p3m":3,"p6m":1,"p1y":2,"p3y":3,"p5y":1}},"LU2617254367":{"u":"B","cc":"AY2B5","url":"https://www.trustnet.com/factsheets/b/ay2b5/ms-invf-emerging-markets-debt-opportunities-zh-hedged-cap-gbp","asOf":"2026-08-13","name":"MS INVF Emerging Markets Debt Opportunities ZH Hedged Cap GBP","perf":{"p3m":3.1,"p6m":4.8,"p1y":16.1,"p3y":49.5,"p5y":44.0},"sector":"FO Fixed Int - Emerging Markets","sectorPerf":{"p3m":1.1,"p6m":1.4,"p1y":7.0,"p3y":19.7,"p5y":14.2},"quartiles":{"p3m":1,"p6m":1,"p1y":1,"p3y":1,"p5y":1}},"GB00BNY7YM73":{"u":"O","cc":"KZXS","url":"https://www.trustnet.com/factsheets/o/kzxs/premier-miton-tellworth-uk-select-a-acc-gbp","asOf":"2026-08-13","name":"Premier Miton Tellworth UK Select A Acc GBP","pdf":"https://documentscdn.financialexpress.net/Literature/E55EE860E1C5ED1389D5113BE20BA363/244553287.pdf","perf":{"p3m":-4.5,"p6m":-8.4,"p1y":-7.4,"p3y":10.8,"p5y":22.4},"sector":"IA Targeted Absolute Return","sectorPerf":{"p3m":1.4,"p6m":1.0,"p1y":6.8,"p3y":22.2,"p5y":23.2},"quartiles":{"p3m":null,"p6m":null,"p1y":null,"p3y":null,"p5y":null},"ratios":{"vol1y":6.68,"vol3y":5.29,"alpha3y":-1.99,"beta3y":0.87,"sharpe1y":-0.01,"sharpe3y":0.03}},"GB00BP68CM89":{"u":"O","cc":"GMTY","url":"https://www.trustnet.com/factsheets/o/gmty/fidelity-global-dividend-w-inc","asOf":"2026-08-13","name":"Fidelity Global Dividend W Inc","pdf":"https://documentscdn.financialexpress.net/Literature/31E4799B6A89DE3CE16549A8F3968D74/244120669.pdf","perf":{"p3m":4.5,"p6m":4.4,"p1y":15.4,"p3y":53.2,"p5y":63.9},"sector":"IA Global Equity Income","sectorPerf":{"p3m":6.6,"p6m":8.4,"p1y":20.1,"p3y":48.7,"p5y":60.9},"quartiles":{"p3m":4,"p6m":4,"p1y":3,"p3y":2,"p5y":3},"ratios":{"vol1y":11.83,"vol3y":8.41,"alpha3y":3.55,"beta3y":0.84,"sharpe1y":0.86,"sharpe3y":1.36}},"IE00B3RBWM25":{"u":"O","cc":"G2HB","url":"https://www.trustnet.com/factsheets/o/g2hb/vanguard-ftse-all-world-ucits-etf-inc-usd","asOf":"2026-08-13","name":"Vanguard FTSE All World UCITS ETF Inc USD","pdf":"https://documentscdn.financialexpress.net/Literature/4F0A4A384BC393FEEA23FF1E2B4238BF/245011258.pdf","perf":{"p3m":5.0,"p6m":12.2,"p1y":23.1,"p3y":65.4,"p5y":73.9},"sector":"IA Global","sectorPerf":{"p3m":5.5,"p6m":9.6,"p1y":19.4,"p3y":48.1,"p5y":46.6},"quartiles":{"p3m":3,"p6m":1,"p1y":2,"p3y":1,"p5y":1},"ratios":{"vol1y":14.1,"vol3y":12.52,"alpha3y":4.8,"beta3y":0.93,"sharpe1y":1.32,"sharpe3y":1.18}},"GB00BPN5P907":{"u":"O","cc":"HRP3","url":"https://www.trustnet.com/factsheets/o/hrp3/vanguard-ftse-uk-all-share-index-unit-trust-a-acc-gbp","asOf":"2026-08-13","name":"Vanguard FTSE U.K. All Share Index Unit Trust A Acc GBP","pdf":"https://documentscdn.financialexpress.net/Literature/8CC3DE5A9A28DB29CA17301767B9B364/245326746.pdf","perf":{"p3m":6.4,"p6m":6.5,"p1y":21.0,"p3y":56.7,"p5y":68.2},"sector":"IA UK All Companies","sectorPerf":{"p3m":8.8,"p6m":6.6,"p1y":16.7,"p3y":43.3,"p5y":35.1},"quartiles":{"p3m":4,"p6m":2,"p1y":2,"p3y":2,"p5y":1},"ratios":{"vol1y":10.92,"vol3y":9.42,"alpha3y":4.99,"beta3y":0.87,"sharpe1y":1.7,"sharpe3y":1.3}},"GB00BMNR1H58":{"u":"O","cc":"014O","url":"https://www.trustnet.com/factsheets/o/014o/royal-london-short-term-fixed-income-z-inc","asOf":"2026-08-13","name":"Royal London Short Term Fixed Income Z Inc","pdf":"https://documentscdn.financialexpress.net/Literature/1B7DAE66EA5208828111982CE78F494C/244813236.pdf","perf":{"p3m":1.2,"p6m":2.1,"p1y":4.4,"p3y":16.3,"p5y":20.9},"sector":"IA Not yet assigned","sectorPerf":{"p3m":3.8,"p6m":5.5,"p1y":14.3,"p3y":35.9,"p5y":29.8},"quartiles":{"p3m":4,"p6m":4,"p1y":4,"p3y":4,"p5y":3},"ratios":{"vol1y":0.19,"vol3y":0.25,"alpha3y":5.14,"beta3y":0.0,"sharpe1y":4.79,"sharpe3y":6.81}},"IE00BF540Y54":{"u":"O","cc":"OBTS","url":"https://www.trustnet.com/factsheets/o/obts/ishares-core-global-aggregate-bond-ucits-etf-usd","asOf":"2026-08-13","name":"iShares Core Global Aggregate Bond UCITS ETF USD","perf":{"p3m":-0.3,"p6m":-1.0,"p1y":0.8,"p3y":4.6,"p5y":-6.3},"sector":"IA Global Mixed Bond","sectorPerf":{"p3m":0.3,"p6m":-0.5,"p1y":2.1,"p3y":12.7,"p5y":2.9},"quartiles":{"p3m":4,"p6m":3,"p1y":4,"p3y":4,"p5y":4}},"GB00B89VCR08":{"u":"O","cc":"G6IH","url":"https://www.trustnet.com/factsheets/o/g6ih/ishares-uk-gilts-all-stocks-index-d-acc","asOf":"2026-08-13","name":"iShares UK Gilts All Stocks Index D Acc","pdf":"https://documentscdn.financialexpress.net/Literature/CEBB68D5E5D694F1FDB0F731BC08AB69/245325935.pdf","perf":{"p3m":2.1,"p6m":-1.0,"p1y":2.2,"p3y":9.0,"p5y":-22.4},"sector":"IA UK Gilts","sectorPerf":{"p3m":1.8,"p6m":-1.2,"p1y":2.0,"p3y":8.4,"p5y":-22.5},"quartiles":{"p3m":1,"p6m":2,"p1y":2,"p3y":2,"p5y":2},"ratios":{"vol1y":6.17,"vol3y":6.46,"alpha3y":0.21,"beta3y":1.02,"sharpe1y":-0.0,"sharpe3y":-0.0}},"IE00B9M1BB17":{"u":"O","cc":"JBVG","url":"https://www.trustnet.com/factsheets/o/jbvg/vanguard-uk-short-term-investment-grade-bond-index-acc-gbp","asOf":"2026-08-13","name":"Vanguard UK Short-Term Investment Grade Bond Index Acc GBP","perf":{"p3m":1.9,"p6m":0.8,"p1y":3.7,"p3y":18.7,"p5y":9.6},"sector":"IA Sterling Corporate Bond","sectorPerf":{"p3m":2.0,"p6m":-0.1,"p1y":3.4,"p3y":19.7,"p5y":-0.3},"quartiles":{"p3m":3,"p6m":1,"p1y":2,"p3y":3,"p5y":1}},"IE00B810Q511":{"u":"O","cc":"QHN0","url":"https://www.trustnet.com/factsheets/o/qhn0/vanguard-ftse-100-ucits-etf-chf","asOf":"2026-08-13","name":"Vanguard FTSE 100 UCITS ETF CHF","pdf":"https://documentscdn.financialexpress.net/Literature/8B4F9184E5C95A285FCF61957A6AF963/244717215.pdf","perf":{"p3m":6.3,"p6m":6.1,"p1y":22.0,"p3y":58.9,"p5y":79.0},"sector":"IA UK All Companies","sectorPerf":{"p3m":8.9,"p6m":7.1,"p1y":16.4,"p3y":43.3,"p5y":34.8},"quartiles":{"p3m":4,"p6m":3,"p1y":1,"p3y":1,"p5y":1},"ratios":{"vol1y":8.14,"vol3y":9.87,"alpha3y":null,"beta3y":null,"sharpe1y":2.54,"sharpe3y":1.18}},"GB00B83RVT96":{"u":"O","cc":"G6VD","url":"https://www.trustnet.com/factsheets/o/g6vd/ishares-index-linked-gilt-index-uk-d-acc","asOf":"2026-08-13","name":"iShares Index Linked Gilt Index (UK) D Acc","pdf":"https://documentscdn.financialexpress.net/Literature/57B5B28259A1C9E3E377DE5C44C6CD08/245357305.pdf","perf":{"p3m":0.7,"p6m":-2.1,"p1y":2.9,"p3y":-4.8,"p5y":-45.2},"sector":"IA UK Index Linked Gilts","sectorPerf":{"p3m":0.8,"p6m":-1.8,"p1y":2.8,"p3y":-3.1,"p5y":-41.3},"quartiles":{"p3m":2,"p6m":4,"p1y":2,"p3y":4,"p5y":4},"ratios":{"vol1y":9.25,"vol3y":10.51,"alpha3y":-0.32,"beta3y":1.12,"sharpe1y":-0.0,"sharpe3y":-0.01}},"IE00BYQ69B30":{"u":"O","cc":"NYKT","url":"https://www.trustnet.com/factsheets/o/nykt/cg-absolute-return-class-unhedged-share-gbp","asOf":"2026-08-13","name":"CG Absolute Return Class Unhedged Share GBP","perf":{"p3m":1.9,"p6m":3.8,"p1y":7.5,"p3y":18.4,"p5y":14.1},"sector":"IA Flexible Investment","sectorPerf":{"p3m":3.9,"p6m":6.4,"p1y":17.1,"p3y":40.5,"p5y":33.8},"quartiles":{"p3m":4,"p6m":4,"p1y":4,"p3y":4,"p5y":4}},"IE00B1S74Q32":{"u":"O","cc":"FPD5","url":"https://www.trustnet.com/factsheets/o/fpd5/vanguard-uk-investment-grade-bond-index-acc-gbp","asOf":"2026-08-13","name":"Vanguard UK Investment Grade Bond Index Acc GBP","pdf":"https://documentscdn.financialexpress.net/Literature/90671EB0029215BCDF096E9EC6F778D5/244719894.pdf","perf":{"p3m":2.0,"p6m":-0.2,"p1y":3.5,"p3y":18.4,"p5y":-4.4},"sector":"IA Sterling Corporate Bond","sectorPerf":{"p3m":2.0,"p6m":-0.1,"p1y":3.4,"p3y":19.7,"p5y":-0.3},"quartiles":{"p3m":3,"p6m":3,"p1y":2,"p3y":3,"p5y":3},"ratios":{"vol1y":4.71,"vol3y":4.61,"alpha3y":-0.43,"beta3y":0.98,"sharpe1y":-0.0,"sharpe3y":0.38}},"GB00B3P2RZ52":{"u":"O","cc":"GWUO","url":"https://www.trustnet.com/factsheets/o/gwuo/royal-london-short-term-money-market-y-acc","asOf":"2026-08-13","name":"Royal London Short Term Money Market Y Acc","pdf":"https://documentscdn.financialexpress.net/Literature/3D2B921C199AB5A379C37A301A5E51FB/245330840.pdf","perf":{"p3m":1.0,"p6m":1.9,"p1y":4.0,"p3y":15.0,"p5y":19.6},"sector":"IA Short Term Money Market","sectorPerf":{"p3m":0.9,"p6m":1.9,"p1y":4.1,"p3y":14.0,"p5y":17.8},"quartiles":{"p3m":1,"p6m":1,"p1y":1,"p3y":2,"p5y":1},"ratios":{"vol1y":0.09,"vol3y":0.2,"alpha3y":3.13,"beta3y":0.36,"sharpe1y":5.89,"sharpe3y":6.46}},"GB00BPN5P451":{"u":"O","cc":"MEC5","url":"https://www.trustnet.com/factsheets/o/mec5/vanguard-uk-inflation-linked-gilt-index-a-gross-acc-gbp","asOf":"2026-08-13","name":"Vanguard UK Inflation-Linked Gilt Index A Gross Acc GBP","pdf":"https://documentscdn.financialexpress.net/Literature/9C33934CD95556DC695B0B1BC6D60B78/244716140.pdf","perf":{"p3m":0.5,"p6m":-1.7,"p1y":3.2,"p3y":-1.2,"p5y":-39.7},"sector":"IA UK Index Linked Gilts","sectorPerf":{"p3m":0.8,"p6m":-1.8,"p1y":2.8,"p3y":-3.1,"p5y":-41.3},"quartiles":{"p3m":4,"p6m":3,"p1y":1,"p3y":1,"p5y":2},"ratios":{"vol1y":7.97,"vol3y":8.88,"alpha3y":0.16,"beta3y":0.92,"sharpe1y":-0.0,"sharpe3y":-0.0}},"GB00BMWLQV75":{"u":"O","cc":"WVG4","url":"https://www.trustnet.com/factsheets/o/wvg4/ws-ruffer-diversified-return-i-acc","asOf":"2026-08-13","name":"WS Ruffer Diversified Return I Acc","pdf":"https://documentscdn.financialexpress.net/Literature/54CFE39C0C8275DD42F53E588A3149AB/245007868.pdf","perf":{"p3m":1.3,"p6m":-0.7,"p1y":6.1,"p3y":14.4,"p5y":null},"sector":"IA Targeted Absolute Return","sectorPerf":{"p3m":1.4,"p6m":1.0,"p1y":6.8,"p3y":22.2,"p5y":23.2},"quartiles":{"p3m":null,"p6m":null,"p1y":null,"p3y":null,"p5y":null},"ratios":{"vol1y":4.72,"vol3y":4.32,"alpha3y":-2.88,"beta3y":1.05,"sharpe1y":0.34,"sharpe3y":0.11}},"GB00B7778087":{"u":"O","cc":"GMTY","url":"https://www.trustnet.com/factsheets/o/gmty/fidelity-global-dividend-w-inc","asOf":"2026-08-13","name":"Fidelity Global Dividend W Inc","pdf":"https://documentscdn.financialexpress.net/Literature/31E4799B6A89DE3CE16549A8F3968D74/244120669.pdf","perf":{"p3m":4.5,"p6m":4.4,"p1y":15.4,"p3y":53.2,"p5y":63.9},"sector":"IA Global Equity Income","sectorPerf":{"p3m":6.6,"p6m":8.4,"p1y":20.1,"p3y":48.7,"p5y":60.9},"quartiles":{"p3m":4,"p6m":4,"p1y":3,"p3y":2,"p5y":3},"ratios":{"vol1y":11.83,"vol3y":8.41,"alpha3y":3.55,"beta3y":0.84,"sharpe1y":0.86,"sharpe3y":1.36}},"IE0032571485":{"u":"O","cc":"RP65","url":"https://www.trustnet.com/factsheets/o/rp65/royal-london-sterling-extra-yield-bond-a-inc","asOf":"2026-08-13","name":"Royal London Sterling Extra Yield Bond A Inc","pdf":"https://documentscdn.financialexpress.net/Literature/AF3D27B4F0524840A999B3210E638BDD/245326003.pdf","perf":{"p3m":2.9,"p6m":1.8,"p1y":6.7,"p3y":33.4,"p5y":31.7},"sector":"IA Sterling Strategic Bond","sectorPerf":{"p3m":1.2,"p6m":0.4,"p1y":3.8,"p3y":20.6,"p5y":8.2},"quartiles":{"p3m":1,"p6m":1,"p1y":1,"p3y":1,"p5y":1},"ratios":{"vol1y":2.7,"vol3y":2.64,"alpha3y":6.24,"beta3y":0.55,"sharpe1y":1.15,"sharpe3y":2.4}},"GB00B544HM32":{"u":"O","cc":"09Q3","url":"https://www.trustnet.com/factsheets/o/09q3/jupiter-strategic-bond-i-acc","asOf":"2026-08-13","name":"Jupiter Strategic Bond I Acc","pdf":"https://documentscdn.financialexpress.net/Literature/CE1B613F6E300D6B38BB8D6FC71615E4/245326277.pdf","perf":{"p3m":1.0,"p6m":0.6,"p1y":5.3,"p3y":20.8,"p5y":2.8},"sector":"IA Sterling Strategic Bond","sectorPerf":{"p3m":1.2,"p6m":0.4,"p1y":3.8,"p3y":20.6,"p5y":8.2},"quartiles":{"p3m":3,"p6m":2,"p1y":1,"p3y":3,"p5y":4},"ratios":{"vol1y":5.81,"vol3y":7.24,"alpha3y":-4.3,"beta3y":1.75,"sharpe1y":0.32,"sharpe3y":0.38}},"GB00B8319S60":{"u":"O","cc":"GQ7S","url":"https://www.trustnet.com/factsheets/o/gq7s/rqi-global-b-acc-gbp","asOf":"2026-08-13","name":"RQI Global B Acc GBP","pdf":"https://documentscdn.financialexpress.net/Literature/27368717AA0C5FB70926223CD0212928/244891252.pdf","perf":{"p3m":7.5,"p6m":3.4,"p1y":12.8,"p3y":21.1,"p5y":8.7},"sector":"IA Global","sectorPerf":{"p3m":5.5,"p6m":9.6,"p1y":19.4,"p3y":48.1,"p5y":46.6},"quartiles":{"p3m":1,"p6m":4,"p1y":3,"p3y":4,"p5y":4},"ratios":{"vol1y":18.72,"vol3y":15.71,"alpha3y":-8.72,"beta3y":1.24,"sharpe1y":0.25,"sharpe3y":0.1}},"GB00B7W36529":{"u":"O","cc":"GPQK","url":"https://www.trustnet.com/factsheets/o/gpqk/bny-mellon-real-return-inst-w-acc","asOf":"2026-08-13","name":"BNY Mellon Real Return Inst W Acc","pdf":"https://documentscdn.financialexpress.net/Literature/9460A8E02E32B73CED390917A848C537/245327473.pdf","perf":{"p3m":2.2,"p6m":2.7,"p1y":14.4,"p3y":35.7,"p5y":24.5},"sector":"IA Targeted Absolute Return","sectorPerf":{"p3m":1.4,"p6m":1.0,"p1y":6.8,"p3y":22.2,"p5y":23.2},"quartiles":{"p3m":null,"p6m":null,"p1y":null,"p3y":null,"p5y":null},"ratios":{"vol1y":7.77,"vol3y":6.07,"alpha3y":-2.96,"beta3y":1.91,"sharpe1y":1.09,"sharpe3y":1.04}},"GB00BFH3NB82":{"u":"O","cc":"JWHQ","url":"https://www.trustnet.com/factsheets/o/jwhq/man-undervalued-assets-fund-professional-c-acc","asOf":"2026-08-13","name":"Man Undervalued Assets Fund Professional C Acc","pdf":"https://documentscdn.financialexpress.net/Literature/48712BA98DD86C892CA8E79BE6C27B37/245146418.pdf","perf":{"p3m":12.8,"p6m":4.6,"p1y":22.1,"p3y":55.0,"p5y":69.2},"sector":"IA UK All Companies","sectorPerf":{"p3m":8.8,"p6m":6.6,"p1y":16.7,"p3y":43.3,"p5y":35.1},"quartiles":{"p3m":1,"p6m":4,"p1y":1,"p3y":2,"p5y":1},"ratios":{"vol1y":13.76,"vol3y":11.92,"alpha3y":1.51,"beta3y":1.07,"sharpe1y":1.08,"sharpe3y":0.9}},"GB00B2PLJS27":{"u":"O","cc":"BUH9","url":"https://www.trustnet.com/factsheets/o/buh9/artemis-strategic-bond-i-quarterly-acc","asOf":"2026-08-13","name":"Artemis Strategic Bond I Quarterly Acc","pdf":"https://documentscdn.financialexpress.net/Literature/46AEFB3FD4AD34515D7822CE3F68CEDB/245328130.pdf","perf":{"p3m":2.2,"p6m":0.9,"p1y":4.4,"p3y":24.7,"p5y":11.6},"sector":"IA Sterling Strategic Bond","sectorPerf":{"p3m":1.2,"p6m":0.4,"p1y":3.8,"p3y":20.6,"p5y":8.2},"quartiles":{"p3m":1,"p6m":2,"p1y":2,"p3y":1,"p5y":2},"ratios":{"vol1y":4.36,"vol3y":4.99,"alpha3y":-0.39,"beta3y":1.24,"sharpe1y":0.2,"sharpe3y":0.76}},"IE00B5339C57":{"u":"O","cc":"NAU4","url":"https://www.trustnet.com/factsheets/o/nau4/polar-capital-global-insurance-i-acc-gbp","asOf":"2026-08-13","name":"Polar Capital Global Insurance I Acc GBP","pdf":"https://documentscdn.financialexpress.net/Literature/9C94DACDFFD0AA6B2B8DF77D1B8909D7/243935918.pdf","perf":{"p3m":10.8,"p6m":6.0,"p1y":12.2,"p3y":42.7,"p5y":80.9},"sector":"IA Financials and Financial Innovation","sectorPerf":{"p3m":13.6,"p6m":12.6,"p1y":15.2,"p3y":70.1,"p5y":45.7},"quartiles":{"p3m":4,"p6m":4,"p1y":3,"p3y":4,"p5y":2},"ratios":{"vol1y":14.47,"vol3y":12.81,"alpha3y":7.75,"beta3y":0.33,"sharpe1y":0.58,"sharpe3y":0.77}},"GB00B5B71H80":{"u":"O","cc":"FPD1","url":"https://www.trustnet.com/factsheets/o/fpd1/vanguard-ftse-developed-europe-ex-uk-equity-index-a-acc-gbp","asOf":"2026-08-13","name":"Vanguard FTSE Developed Europe ex-UK Equity Index A Acc GBP","pdf":"https://documentscdn.financialexpress.net/Literature/D502E4F1D03CD0DE62443E47B9796630/245326224.pdf","perf":{"p3m":8.5,"p6m":7.1,"p1y":22.8,"p3y":53.4,"p5y":57.2},"sector":"IA Europe Excluding UK","sectorPerf":{"p3m":8.1,"p6m":6.9,"p1y":19.2,"p3y":45.2,"p5y":45.5},"quartiles":{"p3m":2,"p6m":2,"p1y":2,"p3y":2,"p5y":2},"ratios":{"vol1y":12.72,"vol3y":11.18,"alpha3y":1.99,"beta3y":0.98,"sharpe1y":1.35,"sharpe3y":0.93}},"GB00BW9HL249":{"u":"O","cc":"M8MB","url":"https://www.trustnet.com/factsheets/o/m8mb/artemis-smartgarp-global-emerging-markets-equity-i-acc-gbp","asOf":"2026-08-13","name":"Artemis SmartGARP Global Emerging Markets Equity I Acc GBP","pdf":"https://documentscdn.financialexpress.net/Literature/209C165C0419655DE7A3D2C6D3DE2963/245324997.pdf","perf":{"p3m":0.1,"p6m":11.0,"p1y":43.9,"p3y":103.3,"p5y":102.8},"sector":"IA Global Emerging Markets","sectorPerf":{"p3m":-0.4,"p6m":9.3,"p1y":35.1,"p3y":64.1,"p5y":42.7},"quartiles":{"p3m":2,"p6m":2,"p1y":1,"p3y":1,"p5y":1},"ratios":{"vol1y":25.11,"vol3y":16.94,"alpha3y":6.89,"beta3y":1.06,"sharpe1y":1.64,"sharpe3y":1.27}},"IE00B0701B00":{"u":"B","cc":"DV60","url":"https://www.trustnet.com/factsheets/b/dv60/dimensional-us-small-companies-acc-eur","asOf":"2026-08-13","name":"Dimensional US Small Companies Acc EUR","perf":{"p3m":10.8,"p6m":14.7,"p1y":28.7,"p3y":43.9,"p5y":55.8},"sector":"FO Equity - Small Cap USA","sectorPerf":{"p3m":7.4,"p6m":14.7,"p1y":28.0,"p3y":43.0,"p5y":35.0},"quartiles":{"p3m":1,"p6m":3,"p1y":2,"p3y":2,"p5y":1}},"GB00B8278F56":{"u":"O","cc":"I0YV","url":"https://www.trustnet.com/factsheets/o/i0yv/premier-miton-us-opportunities-b-acc-gbp","asOf":"2026-08-13","name":"Premier Miton US Opportunities B Acc GBP","pdf":"https://documentscdn.financialexpress.net/Literature/F4F1D52934FBB4236018E1A1E234F806/245328554.pdf","perf":{"p3m":8.3,"p6m":0.5,"p1y":-5.8,"p3y":-0.3,"p5y":8.2},"sector":"IA North America","sectorPerf":{"p3m":6.0,"p6m":12.9,"p1y":19.0,"p3y":56.6,"p5y":66.1},"quartiles":{"p3m":1,"p6m":4,"p1y":4,"p3y":4,"p5y":4},"ratios":{"vol1y":9.9,"vol3y":15.54,"alpha3y":-11.22,"beta3y":0.88,"sharpe1y":-0.01,"sharpe3y":-0.01}},"GB00BZ82ZX06":{"u":"O","cc":"N02B","url":"https://www.trustnet.com/factsheets/o/n02b/vanguard-global-emerging-markets-a-acc","asOf":"2026-08-13","name":"Vanguard Global Emerging Markets A Acc","pdf":"https://documentscdn.financialexpress.net/Literature/87084B6427332DF33AFE8C9AC835D337/216428873.pdf","perf":{"p3m":-1.2,"p6m":4.7,"p1y":35.4,"p3y":62.7,"p5y":54.9},"sector":"IA Global Emerging Markets","sectorPerf":{"p3m":-0.4,"p6m":9.3,"p1y":35.1,"p3y":64.1,"p5y":42.7},"quartiles":{"p3m":3,"p6m":4,"p1y":3,"p3y":3,"p5y":2},"ratios":{"vol1y":20.63,"vol3y":15.11,"alpha3y":0.94,"beta3y":0.94,"sharpe1y":1.58,"sharpe3y":0.84}},"GB00BKT89K74":{"u":"O","cc":"QQGN","url":"https://www.trustnet.com/factsheets/o/qqgn/ninety-one-global-environment-r","asOf":"2026-08-13","name":"Ninety One Global Environment R","perf":{"p3m":4.6,"p6m":5.1,"p1y":21.2,"p3y":24.8,"p5y":12.3},"sector":"IA Global","sectorPerf":{"p3m":5.5,"p6m":9.6,"p1y":19.4,"p3y":48.1,"p5y":46.6},"quartiles":{"p3m":3,"p6m":4,"p1y":2,"p3y":4,"p5y":4}},"LU1940965699":{"u":"O","cc":"Q7K2","url":"https://www.trustnet.com/factsheets/o/q7k2/redwheel-next-generation-emerging-markets-equity-r-acc-gbp","asOf":"2026-08-13","name":"Redwheel Next Generation Emerging Markets Equity R Acc GBP","pdf":"https://documentscdn.financialexpress.net/Literature/58D31CED8DF4C4EFFFA509B05245D7FB/238991484.pdf","perf":{"p3m":3.4,"p6m":-0.9,"p1y":11.0,"p3y":56.5,"p5y":143.8},"sector":"IA Global Emerging Markets","sectorPerf":{"p3m":-0.4,"p6m":9.3,"p1y":35.1,"p3y":64.1,"p5y":42.7},"quartiles":{"p3m":1,"p6m":4,"p1y":4,"p3y":3,"p5y":1},"ratios":{"vol1y":16.13,"vol3y":13.2,"alpha3y":4.95,"beta3y":0.58,"sharpe1y":1.08,"sharpe3y":0.81}},"GB00B235RJ39":{"u":"O","cc":"A4F6","url":"https://www.trustnet.com/factsheets/o/a4f6/jpm-japan-c-acc","asOf":"2026-08-13","name":"JPM Japan C Acc","pdf":"https://documentscdn.financialexpress.net/Literature/3B525B80A34D74CB0000E1A299722E39/245325413.pdf","perf":{"p3m":3.4,"p6m":-0.6,"p1y":16.7,"p3y":65.4,"p5y":32.4},"sector":"IA Japan","sectorPerf":{"p3m":6.3,"p6m":6.1,"p1y":28.1,"p3y":61.7,"p5y":59.5},"quartiles":{"p3m":4,"p6m":4,"p1y":4,"p3y":2,"p5y":4},"ratios":{"vol1y":24.05,"vol3y":16.07,"alpha3y":-0.95,"beta3y":1.13,"sharpe1y":0.53,"sharpe3y":0.78}},"GB0006020530":{"u":"O","cc":"BG89","url":"https://www.trustnet.com/factsheets/o/bg89/baillie-gifford-emerging-markets-growth-b-acc","asOf":"2026-08-13","name":"Baillie Gifford Emerging Markets Growth B Acc","pdf":"https://documentscdn.financialexpress.net/Literature/65E795A7FD3263E16848E8AC5BC4E7C3/243599174.pdf","perf":{"p3m":-1.6,"p6m":13.6,"p1y":53.3,"p3y":85.2,"p5y":51.0},"sector":"IA Global Emerging Markets","sectorPerf":{"p3m":-0.4,"p6m":9.3,"p1y":35.1,"p3y":64.1,"p5y":42.7},"quartiles":{"p3m":4,"p6m":1,"p1y":1,"p3y":1,"p5y":2},"ratios":{"vol1y":31.99,"vol3y":20.95,"alpha3y":0.24,"beta3y":1.33,"sharpe1y":1.53,"sharpe3y":0.87}},"GB00B66H8P73":{"u":"O","cc":"FER9","url":"https://www.trustnet.com/factsheets/o/fer9/jupiter-jupiter-uk-dynamic-equity-fund-i-acc-gbp","asOf":"2026-08-13","name":"Jupiter Jupiter UK Dynamic Equity Fund I Acc GBP","pdf":"https://documentscdn.financialexpress.net/Literature/06B5A96758B84453F7E6D056B6BFC372/245331110.pdf","perf":{"p3m":11.0,"p6m":5.2,"p1y":21.6,"p3y":58.8,"p5y":78.8},"sector":"IA UK All Companies","sectorPerf":{"p3m":8.8,"p6m":6.6,"p1y":16.7,"p3y":43.3,"p5y":35.1},"quartiles":{"p3m":1,"p6m":4,"p1y":2,"p3y":1,"p5y":1},"ratios":{"vol1y":12.17,"vol3y":11.11,"alpha3y":3.62,"beta3y":0.99,"sharpe1y":1.28,"sharpe3y":1.09}},"GB00B2PLJL57":{"u":"O","cc":"KVH2","url":"https://www.trustnet.com/factsheets/o/kvh2/artemis-uk-smaller-companies-i-acc","asOf":"2026-08-13","name":"Artemis UK Smaller Companies I Acc","pdf":"https://documentscdn.financialexpress.net/Literature/DD1140E4FEADCC8F64C4161A604E206F/245327872.pdf","perf":{"p3m":14.3,"p6m":8.6,"p1y":8.7,"p3y":37.1,"p5y":19.7},"sector":"IA UK Smaller Companies","sectorPerf":{"p3m":8.2,"p6m":4.8,"p1y":10.6,"p3y":26.9,"p5y":-10.2},"quartiles":{"p3m":1,"p6m":1,"p1y":3,"p3y":1,"p5y":1},"ratios":{"vol1y":16.9,"vol3y":13.57,"alpha3y":2.71,"beta3y":0.91,"sharpe1y":-0.0,"sharpe3y":0.42}},"IE00B50W2R13":{"u":"O","cc":"FPD9","url":"https://www.trustnet.com/factsheets/o/fpd9/vanguard-global-bond-index-hedged-acc-gbp","asOf":"2026-08-13","name":"Vanguard Global Bond Index Hedged Acc GBP","pdf":"https://documentscdn.financialexpress.net/Literature/21D21C2C1259CA926250528E49FFCD7B/244718225.pdf","perf":{"p3m":0.2,"p6m":-0.9,"p1y":1.8,"p3y":12.4,"p5y":-3.3},"sector":"IA Global Mixed Bond","sectorPerf":{"p3m":0.3,"p6m":-0.5,"p1y":2.1,"p3y":12.7,"p5y":2.9},"quartiles":{"p3m":3,"p6m":3,"p1y":3,"p3y":3,"p5y":4},"ratios":{"vol1y":3.21,"vol3y":4.51,"alpha3y":-0.6,"beta3y":1.08,"sharpe1y":-0.0,"sharpe3y":0.01}},"GB00BGMK1733":{"u":"O","cc":"PZCZ","url":"https://www.trustnet.com/factsheets/o/pzcz/abrdn-short-dated-global-inflation-linked-bond-tracker-b-acc","asOf":"2026-08-13","name":"abrdn Short Dated Global Inflation-Linked Bond Tracker B Acc","pdf":"https://documentscdn.financialexpress.net/Literature/0FF5A81CD4FA426612B68B3C8923AEC6/245326569.pdf","perf":{"p3m":-0.1,"p6m":1.2,"p1y":3.1,"p3y":13.9,"p5y":10.2},"sector":"IA Global Inflation Linked Bond","sectorPerf":{"p3m":-0.5,"p6m":0.1,"p1y":2.4,"p3y":9.0,"p5y":0.1},"quartiles":{"p3m":2,"p6m":1,"p1y":1,"p3y":1,"p5y":1},"ratios":{"vol1y":1.7,"vol3y":2.39,"alpha3y":2.74,"beta3y":0.57,"sharpe1y":-0.0,"sharpe3y":0.32}},"GB00B702WG47":{"u":"O","cc":"G1GZ","url":"https://www.trustnet.com/factsheets/o/g1gz/hsbc-global-listed-real-assets-c-acc","asOf":"2026-08-13","name":"HSBC Global Listed Real Assets C Acc","pdf":"https://documentscdn.financialexpress.net/Literature/039E4062EF503C449714AFD3D5008D1B/244847741.pdf","perf":{"p3m":0.1,"p6m":1.1,"p1y":10.7,"p3y":28.3,"p5y":4.8},"sector":"IA Infrastructure","sectorPerf":{"p3m":0.2,"p6m":2.3,"p1y":12.4,"p3y":29.9,"p5y":31.5},"quartiles":{"p3m":2,"p6m":3,"p1y":4,"p3y":3,"p5y":4},"ratios":{"vol1y":12.0,"vol3y":12.25,"alpha3y":-1.0,"beta3y":1.19,"sharpe1y":0.78,"sharpe3y":0.46}},"LU1940965939":{"u":"O","cc":"Q7K2","url":"https://www.trustnet.com/factsheets/o/q7k2/redwheel-next-generation-emerging-markets-equity-r-acc-gbp","asOf":"2026-08-13","name":"Redwheel Next Generation Emerging Markets Equity R Acc GBP","pdf":"https://documentscdn.financialexpress.net/Literature/58D31CED8DF4C4EFFFA509B05245D7FB/238991484.pdf","perf":{"p3m":3.4,"p6m":-0.9,"p1y":11.0,"p3y":56.5,"p5y":143.8},"sector":"IA Global Emerging Markets","sectorPerf":{"p3m":-0.4,"p6m":9.3,"p1y":35.1,"p3y":64.1,"p5y":42.7},"quartiles":{"p3m":1,"p6m":4,"p1y":4,"p3y":3,"p5y":1},"ratios":{"vol1y":16.13,"vol3y":13.2,"alpha3y":4.95,"beta3y":0.58,"sharpe1y":1.08,"sharpe3y":0.81}},"GB00B80QFZ35":{"u":"O","cc":"G18Y","url":"https://www.trustnet.com/factsheets/o/g18y/hsbc-ftse-250-index-c-acc","asOf":"2026-08-13","name":"HSBC FTSE 250 Index C Acc","pdf":"https://documentscdn.financialexpress.net/Literature/448ABE1A23484ACA1E81A2264EAED457/244537558.pdf","perf":{"p3m":10.7,"p6m":7.9,"p1y":17.9,"p3y":45.1,"p5y":21.5},"sector":"IA UK All Companies","sectorPerf":{"p3m":8.8,"p6m":6.6,"p1y":16.7,"p3y":43.3,"p5y":35.1},"quartiles":{"p3m":1,"p6m":1,"p1y":2,"p3y":3,"p5y":3},"ratios":{"vol1y":15.46,"vol3y":13.36,"alpha3y":-2.36,"beta3y":1.22,"sharpe1y":0.64,"sharpe3y":0.61}},"GB00BPN5P014":{"u":"O","cc":"FPD1","url":"https://www.trustnet.com/factsheets/o/fpd1/vanguard-ftse-developed-europe-ex-uk-equity-index-a-acc-gbp","asOf":"2026-08-13","name":"Vanguard FTSE Developed Europe ex-UK Equity Index A Acc GBP","pdf":"https://documentscdn.financialexpress.net/Literature/D502E4F1D03CD0DE62443E47B9796630/245326224.pdf","perf":{"p3m":8.5,"p6m":7.1,"p1y":22.8,"p3y":53.4,"p5y":57.2},"sector":"IA Europe Excluding UK","sectorPerf":{"p3m":8.1,"p6m":6.9,"p1y":19.2,"p3y":45.2,"p5y":45.5},"quartiles":{"p3m":2,"p6m":2,"p1y":2,"p3y":2,"p5y":2},"ratios":{"vol1y":12.72,"vol3y":11.18,"alpha3y":1.99,"beta3y":0.98,"sharpe1y":1.35,"sharpe3y":0.93}},"GB00BZ82ZY13":{"u":"O","cc":"N02B","url":"https://www.trustnet.com/factsheets/o/n02b/vanguard-global-emerging-markets-a-acc","asOf":"2026-08-13","name":"Vanguard Global Emerging Markets A Acc","pdf":"https://documentscdn.financialexpress.net/Literature/87084B6427332DF33AFE8C9AC835D337/216428873.pdf","perf":{"p3m":-1.2,"p6m":4.7,"p1y":35.4,"p3y":62.7,"p5y":54.9},"sector":"IA Global Emerging Markets","sectorPerf":{"p3m":-0.4,"p6m":9.3,"p1y":35.1,"p3y":64.1,"p5y":42.7},"quartiles":{"p3m":3,"p6m":4,"p1y":3,"p3y":3,"p5y":2},"ratios":{"vol1y":20.63,"vol3y":15.11,"alpha3y":0.94,"beta3y":0.94,"sharpe1y":1.58,"sharpe3y":0.84}},"GB00BP8RYB62":{"u":"O","cc":"K41W","url":"https://www.trustnet.com/factsheets/o/k41w/fidelity-index-world-p","asOf":"2026-08-13","name":"Fidelity Index World P","pdf":"https://documentscdn.financialexpress.net/Literature/BD9F197FB744B9A7984A2EBF47C3E417/245327702.pdf","perf":{"p3m":5.5,"p6m":11.1,"p1y":22.4,"p3y":64.8,"p5y":78.1},"sector":"IA Global","sectorPerf":{"p3m":5.5,"p6m":9.6,"p1y":19.4,"p3y":48.1,"p5y":46.6},"quartiles":{"p3m":3,"p6m":2,"p1y":2,"p3y":1,"p5y":1},"ratios":{"vol1y":13.43,"vol3y":12.24,"alpha3y":3.17,"beta3y":1.05,"sharpe1y":0.94,"sharpe3y":1.05}},"GB00BD6DSC14":{"u":"O","cc":"OSLV","url":"https://www.trustnet.com/factsheets/o/oslv/trinitybridge-select-fixed-income-x-acc","asOf":"2026-08-13","name":"TrinityBridge Select Fixed Income X Acc","pdf":"https://documentscdn.financialexpress.net/Literature/7A65170B8E076E4278C575362B9DF69A/236845306.pdf","perf":{"p3m":2.1,"p6m":1.0,"p1y":4.3,"p3y":22.0,"p5y":14.7},"sector":"IA Sterling Strategic Bond","sectorPerf":{"p3m":1.2,"p6m":0.4,"p1y":3.8,"p3y":20.6,"p5y":8.2},"quartiles":{"p3m":1,"p6m":2,"p1y":2,"p3y":2,"p5y":2},"ratios":{"vol1y":3.29,"vol3y":3.78,"alpha3y":0.73,"beta3y":0.93,"sharpe1y":0.14,"sharpe3y":0.81}},"IE000SZPPNQ2":{"u":"O","cc":"BS0SE","url":"https://www.trustnet.com/factsheets/o/bs0se/pinebridge-global-focus-equity-r2h-gbp","asOf":"2026-08-13","name":"PineBridge Global Focus Equity R2H GBP","perf":{"p3m":4.2,"p6m":4.3,"p1y":11.2,"p3y":null,"p5y":null},"sector":"IA Global","sectorPerf":{"p3m":5.5,"p6m":9.6,"p1y":19.4,"p3y":48.1,"p5y":46.6},"quartiles":{"p3m":4,"p6m":4,"p1y":4,"p3y":null,"p5y":null}},"IE0006WW1TQ4":{"u":"O","cc":"ASKP3","url":"https://www.trustnet.com/factsheets/o/askp3/xtrackers-msci-world-ex-usa-ucits-etf-1c-acc-usd","asOf":"2026-08-13","name":"Xtrackers MSCI World ex USA UCITS ETF 1C Acc USD","perf":{"p3m":6.8,"p6m":6.9,"p1y":24.2,"p3y":null,"p5y":null},"sector":"IA Global","sectorPerf":{"p3m":5.5,"p6m":9.6,"p1y":19.4,"p3y":48.1,"p5y":46.6},"quartiles":{"p3m":2,"p6m":3,"p1y":2,"p3y":null,"p5y":null}},"IE00BPT2BT73":{"u":"O","cc":"FPD5","url":"https://www.trustnet.com/factsheets/o/fpd5/vanguard-uk-investment-grade-bond-index-acc-gbp","asOf":"2026-08-13","name":"Vanguard UK Investment Grade Bond Index Acc GBP","pdf":"https://documentscdn.financialexpress.net/Literature/90671EB0029215BCDF096E9EC6F778D5/244719894.pdf","perf":{"p3m":2.0,"p6m":-0.2,"p1y":3.5,"p3y":18.4,"p5y":-4.4},"sector":"IA Sterling Corporate Bond","sectorPerf":{"p3m":2.0,"p6m":-0.1,"p1y":3.4,"p3y":19.7,"p5y":-0.3},"quartiles":{"p3m":3,"p6m":3,"p1y":2,"p3y":3,"p5y":3},"ratios":{"vol1y":4.71,"vol3y":4.61,"alpha3y":-0.43,"beta3y":0.98,"sharpe1y":-0.0,"sharpe3y":0.38}},"GB00BNQNJ512":{"u":"O","cc":"M8MB","url":"https://www.trustnet.com/factsheets/o/m8mb/artemis-smartgarp-global-emerging-markets-equity-i-acc-gbp","asOf":"2026-08-13","name":"Artemis SmartGARP Global Emerging Markets Equity I Acc GBP","pdf":"https://documentscdn.financialexpress.net/Literature/209C165C0419655DE7A3D2C6D3DE2963/245324997.pdf","perf":{"p3m":0.1,"p6m":11.0,"p1y":43.9,"p3y":103.3,"p5y":102.8},"sector":"IA Global Emerging Markets","sectorPerf":{"p3m":-0.4,"p6m":9.3,"p1y":35.1,"p3y":64.1,"p5y":42.7},"quartiles":{"p3m":2,"p6m":2,"p1y":1,"p3y":1,"p5y":1},"ratios":{"vol1y":25.11,"vol3y":16.94,"alpha3y":6.89,"beta3y":1.06,"sharpe1y":1.64,"sharpe3y":1.27}},"GB00BPXXDJ03":{"u":"O","cc":"AZIQ4","url":"https://www.trustnet.com/factsheets/o/aziq4/janus-henderson-global-life-sciences-equity-g-acc-gbp","asOf":"2026-08-13","name":"Janus Henderson Global Life Sciences Equity G Acc GBP","perf":{"p3m":15.2,"p6m":11.8,"p1y":44.5,"p3y":null,"p5y":null},"sector":"IA Healthcare and Biotechnology","sectorPerf":{"p3m":14.2,"p6m":10.2,"p1y":30.6,"p3y":21.9,"p5y":16.6},"quartiles":{"p3m":2,"p6m":1,"p1y":1,"p3y":null,"p5y":null},"ratios":{"vol1y":19.15,"vol3y":null,"alpha3y":null,"beta3y":null,"sharpe1y":1.64,"sharpe3y":null}},"IE00BPT2BR59":{"u":"O","cc":"FPD7","url":"https://www.trustnet.com/factsheets/o/fpd7/vanguard-uk-government-bond-index-acc-gbp","asOf":"2026-08-13","name":"Vanguard UK Government Bond Index Acc GBP","pdf":"https://documentscdn.financialexpress.net/Literature/1D41DCFE9ABC0E023ED9CFE3B61A128B/245331271.pdf","perf":{"p3m":1.9,"p6m":-1.6,"p1y":2.0,"p3y":8.4,"p5y":-27.1},"sector":"IA UK Gilts","sectorPerf":{"p3m":1.8,"p6m":-1.2,"p1y":2.0,"p3y":8.4,"p5y":-22.5},"quartiles":{"p3m":2,"p6m":4,"p1y":3,"p3y":3,"p5y":4},"ratios":{"vol1y":6.79,"vol3y":7.14,"alpha3y":-0.57,"beta3y":1.12,"sharpe1y":-0.0,"sharpe3y":-0.0}},"IE00B5L01S80":{"u":"O","cc":"K46A","url":"https://www.trustnet.com/factsheets/o/k46a/hsbc-ftse-epranareit-developed-ucits-etf-nav-gbp","asOf":"2026-08-13","name":"HSBC FTSE EPRA/NAREIT Developed UCITS ETF NAV GBP","pdf":"https://documentscdn.financialexpress.net/Literature/01A914DE8878622645B183FE2EB337BC/244535285.pdf","perf":{"p3m":1.7,"p6m":3.8,"p1y":15.0,"p3y":25.8,"p5y":10.2},"sector":"IA Listed Property","sectorPerf":{"p3m":1.8,"p6m":1.3,"p1y":10.7,"p3y":22.3,"p5y":0.3},"quartiles":{"p3m":null,"p6m":null,"p1y":null,"p3y":null,"p5y":null},"ratios":{"vol1y":13.72,"vol3y":13.09,"alpha3y":1.36,"beta3y":0.95,"sharpe1y":1.03,"sharpe3y":0.37}},"IE00BJSFQX44":{"u":"O","cc":"I02U","url":"https://www.trustnet.com/factsheets/o/i02u/ishares-global-high-yield-corp-bond-ucits-etf-usd","asOf":"2026-08-13","name":"iShares Global High Yield Corp Bond UCITS ETF USD","perf":{"p3m":0.5,"p6m":0.9,"p1y":3.5,"p3y":19.5,"p5y":20.1},"sector":"IA Global High Yield Bond","sectorPerf":{"p3m":1.1,"p6m":1.9,"p1y":5.0,"p3y":20.9,"p5y":19.4},"quartiles":{"p3m":4,"p6m":4,"p1y":4,"p3y":3,"p5y":3}},"IE00BPT2BB99":{"u":"O","cc":"K41H","url":"https://www.trustnet.com/factsheets/o/k41h/vanguard-emerging-markets-stock-index-institutional-acc-usd","asOf":"2026-08-13","name":"Vanguard Emerging Markets Stock Index Institutional Acc USD","pdf":"https://documentscdn.financialexpress.net/Literature/AB319E529312D3673D05DAC98319AEA8/244715610.pdf","perf":{"p3m":-0.2,"p6m":9.6,"p1y":35.8,"p3y":68.5,"p5y":49.0},"sector":"IA Global Emerging Markets","sectorPerf":{"p3m":-0.6,"p6m":10.6,"p1y":34.3,"p3y":64.7,"p5y":43.9},"quartiles":{"p3m":2,"p6m":2,"p1y":3,"p3y":2,"p5y":2},"ratios":{"vol1y":25.06,"vol3y":17.72,"alpha3y":0.69,"beta3y":1.02,"sharpe1y":1.31,"sharpe3y":0.88}},"IE00BFPM9T72":{"u":"O","cc":"VA77","url":"https://www.trustnet.com/factsheets/o/va77/vanguard-us500stockidx-investor-usd","asOf":"2026-08-13","name":"Vanguard US500StockIdx Investor USD","perf":{"p3m":5.0,"p6m":15.0,"p1y":20.9,"p3y":67.5,"p5y":86.3},"sector":"IA North America","sectorPerf":{"p3m":6.0,"p6m":12.9,"p1y":19.0,"p3y":56.6,"p5y":66.1},"quartiles":{"p3m":3,"p6m":2,"p1y":2,"p3y":2,"p5y":1}},"IE00BM67HK77":{"u":"O","cc":"N3AI","url":"https://www.trustnet.com/factsheets/o/n3ai/xtrackers-msci-world-health-care-ucits-etf-1c-usd","asOf":"2026-08-13","name":"Xtrackers MSCI World Health Care UCITS ETF 1C USD","perf":{"p3m":12.4,"p6m":5.3,"p1y":24.0,"p3y":17.5,"p5y":29.4},"sector":"IA Healthcare and Biotechnology","sectorPerf":{"p3m":14.2,"p6m":10.2,"p1y":30.6,"p3y":21.9,"p5y":16.6},"quartiles":{"p3m":3,"p6m":4,"p1y":3,"p3y":3,"p5y":2}},"IE00BPT2BD14":{"u":"O","cc":"I2X3","url":"https://www.trustnet.com/factsheets/o/i2x3/vanguard-global-small-cap-index-acc-gbp","asOf":"2026-08-13","name":"Vanguard Global Small-Cap Index Acc GBP","pdf":"https://documentscdn.financialexpress.net/Literature/7F9E1B1D07A84B8DED7A7A673729EB16/245330571.pdf","perf":{"p3m":5.5,"p6m":10.5,"p1y":27.1,"p3y":52.4,"p5y":47.7},"sector":"IA Global","sectorPerf":{"p3m":5.5,"p6m":9.6,"p1y":19.4,"p3y":48.1,"p5y":46.6},"quartiles":{"p3m":3,"p6m":2,"p1y":1,"p3y":2,"p5y":3},"ratios":{"vol1y":12.65,"vol3y":14.34,"alpha3y":-0.41,"beta3y":1.12,"sharpe1y":1.58,"sharpe3y":0.66}},"IE000ZXYID24":{"u":"E","cc":"L31W","url":"https://www.trustnet.com/factsheets/e/l31w/ishares-global-aggregate-bond-esg-sri-ucits-etf-dis-usd","asOf":"2026-08-13","name":"iShares Global Aggregate Bond ESG SRI UCITS ETF Dis USD","perf":{"p3m":-0.3,"p6m":-1.0,"p1y":0.7,"p3y":4.4,"p5y":null}},"LU2269164153":{"u":"O","cc":"GRH5","url":"https://www.trustnet.com/factsheets/o/grh5/amundi-msci-uk-imi-sri-climate-paris-aligned-c-eur","asOf":"2026-08-13","name":"Amundi MSCI UK IMI SRI Climate Paris Aligned (C) EUR","perf":{"p3m":11.5,"p6m":6.4,"p1y":18.8,"p3y":52.9,"p5y":42.5},"sector":"IA UK All Companies","sectorPerf":{"p3m":8.9,"p6m":7.1,"p1y":16.4,"p3y":43.3,"p5y":34.8},"quartiles":{"p3m":1,"p6m":2,"p1y":2,"p3y":2,"p5y":2}},"IE0006O3TTP9":{"u":"E","cc":"AV2NL","url":"https://www.trustnet.com/factsheets/e/av2nl/bnp-paribas-bnp-paribas-easy-ecpi-global-esg-infrastructure-ucits-etf-ucits-etf-cap","asOf":"2026-08-13","name":"BNP Paribas BNP Paribas Easy ECPI Global ESG Infrastructure UCITS ETF UCITS ETF Cap","perf":{"p3m":-0.8,"p6m":3.8,"p1y":22.6,"p3y":null,"p5y":null}},"IE00BK72HH44":{"u":"O","cc":"R2BQ","url":"https://www.trustnet.com/factsheets/o/r2bq/ubs-msci-world-socially-responsible-ucits-etf-acc-usd","asOf":"2026-08-13","name":"UBS MSCI World Socially Responsible UCITS ETF Acc USD","perf":{"p3m":7.1,"p6m":13.6,"p1y":19.7,"p3y":53.5,"p5y":60.5},"sector":"IA Global","sectorPerf":{"p3m":5.3,"p6m":10.3,"p1y":19.0,"p3y":48.3,"p5y":46.3},"quartiles":{"p3m":2,"p6m":1,"p1y":3,"p3y":2,"p5y":2}},"LU2089234475":{"u":"O","cc":"Q1BN","url":"https://www.trustnet.com/factsheets/o/q1bn/amundi-msci-emerging-markets-sri-climate-paris-aligned-ae-acc-eur","asOf":"2026-08-13","name":"Amundi MSCI Emerging Markets SRI Climate Paris Aligned AE Acc EUR","perf":{"p3m":-0.2,"p6m":4.7,"p1y":23.0,"p3y":39.1,"p5y":21.0},"sector":"IA Global Emerging Markets","sectorPerf":{"p3m":-0.6,"p6m":10.6,"p1y":34.3,"p3y":64.7,"p5y":43.9},"quartiles":{"p3m":2,"p6m":4,"p1y":4,"p3y":4,"p5y":4}},"IE00BFMNPS42":{"u":"O","cc":"P0A1","url":"https://www.trustnet.com/factsheets/o/p0a1/xtrackers-msci-usa-esg-ucits-etf-1c-usd","asOf":"2026-08-13","name":"Xtrackers MSCI USA ESG UCITS ETF 1C USD","perf":{"p3m":5.1,"p6m":14.2,"p1y":20.4,"p3y":68.2,"p5y":85.3},"sector":"IA North America","sectorPerf":{"p3m":6.0,"p6m":12.9,"p1y":19.0,"p3y":56.6,"p5y":66.1},"quartiles":{"p3m":3,"p6m":2,"p1y":2,"p3y":2,"p5y":2}},"IE00B76VTL96":{"u":"O","cc":"0GDR","url":"https://www.trustnet.com/factsheets/o/0gdr/vanguard-esg-developed-european-index-acc-gbp","asOf":"2026-08-13","name":"Vanguard ESG Developed European Index Acc GBP","pdf":"https://documentscdn.financialexpress.net/Literature/DB10E0889A7234C3BBB36F09DE352188/245328152.pdf","perf":{"p3m":8.9,"p6m":6.3,"p1y":20.2,"p3y":48.5,"p5y":54.9},"sector":"IA Europe Including UK","sectorPerf":{"p3m":7.9,"p6m":6.2,"p1y":18.3,"p3y":43.3,"p5y":44.5},"quartiles":{"p3m":1,"p6m":3,"p1y":2,"p3y":3,"p5y":2},"ratios":{"vol1y":13.19,"vol3y":11.0,"alpha3y":0.77,"beta3y":1.05,"sharpe1y":1.15,"sharpe3y":0.84}},"IE0009QS7W62":{"u":"E","cc":"QPTV","url":"https://www.trustnet.com/factsheets/e/qptv/ishares-msci-world-health-care-sector-advanced-ucits-etf-dist-usd","asOf":"2026-08-13","name":"iShares MSCI World Health Care Sector Advanced UCITS ETF Dist USD","perf":{"p3m":12.5,"p6m":5.3,"p1y":23.4,"p3y":11.1,"p5y":23.9}},"IE00BKSCBW67":{"u":"O","cc":"VDPW","url":"https://www.trustnet.com/factsheets/o/vdpw/ubs-msci-world-small-cap-socially-responsible-ucits-etf-acc-usd","asOf":"2026-08-13","name":"UBS MSCI World Small Cap Socially Responsible UCITS ETF Acc USD","perf":{"p3m":8.0,"p6m":8.1,"p1y":22.0,"p3y":38.1,"p5y":null},"sector":"IA Global","sectorPerf":{"p3m":5.3,"p6m":10.3,"p1y":19.0,"p3y":48.3,"p5y":46.3},"quartiles":{"p3m":1,"p6m":3,"p1y":2,"p3y":3,"p5y":null}},"GB00BN090851":{"u":"O","cc":"AZEMJ","url":"https://www.trustnet.com/factsheets/o/azemj/ishares-japan-equity-esg-screened-and-optimised-index-uk-s-acc","asOf":"2026-08-13","name":"iShares Japan Equity ESG Screened and Optimised Index (UK) S Acc","perf":{"p3m":5.9,"p6m":4.6,"p1y":26.1,"p3y":null,"p5y":null},"sector":"IA Japan","sectorPerf":{"p3m":6.3,"p6m":6.1,"p1y":28.1,"p3y":61.7,"p5y":59.5},"quartiles":{"p3m":3,"p6m":3,"p1y":3,"p3y":null,"p5y":null}},"IE00B8GKDB10":{"u":"O","cc":"JBMD","url":"https://www.trustnet.com/factsheets/o/jbmd/vanguard-ftse-all-world-high-dividend-yield-ucits-etf-inc-usd","asOf":"2026-08-13","name":"Vanguard FTSE All World High Dividend Yield UCITS ETF Inc USD","pdf":"https://documentscdn.financialexpress.net/Literature/BF803E9B702683F52C39AE2379E0205C/244716906.pdf","perf":{"p3m":7.2,"p6m":8.2,"p1y":27.2,"p3y":60.4,"p5y":79.2},"sector":"IA Global Equity Income","sectorPerf":{"p3m":6.6,"p6m":8.4,"p1y":20.1,"p3y":48.7,"p5y":60.9},"quartiles":{"p3m":2,"p6m":2,"p1y":1,"p3y":2,"p5y":1},"ratios":{"vol1y":11.92,"vol3y":10.9,"alpha3y":4.1,"beta3y":0.9,"sharpe1y":2.08,"sharpe3y":1.32}},"GB00BMWVS003":{"u":"O","cc":"R5YC","url":"https://www.trustnet.com/factsheets/o/r5yc/premier-miton-strategic-monthly-income-bond-c-acc-gbp","asOf":"2026-08-13","name":"Premier Miton Strategic Monthly Income Bond C Acc GBP","pdf":"https://documentscdn.financialexpress.net/Literature/E972C63EDD2180FCBC9B42783CBCA3C9/244553579.pdf","perf":{"p3m":0.9,"p6m":0.2,"p1y":3.5,"p3y":25.0,"p5y":18.6},"sector":"IA Sterling Strategic Bond","sectorPerf":{"p3m":1.2,"p6m":0.4,"p1y":3.8,"p3y":20.6,"p5y":8.2},"quartiles":{"p3m":3,"p6m":3,"p1y":3,"p3y":1,"p5y":1},"ratios":{"vol1y":2.28,"vol3y":2.21,"alpha3y":4.54,"beta3y":0.46,"sharpe1y":0.13,"sharpe3y":1.82}},"IE00B8RHFL59":{"u":"O","cc":"IB3M","url":"https://www.trustnet.com/factsheets/o/ib3m/pimco-gis-income-inst-hedged-inc-gbp","asOf":"2026-08-13","name":"PIMCO GIS Income Inst Hedged Inc GBP","pdf":"https://documentscdn.financialexpress.net/Literature/313B15BEFE759E50DCB25EC1C25AEC74/244320241.pdf","perf":{"p3m":0.6,"p6m":-0.7,"p1y":4.3,"p3y":22.0,"p5y":15.7},"sector":"IA Sterling Strategic Bond","sectorPerf":{"p3m":1.2,"p6m":0.4,"p1y":3.8,"p3y":20.6,"p5y":8.2},"quartiles":{"p3m":4,"p6m":4,"p1y":2,"p3y":2,"p5y":2},"ratios":{"vol1y":3.9,"vol3y":4.56,"alpha3y":-0.05,"beta3y":1.05,"sharpe1y":0.33,"sharpe3y":0.64}},"GB00BYVB3Q65":{"u":"O","cc":"E5JB","url":"https://www.trustnet.com/factsheets/o/e5jb/tm-gravis-uk-infrastructure-income-c-acc-gbp","asOf":"2026-08-13","name":"TM Gravis UK Infrastructure Income C Acc GBP","perf":{"p3m":9.9,"p6m":10.2,"p1y":12.2,"p3y":24.5,"p5y":7.9},"sector":"IA Infrastructure","sectorPerf":{"p3m":0.2,"p6m":2.3,"p1y":12.4,"p3y":29.9,"p5y":31.5},"quartiles":{"p3m":1,"p6m":1,"p1y":3,"p3y":4,"p5y":4}},"IE00BD5M7551":{"u":"O","cc":"NQGQ","url":"https://www.trustnet.com/factsheets/o/nqgq/bny-mellon-us-equity-income-fund-w-acc-usd","asOf":"2026-08-13","name":"BNY Mellon US Equity Income Fund W Acc USD","perf":{"p3m":9.9,"p6m":13.8,"p1y":27.4,"p3y":54.3,"p5y":96.2},"sector":"IA North America","sectorPerf":{"p3m":6.0,"p6m":12.9,"p1y":19.0,"p3y":56.6,"p5y":66.1},"quartiles":{"p3m":1,"p6m":2,"p1y":1,"p3y":3,"p5y":1}},"GB00BYP25698":{"u":"O","cc":"NVZK","url":"https://www.trustnet.com/factsheets/o/nvzk/schroder-us-equity-income-maximiser-z-acc","asOf":"2026-08-13","name":"Schroder US Equity Income Maximiser Z Acc","pdf":"https://documentscdn.financialexpress.net/Literature/9F56AA526AB812C8CB5D7CAF4F17E721/244692043.pdf","perf":{"p3m":4.7,"p6m":10.4,"p1y":18.8,"p3y":53.2,"p5y":69.5},"sector":"IA North America","sectorPerf":{"p3m":6.0,"p6m":12.9,"p1y":19.0,"p3y":56.6,"p5y":66.1},"quartiles":{"p3m":3,"p6m":3,"p1y":3,"p3y":3,"p5y":2},"ratios":{"vol1y":13.14,"vol3y":12.81,"alpha3y":-0.51,"beta3y":0.99,"sharpe1y":0.68,"sharpe3y":0.8}},"GB00BDD2F083":{"u":"O","cc":"NND1","url":"https://www.trustnet.com/factsheets/o/nnd1/schroder-income-maximiser-z-acc","asOf":"2026-08-13","name":"Schroder Income Maximiser Z Acc","pdf":"https://documentscdn.financialexpress.net/Literature/C2DFD1C9A8B09FBA16F8952E8DE50D51/244691337.pdf","perf":{"p3m":11.4,"p6m":4.8,"p1y":18.6,"p3y":62.7,"p5y":83.6},"sector":"IA UK Equity Income","sectorPerf":{"p3m":9.5,"p6m":6.1,"p1y":19.3,"p3y":51.4,"p5y":53.4},"quartiles":{"p3m":1,"p6m":3,"p1y":3,"p3y":2,"p5y":1},"ratios":{"vol1y":11.34,"vol3y":9.94,"alpha3y":2.6,"beta3y":0.97,"sharpe1y":1.24,"sharpe3y":1.31}},"GB00B5N99561":{"u":"O","cc":"JXZ0","url":"https://www.trustnet.com/factsheets/o/jxz0/artemis-global-income-i-inc","asOf":"2026-08-13","name":"Artemis Global Income I Inc","pdf":"https://documentscdn.financialexpress.net/Literature/445F69338588012C2604B05B79F06F51/245325364.pdf","perf":{"p3m":4.5,"p6m":8.8,"p1y":40.1,"p3y":147.7,"p5y":163.9},"sector":"IA Global Equity Income","sectorPerf":{"p3m":6.6,"p6m":8.4,"p1y":20.1,"p3y":48.7,"p5y":60.9},"quartiles":{"p3m":4,"p6m":2,"p1y":1,"p3y":1,"p5y":1},"ratios":{"vol1y":18.22,"vol3y":13.3,"alpha3y":15.24,"beta3y":1.24,"sharpe1y":1.72,"sharpe3y":2.26}},"GB00BPN5NV83":{"u":"O","cc":"FPC7","url":"https://www.trustnet.com/factsheets/o/fpc7/vanguard-ftse-uk-equity-income-index-a-acc-gbp","asOf":"2026-08-13","name":"Vanguard FTSE UK Equity Income Index A Acc GBP","pdf":"https://documentscdn.financialexpress.net/Literature/E01E0CB19D6CA265A15D1D1BA2D45D9A/216421250.pdf","perf":{"p3m":6.7,"p6m":5.5,"p1y":28.9,"p3y":81.3,"p5y":101.1},"sector":"IA UK Equity Income","sectorPerf":{"p3m":9.5,"p6m":6.1,"p1y":19.3,"p3y":51.4,"p5y":53.4},"quartiles":{"p3m":4,"p6m":3,"p1y":1,"p3y":1,"p5y":1},"ratios":{"vol1y":11.44,"vol3y":10.78,"alpha3y":6.37,"beta3y":1.02,"sharpe1y":2.39,"sharpe3y":1.66}},"GB00B5N1BC33":{"u":"O","cc":"M0W9","url":"https://www.trustnet.com/factsheets/o/m0w9/jpm-emerging-markets-income-c-acc","asOf":"2026-08-13","name":"JPM Emerging Markets Income C Acc","pdf":"https://documentscdn.financialexpress.net/Literature/734D85A4D2A59BD6E83F9C89A0423ED8/245329116.pdf","perf":{"p3m":1.4,"p6m":8.8,"p1y":39.0,"p3y":70.8,"p5y":66.1},"sector":"IA Global Emerging Markets","sectorPerf":{"p3m":-0.4,"p6m":9.3,"p1y":35.1,"p3y":64.1,"p5y":42.7},"quartiles":{"p3m":1,"p6m":3,"p1y":2,"p3y":2,"p5y":1},"ratios":{"vol1y":21.51,"vol3y":14.6,"alpha3y":2.64,"beta3y":0.92,"sharpe1y":1.59,"sharpe3y":0.99}}};
+  var SEED_TN_META = {"fetchedAt":"2026-08-13 16:00","funds":81,"errors":27};
+  var SEED_MACRO = {"fetchedAt":"2026-08-13 16:00","themes":{"global":{"label":"Global markets","query":"global economy markets outlook","articles":[["FirstFT: All eyes on the US jobs market","https://www.ft.com/content/9c99a309-e133-4882-8cea-f21aa1eea0e1","2026-08-07"],["Singapore shrugs off Iran war as AI boom buoys growth","https://www.ft.com/content/7c738ae1-39e5-4094-b224-605dcddaa4e0","2026-08-11"],["Will US inflation be cool enough to trim bets on a September rate rise?","https://www.ft.com/content/e7f0c7af-b170-4cb5-a16e-671efa62e605","2026-08-09"],["Investing in the forgotten lands","https://www.ft.com/content/c27150f4-24e7-4def-9461-0a4849a0ea81",""],["A very British by-election reaches its finale","https://www.ft.com/content/af06cfa1-0ea8-40a6-ad2c-81fe47a63e7b","2026-08-09"],["How will El Niño hit the world economy?","https://www.ft.com/content/4469e5f8-1839-45a5-9e1d-b63ea58b8763",""]]},"uk":{"label":"UK economy","query":"UK economy inflation Bank of England","articles":[["UK growth resilient in second quarter","https://www.ft.com/content/e90128dc-9a22-4fd1-933c-e344f38255a8","2026-08-13"],["Bank of England holds rates amid volatile energy prices","https://www.ft.com/content/68274800-2971-4d50-922f-ff2b6780dc31","2026-07-30"],["UK economy grows 0.4% in second quarter","https://www.ft.com/content/f35f8c3d-3c9f-4209-b8a7-e4038dfc528f","2026-08-13"],["Bank of England holds rates at 3.75% as it waits to see impact of Iran war","https://www.ft.com/content/44589e41-8880-4c6b-89c5-a02d34cf46ab","2026-07-30"],["Why the BoE needs more parliamentary attention","https://www.ft.com/content/76be8ae0-ecad-4e47-a168-2f2ceaf64eb2","2026-08-11"],["Will US inflation be cool enough to trim bets on a September rate rise?","https://www.ft.com/content/e7f0c7af-b170-4cb5-a16e-671efa62e605","2026-08-09"]]},"us":{"label":"US economy","query":"US economy Federal Reserve inflation","articles":[["US inflation falls to 3.4% in July","https://www.ft.com/content/52727749-4360-4463-8822-dc3bfd8ef279","2026-08-12"],["Poorer Americans are struggling to make ‘ends meet’, top Fed official says","https://www.ft.com/content/56c300d3-3632-476e-96d6-da84d4558bda","2026-08-12"],["Declining PCE inflation in June likely to be reversed in July","https://www.ft.com/content/fd75ca61-c9db-41c8-97d3-80069c25beb6","2026-07-30"],["US borrowing costs hit 19-year high as Federal Reserve defies inflation fears","https://www.ft.com/content/c4eedbe8-6345-48b6-8d44-5cc5b0bea2c7","2026-07-30"],["The Fed will face a pivotal meeting in September unless there is a durable ceasefire","https://www.ft.com/content/51ed81fb-0361-4a5f-8d48-a2352be7e543","2026-07-31"],["Will US inflation be cool enough to trim bets on a September rate rise?","https://www.ft.com/content/e7f0c7af-b170-4cb5-a16e-671efa62e605","2026-08-09"]]},"europe":{"label":"Europe ex-UK","query":"eurozone economy ECB","articles":[["Eurozone economy grew 0.4% in second quarter despite Middle East energy shock","https://www.ft.com/content/6710a395-0141-4c3f-9620-ccf249e18091","2026-07-30"],["Rising Eurozone inflation keeps rate rise on the table","https://www.ft.com/content/4ee1e8b0-3d48-44b6-8d9a-e71ce5b458bf","2026-07-31"],["‘The most difficult dilemma’","https://www.ft.com/content/d8b52073-c847-48c9-b432-50e989c4b8f0",""],["Eurozone inflation rises to 2.9% in July","https://www.ft.com/content/f54e632e-f8b4-4554-9f2e-c8a2ded0555b","2026-07-31"],["Investing in the forgotten lands","https://www.ft.com/content/c27150f4-24e7-4def-9461-0a4849a0ea81",""],["US euro sale to prop up yen blindsided ECB","https://www.ft.com/content/d9922d0b-51a0-48be-811b-42e08f90985a","2026-08-07"]]},"em":{"label":"Emerging markets","query":"emerging markets economy","articles":[["Developing countries have ‘less to fear’ from AI than rich nations","https://www.ft.com/content/33c20c4e-6a25-42da-9f1e-6664c8388957","2026-08-04"],["Beijing pledges faster spending to support China’s economy","https://www.ft.com/content/ea820de1-9113-47cc-8888-a1d307ca6f2e","2026-07-30"],["India raises $40bn from diaspora to support sagging rupee","https://www.ft.com/content/7dc728e5-74d3-45e9-bae8-c2cd6284e136","2026-08-05"],["China’s great jobs squeeze","https://www.ft.com/content/a3803e70-cb4d-444f-a31e-05be2f2c44f6","2026-08-12"],["Falling stocks, a tumbling currency and now Bank Indonesia’s governor resigns","https://www.ft.com/content/b081b88e-5f8b-4a04-9a7f-67cda439e237","2026-07-30"],["China’s monthly inflation cools as impact from Iran war eases","https://www.ft.com/content/15c56de6-c884-4c7f-a91c-6d1aa59ce1c6","2026-08-09"]]},"japan":{"label":"Japan","query":"Japan economy Bank of Japan","articles":[["Summary of opinions suggests Bank of Japan set for more tightening","https://www.ft.com/content/cfa061f4-83dc-4e4b-9a51-0142caacaff6","2026-08-10"],["Bank of Japan holds rates with hawkish guidance","https://www.ft.com/content/cb149846-6032-4883-8695-685e4e8dd886","2026-07-31"],["Solid wage growth keeps BoJ on course for tightening","https://www.ft.com/content/36b7f8a7-5062-4211-90e0-d89b6c32ca15","2026-08-05"],["Revisiting our estimates for Japan’s neutral rate","https://www.ft.com/content/6bbddd45-5f39-4140-8218-66b66b7d08a6","2026-08-07"],["Investors warn Bank of Japan faces test to inflation-fighting credibility","https://www.ft.com/content/f22b9197-db1e-4270-99c1-dcf867227aeb","2026-07-30"],["US Treasury undertakes historic intervention in yen market","https://www.ft.com/content/0f9b2fe7-bde4-4f5f-b49e-93ccb5da9ea8","2026-08-01"]]},"asia":{"label":"Asia Pacific","query":"Asia Pacific economy markets","articles":[["The renminbi’s hardest mile is only now beginning","https://www.ft.com/content/5fbd8dad-7e3d-418b-91dc-b61af9436ca6","2026-08-10"],["Falling stocks, a tumbling currency and now Bank Indonesia’s governor resigns","https://www.ft.com/content/b081b88e-5f8b-4a04-9a7f-67cda439e237","2026-07-30"],["Beijing pledges faster spending to support China’s economy","https://www.ft.com/content/ea820de1-9113-47cc-8888-a1d307ca6f2e","2026-07-30"],["China’s great jobs squeeze","https://www.ft.com/content/a3803e70-cb4d-444f-a31e-05be2f2c44f6","2026-08-12"],["After the great deleveraging","https://www.ft.com/content/4c756bd3-a7b8-45ef-aaee-1bfd48fc1439","2026-08-07"],["China’s factory activity falls for first time in five months","https://www.ft.com/content/181a7596-a891-4b88-9a22-8f447a9e8b91","2026-07-31"]]},"specialist":{"label":"Sectors & commodities","query":"commodities infrastructure sectors outlook","articles":[["Impatient yacht owners make for a hot new asset class","https://www.ft.com/content/69c573e0-9c24-451d-bb13-ae7a7c3104c0",""],["Price of niche rare earth jumps on fears of renewed Chinese export controls","https://www.ft.com/content/395650e6-7963-428b-9d86-b39c36453f5d",""],["Maersk chief calls for investment push to ease trade strains","https://www.ft.com/content/05e95d34-dcc3-437d-85cc-cc1c12fdaa23","2026-08-13"],["How will El Niño hit the world economy?","https://www.ft.com/content/4469e5f8-1839-45a5-9e1d-b63ea58b8763",""],["One of world’s biggest coal producers battles to keep lights on","https://www.ft.com/content/ff321dc1-41d6-473d-b7e7-2a58224a18e7","2026-08-09"],["A reality check is needed on Arctic shipping","https://www.ft.com/content/531b41af-3913-4ad4-baa2-7f0f55188bf8","2026-08-13"]]},"bonds":{"label":"Bonds & rates","query":"bond markets interest rates outlook","articles":[["The curious case of the Japanese government bond yields","https://www.ft.com/content/22a6bce7-ccec-4e7d-a31b-ca8d67b1bcb6","2026-08-07"],["Bond sell-off sent warning on Federal Reserve’s credibility, says top central bank official","https://www.ft.com/content/2735a2b5-db87-4a7f-9484-20c1e429267d","2026-07-31"],["Kevin Warsh’s monetary hall of mirrors","https://www.ft.com/content/d3c55471-0e3d-4798-8355-2b661880d8b9",""],["Why the yen matters","https://www.ft.com/content/f52478de-29af-41bd-a390-9f8102ac32a8","2026-08-11"],["Comms trouble","https://www.ft.com/content/061a0cf8-f40d-4c9d-b173-a9ef78ff9daa","2026-08-10"],["How to stop Kevin Warsh becoming a lame duck","https://www.ft.com/content/e4b66f65-ae0d-45cd-aede-8662de3495b1",""]]},"diversifiers":{"label":"Alternatives & real assets","query":"gold infrastructure property alternative assets","articles":[["Digital gold, copper and uranium: prospectors stake bets on metals-crypto fusion","https://www.ft.com/content/de7ded5c-23d4-44ac-8b21-bf7f5cdfefda","2026-08-13"],["Impatient yacht owners make for a hot new asset class","https://www.ft.com/content/69c573e0-9c24-451d-bb13-ae7a7c3104c0",""],["Letter: Britain can’t build without knowing what it owns","https://www.ft.com/content/6a2abb85-8cb3-4b64-9037-5b89e9b76e0e","2026-08-13"],["Barrick and Newmont gold mining truce clears way for IPO","https://www.ft.com/content/0cc564c0-b69f-4e67-ac5d-15147ee31ac1","2026-08-10"],["Goldman Sachs to acquire ETF provider Neos for up to $2.3bn","https://www.ft.com/content/ca40af31-2446-45e7-8e6a-7554d759a6ca","2026-08-12"],["UK regulator prepares framework for tokenised gold","https://www.ft.com/content/9973f186-5834-4b66-8faa-e8b2e8711466","2026-08-10"]]},"rates":{"label":"Rates & cash","query":"central banks interest rates cash","articles":[["How to stop Kevin Warsh becoming a lame duck","https://www.ft.com/content/e4b66f65-ae0d-45cd-aede-8662de3495b1",""],["Latest savings rates","https://www.ft.com/content/9f46db72-0a1e-42b0-8efe-974a04fa0fc7","2026-08-06"],["UK interest rates: Bank of England holds interest rates at 3.75%","https://www.ft.com/content/9c33426e-d413-4d9b-b429-34dea508195e",""],["Kevin Warsh’s monetary hall of mirrors","https://www.ft.com/content/d3c55471-0e3d-4798-8355-2b661880d8b9",""],["Comms trouble","https://www.ft.com/content/061a0cf8-f40d-4c9d-b173-a9ef78ff9daa","2026-08-10"],["Latest Isa rates","https://www.ft.com/content/75ba3055-625c-4cb5-894b-0696a38f5e79","2026-08-06"]]}},"summary":null};
+  // ---------- end live market data ----------
+
+  // ---------- Trustnet fund data ----------
+  // SEED_TN is keyed by ISIN: factsheet links plus cumulative performance
+  // (fund vs sector, with quartiles) and risk ratios scraped from the fund's
+  // Trustnet factsheet by the daily market-data refresh. Funds Trustnet does
+  // not cover fall back to the live Morningstar lookup below.
+
+  function tnEntry(e) {
+    if (!e.isin) return null;
+    return SEED_TN[e.isin.toUpperCase()] || null;
+  }
+
+  function tnNum(v) {
+    return typeof v === "number" && isFinite(v) ? v : null;
+  }
+
+  // Paired bars per period: the fund next to its IA sector, around a zero line.
+  function tnGroupChart(items) {
+    var W = 420, H = 200, top = 26, bottom = 40;
+    var plotH = H - top - bottom;
+    var vals = [];
+    items.forEach(function (it) {
+      if (it.fund != null) vals.push(it.fund);
+      if (it.sector != null) vals.push(it.sector);
+    });
+    if (!vals.length) return "";
+    var max = Math.max(0, Math.max.apply(null, vals));
+    var min = Math.min(0, Math.min.apply(null, vals));
+    var span = (max - min) || 1;
+    var y0 = top + (max / span) * plotH;
+    var slot = W / items.length;
+    var barW = Math.min(24, slot * 0.26);
+
+    var svg = '<svg class="mschart" viewBox="0 0 ' + W + " " + H + '" role="img">' +
+      '<line x1="0" y1="' + y0.toFixed(1) + '" x2="' + W + '" y2="' + y0.toFixed(1) +
+      '" stroke="var(--line-strong)" stroke-width="1"/>';
+    items.forEach(function (it, i) {
+      var cx = slot * i + slot / 2;
+      if (it.fund == null && it.sector == null) {
+        svg += '<text x="' + cx.toFixed(1) + '" y="' + (y0 - 7).toFixed(1) +
+          '" text-anchor="middle" class="ms-na">n/a</text>';
+      }
+      [["fund", -barW / 2 - 1], ["sector", barW / 2 + 1]].forEach(function (pair) {
+        var v = it[pair[0]];
+        if (v == null) return;
+        var h = Math.abs(v) / span * plotH;
+        var y = v >= 0 ? y0 - h : y0;
+        var x = cx + pair[1] - barW / 2;
+        var fill = pair[0] === "sector" ? "var(--ink-3)"
+          : (v >= 0 ? "var(--good)" : "var(--crit)");
+        svg += '<rect x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + barW.toFixed(1) +
+          '" height="' + Math.max(h, 1.5).toFixed(1) + '" rx="2.5" fill="' + fill + '"' +
+          (pair[0] === "sector" ? ' opacity="0.45"' : "") + "/>";
+        if (pair[0] === "fund") {
+          svg += '<text x="' + (x + barW / 2).toFixed(1) + '" y="' +
+            (v >= 0 ? y - 6 : y + h + 13).toFixed(1) + '" text-anchor="middle" class="ms-val">' +
+            (v > 0 ? "+" : "") + v.toFixed(1) + "</text>";
+        }
+      });
+      svg += '<text x="' + cx.toFixed(1) + '" y="' + (H - 22) + '" text-anchor="middle" class="ms-lab">' +
+        it.label + "</text>";
+      if (it.q) {
+        svg += '<text x="' + cx.toFixed(1) + '" y="' + (H - 8) + '" text-anchor="middle" class="ms-na">Q' +
+          it.q + "</text>";
+      }
+    });
+    return svg + "</svg>";
+  }
+
+  function tnBox(title, body, headExtra) {
+    return '<div class="box"><div class="box-head"><h3>' + title + "</h3>" + (headExtra || "") +
+      srctag("srctag-fe", "Trustnet") + '</div><div class="box-body">' + body + "</div></div>";
+  }
+
+  // Performance + Sharpe boxes from the seeded Trustnet data, or null when the
+  // fund is not covered (the caller then falls back to Morningstar).
+  function tnBoxes(e) {
+    var t = tnEntry(e);
+    if (!t || !t.perf) return null;
+
+    var asof = t.asOf ? '<span class="ms-asof">as at ' + esc(fmtDate(t.asOf)) + "</span>" : "";
+    var periods = [["3m", "p3m"], ["6m", "p6m"], ["1y", "p1y"], ["3y", "p3y"], ["5y", "p5y"]];
+
+    var perf = tnGroupChart(periods.map(function (p) {
+      return {
+        label: p[0],
+        fund: tnNum(t.perf[p[1]]),
+        sector: t.sectorPerf ? tnNum(t.sectorPerf[p[1]]) : null,
+        q: t.quartiles ? t.quartiles[p[1]] : null
+      };
+    }));
+    var perfFoot = '<div class="ms-foot">Cumulative total return %, fund (coloured) vs ' +
+      esc(t.sector || "its IA sector") + " (grey), with the quartile each period ranks in. " +
+      'Matched &ldquo;' + esc(t.name || "") + "&rdquo; on Trustnet.</div>";
+
+    var sharpe = "";
+    var sharpeFoot = "";
+    if (t.ratios) {
+      sharpe = msBarChart([
+        { label: "1y", v: tnNum(t.ratios.sharpe1y) },
+        { label: "3y", v: tnNum(t.ratios.sharpe3y) }
+      ], false);
+      var extras = [];
+      if (tnNum(t.ratios.vol3y) != null) extras.push("3y volatility " + t.ratios.vol3y.toFixed(2) + "%");
+      if (tnNum(t.ratios.alpha3y) != null) extras.push("alpha " + t.ratios.alpha3y.toFixed(2));
+      if (tnNum(t.ratios.beta3y) != null) extras.push("beta " + t.ratios.beta3y.toFixed(2));
+      sharpeFoot = '<div class="ms-foot">Risk-adjusted return - higher is better, above 1 is strong.' +
+        (extras.length ? " " + extras.join(", ") + "." : "") + "</div>";
+    }
+
+    return tnBox("Performance", (perf || '<span class="ms-foot">No return history published.</span>') + perfFoot, asof) +
+      tnBox("Sharpe ratio", (sharpe || '<span class="ms-foot">No Sharpe history on Trustnet for this share class.</span>') +
+        sharpeFoot, asof);
+  }
+
+  // Factsheet links for a fund: the provider PDF opens inside the dashboard
+  // (FE's document CDN allows embedding); the Trustnet page opens via the
+  // popup's new-tab fallback.
+  function tnDocsBox(e) {
+    var t = tnEntry(e);
+    var rows = [];
+    if (t && t.pdf) {
+      rows.push(["Provider factsheet", "PDF", t.pdf, "Opens inside the dashboard"]);
+    }
+    if (t && t.kiid) {
+      rows.push(["Key Investor Information (KIID)", "PDF", t.kiid, "Opens inside the dashboard"]);
+    }
+    if (t && t.url) {
+      rows.push(["Trustnet factsheet page", "Web", t.url, "Full factsheet on trustnet.com"]);
+    }
+    var body;
+    if (rows.length) {
+      body = '<div class="tablewrap"><table><caption class="sr">Factsheets for ' + esc(e.fund) + "</caption>" +
+        "<thead><tr><th>Document</th><th>Type</th><th>Link</th></tr></thead><tbody>" +
+        rows.map(function (r) {
+          return '<tr><td class="notescell">' + icon("paper", 12) + " " + esc(r[0]) + "</td>" +
+            "<td>" + r[1] + "</td>" +
+            '<td class="notescell"><a href="' + esc(r[2]) + '" data-lktitle="' + esc(e.fund + " - " + r[0]) +
+            '" data-tip="' + esc(r[3]) + '">Open</a></td></tr>';
+        }).join("") + "</tbody></table></div>";
+    } else {
+      body = '<div class="box-body"><span style="color:var(--ink-3)">No Trustnet match for ' +
+        esc(e.isin || "this fund") + " yet - the daily market-data refresh fills this in.</span></div>";
+    }
+    return '<div class="box"><div class="box-head"><h3>Factsheets</h3>' + srctag("srctag-fe", "Trustnet") +
+      "</div>" + body + "</div>";
+  }
+
+  function tnCovered(e) {
+    var t = tnEntry(e);
+    return !!(t && t.perf);
+  }
+
+  // Every fund in the register with a factsheet link on Trustnet, for the
+  // Fact Sheet page's fund factsheet library.
+  function tnFactsheetFunds() {
+    return fundRegister().filter(function (e) {
+      var t = tnEntry(e);
+      return !!(t && (t.pdf || t.url));
+    }).sort(function (a, b) { return a.fund.localeCompare(b.fund); });
+  }
+
+  // Fund factsheet library on the Fact Sheet page: one row per fund from the
+  // Funds section, linking the provider PDF (opens inside the dashboard) and
+  // the fund's full factsheet page on trustnet.com.
+  function tnFactsheetLibraryBox() {
+    var funds = tnFactsheetFunds();
+    if (!funds.length) return "";
+    var missing = fundRegister().length - funds.length;
+    var rows = funds.map(function (e) {
+      var t = tnEntry(e);
+      return '<tr><td class="notescell">' + icon("paper", 12) + " " + esc(e.fund) +
+        (e.isin ? '<span class="fact-sub">' + esc(e.isin) + "</span>" : "") + "</td>" +
+        "<td>" + esc(e.asset || "-") + "</td>" +
+        '<td class="notescell">' + (t.pdf
+          ? '<a href="' + esc(t.pdf) + '" data-lktitle="' + esc(e.fund + " - factsheet") +
+            '" data-tip="Provider factsheet - opens inside the dashboard">PDF</a>'
+          : '<span style="color:var(--ink-3)">-</span>') + "</td>" +
+        '<td class="notescell">' + (t.url
+          ? '<a href="' + esc(t.url) + '" data-lktitle="' + esc(e.fund + " - Trustnet factsheet") +
+            '" data-tip="Full factsheet on trustnet.com">Open</a>'
+          : '<span style="color:var(--ink-3)">-</span>') + "</td></tr>";
+    }).join("");
+    return '<div class="box" style="margin-bottom:14px"><div class="box-head">' +
+      "<h3>Fund factsheets (" + funds.length + ")</h3>" + srctag("srctag-fe", "Trustnet") + "</div>" +
+      '<div class="tablewrap"><table><caption class="sr">Trustnet factsheets for funds in the Lumin models</caption>' +
+      "<thead><tr><th>Fund</th><th>Asset class</th><th>Provider PDF</th><th>Trustnet page</th></tr></thead>" +
+      "<tbody>" + rows + "</tbody></table></div>" +
+      '<div class="box-body"><div class="ms-foot">Every fund from the Funds section with a factsheet on ' +
+      "Trustnet (FE fundinfo), matched by ISIN and refreshed by the daily market-data job." +
+      (missing > 0 ? " " + missing + " fund" + (missing === 1 ? "" : "s") +
+        " in the register " + (missing === 1 ? "has" : "have") + " no Trustnet match yet." : "") +
+      "</div></div></div>";
+  }
+
+  // Which SEED_MACRO theme a fund reads from: equity funds by region, the
+  // other asset classes by their own macro storyline.
+  function macroTheme(e) {
+    var key;
+    if (e.asset === "Equities") {
+      key = ({
+        "Global": "global", "UK": "uk", "US": "us", "Europe ex-UK": "europe",
+        "Emerging Markets": "em", "Japan": "japan", "Asia Pacific": "asia",
+        "Specialist": "specialist"
+      })[e.region || "Global"] || "global";
+    } else if (e.asset === "Fixed Interest") {
+      key = "bonds";
+    } else if (e.asset === "Diversifiers") {
+      key = "diversifiers";
+    } else if (e.asset === "Cash") {
+      key = "rates";
+    } else {
+      key = "global";
+    }
+    return (SEED_MACRO.themes && SEED_MACRO.themes[key]) || null;
   }
 
   // ---------- Morningstar live data ----------
@@ -4143,8 +4437,38 @@
       "and linked from each fund's research page.</p>" + renderDdqBox();
   }
 
+  // ---------- fund register facts (SEED_FACTS, from data/funds.json) ----------
+
+  var factsIdx = null;
+  function fundFacts(e) {
+    if (typeof SEED_FACTS === "undefined" || !SEED_FACTS.length) return null;
+    if (!factsIdx) {
+      factsIdx = { isin: {}, name: {} };
+      SEED_FACTS.forEach(function (f, i) {
+        (f.shareClasses || []).forEach(function (sc) {
+          if (sc.isin) factsIdx.isin[sc.isin.toUpperCase()] = i;
+        });
+        factsIdx.name[String(f.name || "").toLowerCase()] = i;
+      });
+    }
+    var i = e.isin ? factsIdx.isin[e.isin.toUpperCase()] : undefined;
+    if (i === undefined) {
+      // seed display names carry the share class in brackets; facts names don't
+      var base = String(e.fund || "").replace(/\s*\([^)]*\)\s*$/, "").toLowerCase();
+      i = factsIdx.name[base];
+      if (i === undefined) i = factsIdx.name[String(e.fund || "").toLowerCase()];
+    }
+    return i === undefined ? null : SEED_FACTS[i];
+  }
+
+  // Register fees/yields are decimal fractions (0.0045 = 0.45%).
+  function pctFrac(v, dp) {
+    return v == null ? "-" : fmtPct(v * 100, dp == null ? 2 : dp);
+  }
+
   function renderFundPage(e) {
     var models = visiblePortfolios().length;
+    var ff = fundFacts(e);
 
     // Weight in L50 - prefer the Core range if the fund sits in more than one L50.
     var l50 = null;
@@ -4166,30 +4490,89 @@
         : 'Not held<span class="fact-sub">No L50 model holds this fund</span>') +
       "</div>";
 
+    // second row of tiles from the workbook's fund register (SEED_FACTS)
+    if (ff) {
+      var mySc = null;
+      (ff.shareClasses || []).forEach(function (c) {
+        if (e.isin && c.isin && c.isin.toUpperCase() === e.isin.toUpperCase()) mySc = c;
+      });
+      var ocfHtml;
+      if (mySc && mySc.ocf != null) {
+        ocfHtml = pctFrac(mySc.ocf) + '<span class="fact-sub">' +
+          esc((mySc.label || "this share class") +
+              (mySc.ocfDate ? ", as at " + fmtDate(mySc.ocfDate) : "")) + "</span>";
+      } else {
+        var ocfs = (ff.shareClasses || []).map(function (c) { return c.ocf; })
+          .filter(function (v) { return v != null; });
+        ocfHtml = ocfs.length
+          ? (ocfs.length > 1 && Math.min.apply(null, ocfs) !== Math.max.apply(null, ocfs)
+              ? pctFrac(Math.min.apply(null, ocfs)) + " - " + pctFrac(Math.max.apply(null, ocfs))
+              : pctFrac(ocfs[0])) +
+            '<span class="fact-sub">across ' + ocfs.length + " share class" +
+            (ocfs.length === 1 ? "" : "es") + "</span>"
+          : 'Not recorded<span class="fact-sub">No OCF in the workbook</span>';
+      }
+      facts += '<div class="factrow">' +
+        fact("OCF", ocfHtml) +
+        fact("Yield", ff.yield != null
+          ? pctFrac(ff.yield) + '<span class="fact-sub">' +
+            esc((ff.notes || "distribution yield") +
+                (ff.yieldDate ? ", as at " + fmtDate(ff.yieldDate) : "")) + "</span>"
+          : 'Not recorded<span class="fact-sub">No yield in the workbook</span>') +
+        fact("Fund house", esc(ff.house || "-") +
+          '<span class="fact-sub">' + esc(ff.mgmt || "") +
+          (ff.mgmt && ff.region ? " &middot; " : "") +
+          esc(ff.region || "") + "</span>") +
+        "</div>";
+    }
+
+    // The macro backdrop bullets are AI-generated daily from FT coverage by
+    // the market-data refresh - deliberately macro-only, never single stocks.
+    var ai = SEED_MACRO && SEED_MACRO.summary;
+    var aiBullets = ai && ai.bullets && ai.bullets.length
+      ? ai.bullets.map(function (b) { return "<li>" + esc(b) + "</li>"; }).join("")
+      : "<li style=\"color:var(--ink-3)\">No macro summary yet - the daily market-data refresh " +
+        "(refresh-dashboard.bat) generates it from the latest FT coverage.</li>";
+
     var summary = '<div class="box"><div class="box-head"><h3>AI summary</h3>' +
-      srctag("srctag-sp", "M* / Sharepoint") + '</div><div class="box-body">' +
+      (ai && ai.generatedAt ? '<span class="ms-asof">generated ' + esc(fmtDate(String(ai.generatedAt).slice(0, 10))) + "</span>" : "") +
+      srctag("srctag-ft", "AI / FT") + '</div><div class="box-body">' +
+      '<div class="side-title">Macro backdrop</div>' +
+      '<ul class="bullets">' + aiBullets + "</ul>" +
+      '<div class="side-title" style="margin-top:10px">In the Lumin models</div>' +
       '<ul class="bullets">' +
       "<li>Held in <strong>" + e.count + "</strong> of the " + models + " Lumin models" +
       (e.ranges.length ? " (" + e.ranges.map(esc).join(", ") + ")" : "") + ".</li>" +
       "<li>Weights range from " + fmtPct(e.min, 2) + " to " + fmtPct(e.max, 2) +
       ", averaging " + fmtPct(e.avg, 2) + ".</li>" +
       (latest ? "<li>Latest model allocation dated " + esc(fmtDate(latest)) + ".</li>" : "") +
-      "<li>Flows have been XX over past 12m and 36m.</li>" +
-      "<li>X% dividend yield.</li>" +
-      "</ul></div></div>";
+      (ff && ff.yield != null
+        ? "<li><strong>" + pctFrac(ff.yield) + "</strong> yield" +
+          (ff.yieldDate ? " as at " + esc(fmtDate(ff.yieldDate)) : "") + ".</li>"
+        : "") +
+      "</ul>" +
+      '<div class="ms-foot" style="margin-top:8px">AI-generated content - review before it informs ' +
+      "any regulated activity or client communication.</div>" +
+      "</div></div>";
 
+    var theme = macroTheme(e);
+    var macroBody;
+    if (theme && theme.articles && theme.articles.length) {
+      macroBody = '<div class="side-title">' + esc(theme.label) + "</div>" +
+        '<div class="wgrid">' + theme.articles.map(function (a) {
+          return '<a class="wcell" href="' + esc(a[1]) + '" data-lktitle="' + esc(a[0]) + '">' +
+            "<span>" + esc(a[0]) + '</span><span class="w">' + esc(a[2] ? fmtDate(a[2]) : "FT") + "</span></a>";
+        }).join("") + "</div>" +
+        '<div class="ms-foot" style="margin-top:8px">Latest Financial Times coverage relevant to this ' +
+        "fund's corner of the market" +
+        (SEED_MACRO.fetchedAt ? ", refreshed " + esc(fmtDate(String(SEED_MACRO.fetchedAt).slice(0, 10))) : "") +
+        ". FT articles need an FT subscription to read in full.</div>";
+    } else {
+      macroBody = '<span style="color:var(--ink-3)">No FT articles pulled yet - the daily ' +
+        "market-data refresh fills this in.</span>";
+    }
     var macro = '<div class="box"><div class="box-head"><h3>Macro environment</h3>' +
-      srctag("srctag-ft", "FT") + '</div><div class="box-body"><ul class="bullets">' +
-      "<li>Fund expected to perform strongly in inflationary periods<ul>" +
-      "<li>Latest US print +xx% vs expectation</li>" +
-      "<li>Latest UK print +xx% vs expectation</li></ul></li>" +
-      "<li>Fund expected to perform in times of growth<ul>" +
-      "<li>US jobs data +xxk vs expectation</li>" +
-      "<li>US mortgage applications +xx% vs expectation</li>" +
-      "<li>US home sales +xx% vs expectation</li>" +
-      "<li>US PMI +xx% vs expectation</li>" +
-      "<li>More forward / backward looking indicators...</li></ul></li>" +
-      "</ul></div></div>";
+      srctag("srctag-ft", "FT") + '</div><div class="box-body">' + macroBody + "</div></div>";
 
     var noteRows = (e.notes || []).map(function (n) {
       var isDoc = /\.[a-z0-9]{2,5}$/i.test(n[1]);
@@ -4205,10 +4588,44 @@
         : '<div class="box-body"><span style="color:var(--ink-3)">No meeting notes filed for this fund yet.</span></div>') +
       "</div>";
 
+    // Share-class detail from the workbook's fund register, when seeded.
+    var registerBox = "";
+    if (ff) {
+      var scRows = (ff.shareClasses || []).map(function (c) {
+        return "<tr><td>" + esc(c.label || "-") + '</td><td class="isin">' + esc(c.isin || "-") + "</td>" +
+          '<td class="num">' + pctFrac(c.ocf) + '</td><td class="num">' + pctFrac(c.amc) + "</td>" +
+          "<td>" + esc((c.platforms || []).join(", ") || "-") + "</td></tr>";
+      }).join("");
+      var srcSheet = (typeof SEED_FACTS_META !== "undefined" && SEED_FACTS_META.sourceSheet)
+        ? SEED_FACTS_META.sourceSheet : "";
+      registerBox = '<div class="box"><div class="box-head"><h3>Fund register</h3>' +
+        srctag("srctag-sp", "Workbook") + "</div>" +
+        (scRows
+          ? '<div class="tablewrap"><table><caption class="sr">Share classes of ' + esc(e.fund) + "</caption>" +
+            '<thead><tr><th>Share class</th><th>ISIN</th><th class="num">OCF</th><th class="num">AMC</th><th>Platforms</th></tr></thead>' +
+            "<tbody>" + scRows + "</tbody></table></div>"
+          : "") +
+        '<div class="box-body" style="padding-top:12px">' +
+        (ff.website
+          ? '<a class="noteslink" href="' + esc(ff.website) + '" target="_blank" rel="noopener" ' +
+            'style="color:var(--accent)">' + esc(ff.house || "Fund house") + " website</a>"
+          : "") +
+        ((ff.contactPhone || ff.contactEmail)
+          ? '<span style="font-size:12.5px">' + esc([ff.contactPhone, ff.contactEmail]
+              .filter(function (x) { return x; }).join(" · ")) + "</span>"
+          : "") +
+        (srcSheet
+          ? '<span style="color:var(--ink-3);font-size:12px">Source: ' + esc(srcSheet) +
+            " via the fund register</span>"
+          : "") +
+        "</div></div>";
+    }
+
     return crumb + facts +
       '<div class="fundgrid">' +
-      '<div class="fundcol">' + summary + '<div class="ms-wrap" id="msBoxes">' + msBoxes(e) + "</div></div>" +
-      '<div class="fundcol">' + macro + renderDdqBox() + notesBox + "</div>" +
+      '<div class="fundcol">' + summary +
+      '<div class="ms-wrap" id="msBoxes">' + (tnBoxes(e) || msBoxes(e)) + "</div>" + notesBox + "</div>" +
+      '<div class="fundcol">' + tnDocsBox(e) + registerBox + macro + renderDdqBox() + "</div>" +
       "</div>";
   }
 
@@ -4340,9 +4757,33 @@
     return (bytes / 1048576).toFixed(1) + " MB";
   }
 
+  // Read-only listing of what the document scanner found on SharePoint for a
+  // section (SEED_DOCS, from data/documents_index.json). New files dropped in
+  // the right SharePoint folder appear here at the next refresh - no manual
+  // attach step. User-attached workspace documents render separately below.
+  function seededDocsBox(key) {
+    if (typeof SEED_DOCS === "undefined" || !SEED_DOCS[key] || !SEED_DOCS[key].length) return "";
+    var rows = SEED_DOCS[key].map(function (d) {
+      return "<tr><td>" + esc(d.modified ? fmtDate(String(d.modified).slice(0, 10)) : "-") + "</td>" +
+        "<td>" + esc(d.title) + (d.folder ? '<span class="fact-sub">' + esc(d.folder) + "</span>" : "") + "</td>" +
+        '<td class="notescell"><a href="' + esc(d.url) + '" target="_blank" rel="noopener">' +
+        icon("ext", 12) + " Open on SharePoint</a></td></tr>";
+    }).join("");
+    var scanned = (typeof SEED_DOCS_META !== "undefined" && SEED_DOCS_META.scannedAt)
+      ? SEED_DOCS_META.scannedAt : "";
+    return '<div class="box" style="margin-bottom:14px"><div class="box-head">' +
+      "<h3>On SharePoint (" + SEED_DOCS[key].length + ")</h3>" + srctag("srctag-sp", "Sharepoint") +
+      (scanned ? '<span class="pill" style="margin-left:auto" data-tip="Rescanned on every dashboard refresh">scanned ' +
+        esc(scanned) + "</span>" : "") + "</div>" +
+      '<div class="tablewrap"><table><caption class="sr">Documents found on SharePoint</caption>' +
+      "<thead><tr><th>Modified</th><th>Document</th><th>Link</th></tr></thead>" +
+      "<tbody>" + rows + "</tbody></table></div></div>";
+  }
+
   function renderContentSection(key) {
     var cfg = CONTENT_SECTIONS[key];
     var entries = contentEntries(key);
+    var seeded = seededDocsBox(key);
 
     var head = '<div class="panel-head"><h2>' + esc(cfg.label) + " (" + entries.length + ")</h2>" +
       '<button class="btn" data-act="add-content" data-key="' + key + '">' + icon("upload") + " " + esc(cfg.verb) + "</button></div>" +
@@ -4354,11 +4795,12 @@
       "</p>";
 
     if (!entries.length) {
-      return head + '<div class="empty">Nothing filed here yet - use "' + esc(cfg.verb) + '" to add the first document.</div>';
+      return head + seeded +
+        '<div class="empty">Nothing filed here yet - use "' + esc(cfg.verb) + '" to add the first document.</div>';
     }
 
     var rows = contentRows(entries, "arm-content", 'data-key="' + key + '"');
-    return head + entryTable(cfg.label, rows);
+    return head + seeded + entryTable(cfg.label, rows);
   }
 
   // Shared by the Investment Content sections and the year folders: one row
@@ -4396,8 +4838,8 @@
   var FOLDER_SECTIONS = {
     factsheet: {
       label: "Fact Sheet",
-      blurb: "Model portfolio fact sheets filed by year. Open a year, then attach the final document or add " +
-        "a link to the master copy on SharePoint."
+      blurb: "Trustnet factsheets for every fund in the Lumin models, plus the model portfolio fact sheets " +
+        "filed by year. Open a year, then attach the final document or add a link to the master copy on SharePoint."
     },
     quant: {
       label: "Quant Scores",
@@ -4436,8 +4878,10 @@
       (cfg.site ? ' <a href="' + cfg.site + '" target="_blank" rel="noopener">' + esc(cfg.siteLabel) + "</a>." : "") +
       "</p>";
 
+    var seeded = seededDocsBox(key) + (key === "factsheet" ? tnFactsheetLibraryBox() : "");
+
     if (!folders.length) {
-      return head + '<div class="empty">No folders yet - use "New folder" to create the first one.</div>';
+      return head + seeded + '<div class="empty">No folders yet - use "New folder" to create the first one.</div>';
     }
 
     var cards = folders.map(function (f) {
@@ -4447,7 +4891,7 @@
         "<span>" + (n ? n + " document" + (n === 1 ? "" : "s") : "Empty") + "</span></button>";
     }).join("");
 
-    return head + '<div class="foldergrid">' + cards + "</div>";
+    return head + seeded + '<div class="foldergrid">' + cards + "</div>";
   }
 
   function renderFolderDetail(key, cfg, folder) {
@@ -4921,7 +5365,7 @@
         ? fundRegister().filter(function (x) { return x.key === view.fundPage; })[0] || null
         : null;
       main.innerHTML = fp ? renderFundPage(fp) : renderFunds();
-      if (fp) ensureMstar(fp);
+      if (fp && !tnCovered(fp)) ensureMstar(fp);   // Morningstar only as fallback
       if (!fp) restoreSearchFocus();
       return;
     }
@@ -5088,6 +5532,79 @@
     }, 2600);
   }
 
+  // ---------- in-dashboard link viewer ----------
+  // Every external link opens in a popup over the dashboard instead of a new
+  // tab. Sites that refuse to be embedded (X-Frame-Options / CSP) get a clean
+  // fallback panel; the header always offers Open in new tab as an escape
+  // hatch. Ctrl/Cmd-click still opens a real tab.
+
+  var FRAME_BLOCKED = [
+    "sharepoint.com", "office.com", "live.com", "office365.com",
+    "ft.com", "trustnet.com", "luminwealth.co.uk", "morningstar.co.uk", "google.com"
+  ];
+
+  function linkHost(url) {
+    try { return new URL(url).hostname; } catch (e) { return ""; }
+  }
+
+  function frameBlocked(url) {
+    var h = linkHost(url).toLowerCase();
+    if (!h) return false;
+    return FRAME_BLOCKED.some(function (d) { return h === d || h.slice(-d.length - 1) === "." + d; });
+  }
+
+  var linkDlg = document.getElementById("linkDlg");
+
+  function openLinkPopup(url, title) {
+    var host = linkHost(url);
+    document.getElementById("linkDlgTitle").textContent = title || host;
+    document.getElementById("linkDlgDomain").textContent = host;
+    document.getElementById("linkDlgExt").href = url;
+    var body = document.getElementById("linkDlgBody");
+    if (frameBlocked(url)) {
+      body.innerHTML = '<div class="linkdlg-blocked">' + icon("ext", 24) +
+        "<strong>" + esc(title || host) + "</strong>" +
+        "<span>" + esc(host) + " does not allow its pages to be shown inside another site, " +
+        "so there is no preview here. Open it in its own tab instead - " +
+        "SharePoint and Office links also need you to be signed in.</span>" +
+        '<a class="btn" href="' + esc(url) + '" target="_blank" rel="noopener" data-newtab>' +
+        icon("ext", 13) + " Open in new tab</a></div>";
+    } else {
+      body.innerHTML = '<iframe src="' + esc(url) + '" title="' + esc(title || host) +
+        '" referrerpolicy="no-referrer" allow="fullscreen"></iframe>';
+    }
+    if (!linkDlg.open) linkDlg.showModal();
+  }
+
+  function closeLinkPopup() {
+    if (linkDlg.open) linkDlg.close();
+    document.getElementById("linkDlgBody").innerHTML = "";
+  }
+
+  document.getElementById("linkDlgClose").addEventListener("click", closeLinkPopup);
+  linkDlg.addEventListener("close", function () {
+    document.getElementById("linkDlgBody").innerHTML = "";
+  });
+  linkDlg.addEventListener("click", function (e) {
+    if (e.target === linkDlg) closeLinkPopup();   // backdrop click
+  });
+  document.getElementById("linkDlgExt").addEventListener("click", function () {
+    setTimeout(closeLinkPopup, 50);
+  });
+
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest ? e.target.closest("a[href]") : null;
+    if (!a) return;
+    if (a.hasAttribute("download") || a.hasAttribute("data-newtab")) return;
+    if (a.id === "linkDlgExt") return;
+    if (!/^https?:\/\//i.test(a.href)) return;    // file://, mailto:, blob:, # stay native
+    if (e.ctrlKey || e.metaKey || e.shiftKey || e.button !== 0) return;
+    e.preventDefault();
+    var t = a.getAttribute("data-lktitle") || (a.textContent || "").trim();
+    if (!t || t.length < 4 || /^(link|open|view|here)\b/i.test(t)) t = linkHost(a.href);
+    openLinkPopup(a.href, t);
+  });
+
   // ---------- events ----------
 
   document.getElementById("sidebarNav").addEventListener("click", function (e) {
@@ -5107,23 +5624,21 @@
     render();
   });
 
+  // Refresh pulls in everything new at once: colleague edits from the
+  // workspace folder, then a full reload so freshly spliced data (model
+  // weights, Trustnet figures, FT links, AI summary - rewritten daily by
+  // refresh-dashboard.bat / the scheduled job) and cleared live-data caches
+  // all come back current.
   document.getElementById("refreshBtn").addEventListener("click", function () {
+    try { localStorage.removeItem(MS_KEY); } catch (e) {}
     if (dirHandle) {
       readFolder().then(function (parsed) {
-        var merged = mergeDisk(parsed);
-        view.armed = null;
-        render();
-        toast(merged
-          ? "Merged " + merged + " update" + (merged === 1 ? "" : "s") + " from the workspace folder"
-          : "Workspace folder is up to date");
-      }).catch(function () { toast("Could not read the workspace folder"); });
+        mergeDisk(parsed);
+        window.location.reload();
+      }).catch(function () { window.location.reload(); });
       return;
     }
-    loadState();
-    document.getElementById("initials").value = state.initials;
-    view.armed = null;
-    render();
-    toast("Reloaded from this browser's saved copy");
+    window.location.reload();
   });
 
   document.getElementById("initials").addEventListener("input", function (e) {
@@ -5760,6 +6275,19 @@
   // Reads SEED_META (written by refresh_dashboard.py) so the dashboard itself
   // says when its model data was last refreshed - and goes amber/red when a
   // refresh is overdue, instead of silently showing stale weights.
+
+  // Market data (Trustnet / FT / AI summary) is meant to be daily - flag it
+  // once it is more than three days old.
+  function marketFreshness() {
+    var meta = (typeof SEED_TN_META !== "undefined") ? SEED_TN_META : null;
+    if (!meta || !meta.fetchedAt) {
+      return " &middot; market data not fetched yet";
+    }
+    var days = Math.floor((Date.now() - new Date(String(meta.fetchedAt).replace(" ", "T"))) / 864e5);
+    return " &middot; market data " + esc(String(meta.fetchedAt).slice(0, 10)) +
+      (days > 3 ? " <strong>(stale - " + days + "d old)</strong>" : "") +
+      (meta.funds != null ? " &middot; " + meta.funds + " funds on Trustnet" : "");
+  }
   function renderFreshness() {
     var el = document.createElement("div");
     var meta = (typeof SEED_META !== "undefined") ? SEED_META : null;
@@ -5778,7 +6306,8 @@
         " &middot; latest rebalance " + esc(fmtDate(meta.latest)) +
         " &middot; workbook saved " + esc(meta.savedAt || "?") +
         " &middot; refreshed " + esc(meta.refreshedAt) +
-        (days > 0 ? " (" + days + "d ago)" : "") + "</span>";
+        (days > 0 ? " (" + days + "d ago)" : "") +
+        marketFreshness() + "</span>";
     }
     var content = document.querySelector(".content");
     content.insertBefore(el, document.getElementById("main"));
