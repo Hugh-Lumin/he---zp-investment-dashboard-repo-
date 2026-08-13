@@ -13,13 +13,18 @@ from pathlib import Path
 
 import openpyxl
 
-DEFAULT_WB = (
-    r"C:\Users\HughEdwards\OneDrive - Lumin Wealth Management"
-    r"\Investment team work\Copy of Model Portfolio Analysis - V4.3.11 - Copy.xlsx"
-)
+# Workbook location and the newest 'Model Weights' sheet are derived at runtime
+# (shared with refresh_dashboard.py) so a new rebalance never goes stale here.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import refresh_dashboard as rd
 
-CORE_SHEET = "Model Weights - From 01.05.26"
-CORE_EFFECTIVE = "2026-05-02"
+
+def latest_core_sheet(wb):
+    dated = [(rd.sheet_date(s), s) for s in wb.sheetnames
+             if s.lower().startswith("model weights") and rd.sheet_date(s)]
+    if not dated:
+        raise SystemExit("no dated 'Model Weights' sheets found - is this the right workbook?")
+    return max(dated)  # (iso date, sheet name)
 
 # Fund house -> public website. Links go to the house homepage / UK fund centre;
 # per-fund tearsheets use the FT link built from the ISIN instead (always resolvable).
@@ -128,8 +133,13 @@ def region_from_exposure(vec):
 
 
 def main():
-    wb_path = sys.argv[1] if len(sys.argv) > 1 else DEFAULT_WB
+    wb_path = sys.argv[1] if len(sys.argv) > 1 else rd.locate_workbook()
+    if not wb_path or not Path(wb_path).exists():
+        sys.exit(rd.SYNC_HELP)
+    print(f"workbook: {wb_path}")
     wb = openpyxl.load_workbook(wb_path, read_only=True, data_only=True)
+    core_effective, core_sheet = latest_core_sheet(wb)
+    print(f"core sheet: {core_sheet} (weights from {core_effective})")
 
     # ---- 1. Master Holdings List: metadata per security (keyed by UNID and ISIN)
     ws = wb["Master Holdings List"]
@@ -183,7 +193,7 @@ def main():
             return 0.0
 
     # Core: any weight > 0 in any model column
-    ws = wb[CORE_SHEET]
+    ws = wb[core_sheet]
     rows = ws.iter_rows(values_only=True)
     hdr = [norm(h) for h in next(rows)]
     for r in rows:
@@ -311,8 +321,8 @@ def main():
 
     payload = {
         "generatedAt": datetime.now().strftime("%Y-%m-%d %H:%M"),
-        "sourceSheet": CORE_SHEET,
-        "effectiveDate": CORE_EFFECTIVE,
+        "sourceSheet": core_sheet,
+        "effectiveDate": core_effective,
         "fundCount": len(out),
         "funds": out,
     }

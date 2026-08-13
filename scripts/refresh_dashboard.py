@@ -24,23 +24,30 @@ import warnings
 warnings.filterwarnings("ignore")
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-# Dashboard copies to update. Missing ones are skipped with a note.
-TARGETS = [
-    os.path.join(REPO, "lumin-portfolios.html"),
-    r"C:\Users\HUGHED~1\AppData\Local\Temp\claude\C--Users-HughEdwards--claude"
-    r"\8b6eaab9-6862-4c2b-b585-b8ff103dbc8a\scratchpad\lumin-portfolios.html",
-]
+HOME = os.path.expanduser("~")
 
 NOTES_PATH = os.path.join(REPO, "data", "notes_map.json")
+RUN_LOG = os.path.join(REPO, "data", "run_log.json")
 
-# Where the OneDrive client puts SharePoint content on this machine. The first
-# pattern is a synced team-site library, the second is the personal OneDrive
-# (covers 'Add shortcut to OneDrive').
+# Where the OneDrive client puts SharePoint content, for whichever user runs
+# this. The first pattern is a synced team-site library, the second is the
+# personal OneDrive (covers 'Add shortcut to OneDrive').
 WORKBOOK_GLOBS = [
-    r"C:\Users\HughEdwards\Lumin Wealth Management\**\*Model Portfolio Analysis*.xlsx",
-    r"C:\Users\HughEdwards\OneDrive - Lumin Wealth Management\**\*Model Portfolio Analysis*.xlsx",
+    os.path.join(HOME, "Lumin Wealth Management", "**", "*Model Portfolio Analysis*.xlsx"),
+    os.path.join(HOME, "OneDrive - Lumin Wealth Management", "**", "*Model Portfolio Analysis*.xlsx"),
 ]
+
+
+def targets():
+    """Dashboard copies to update: the repo file, plus any synced SharePoint
+    copy (e.g. a Dashboard folder the team syncs) found on this machine."""
+    found = [os.path.join(REPO, "lumin-portfolios.html")]
+    for root in ("Lumin Wealth Management", "OneDrive - Lumin Wealth Management"):
+        pat = os.path.join(HOME, root, "**", "lumin-portfolios.html")
+        for p in glob.glob(pat, recursive=True):
+            if p not in found:
+                found.append(p)
+    return found
 
 SYNC_HELP = """\
 No synced copy of the workbook was found on this machine.
@@ -261,6 +268,19 @@ def extract(path):
 
     # ------------- Core: every dated 'Model Weights' sheet, every platform column
     sheets = [s for s in wb.sheetnames if s.lower().startswith("model weights")]
+
+    # Gate: a 'Model Weights' sheet whose name doesn't parse to a date would be
+    # silently dropped from history. Fail loudly instead - fix the sheet name
+    # (Model Weights - From DD.MM.YYYY) or add it to DATE_OVERRIDE.
+    unparseable = [s for s in sheets if sheet_date(s) is None and s not in DATE_OVERRIDE]
+    if unparseable:
+        raise SystemExit(
+            "REFUSING TO RUN - these 'Model Weights' sheets have no parseable date "
+            "and would be silently lost from the rebalance history:\n  "
+            + "\n  ".join(unparseable)
+            + "\nRename them 'Model Weights - From DD.MM.YYYY' (include the year) "
+            "or add an entry to DATE_OVERRIDE in this script.")
+
     core_dates = []
     for sh in sheets:
         date = sheet_date(sh)
@@ -390,7 +410,7 @@ def extract(path):
     return out, warns
 
 
-def emit_block(models_in, notes_map, source_label):
+def emit_block(models_in, notes_map, source_label, meta=None):
     """Compact-encode the models + manager notes into the SEED_* JS block."""
     # The platform list keeps every platform seen in the workbook (the UI offers
     # them all), even though Core models are seeded from the canonical one only.
@@ -490,6 +510,11 @@ def emit_block(models_in, notes_map, source_label):
         b.write("    ]],\n")
     b.write("  ];\n")
 
+    meta = dict(meta or {})
+    meta["latest"] = latest
+    b.write("\n  // Provenance shown in the freshness banner. Written by refresh_dashboard.py.\n")
+    b.write("  var SEED_META = " + j(meta) + ";\n")
+
     b.write("""
   var SEED_VERSION = "v3-%s";
 
@@ -550,12 +575,60 @@ def splice(target, block):
     return len(html)
 
 
+def check_regression(stats, allow_shrink):
+    """Compare against the last run: fewer models/snapshots/funds than before
+    usually means a renamed sheet or broken column, not a real change."""
+    if not os.path.exists(RUN_LOG):
+        return []
+    try:
+        runs = json.load(open(RUN_LOG, encoding="utf-8"))
+    except ValueError:
+        return []
+    if not runs:
+        return []
+    prev = runs[-1]
+    problems = []
+    for k in ("models", "snapshots", "funds"):
+        if stats[k] < prev.get(k, 0):
+            problems.append("%s fell from %d to %d since the last run (%s)"
+                            % (k, prev.get(k, 0), stats[k], prev.get("refreshedAt", "?")))
+    if problems and not allow_shrink:
+        raise SystemExit(
+            "REFUSING TO PUBLISH - the extract shrank vs the previous run:\n  "
+            + "\n  ".join(problems)
+            + "\nIf this shrink is intentional (e.g. a model was retired), "
+            "re-run with --allow-shrink. Otherwise check the workbook for a "
+            "renamed sheet or a broken column before publishing.")
+    return problems
+
+
+def log_run(stats, meta, warns):
+    runs = []
+    if os.path.exists(RUN_LOG):
+        try:
+            runs = json.load(open(RUN_LOG, encoding="utf-8"))
+        except ValueError:
+            runs = []
+    entry = {k: stats[k] for k in ("funds", "dates", "platforms", "models", "snapshots", "notes")}
+    entry.update({"latest": stats["latest"], "warnings": len(warns),
+                  "droppedEmpty": len(stats["dropped"])})
+    entry.update(meta)
+    runs.append(entry)
+    os.makedirs(os.path.dirname(RUN_LOG), exist_ok=True)
+    with open(RUN_LOG, "w", encoding="utf-8") as f:
+        json.dump(runs[-200:], f, indent=1)
+
+
 def main():
     argv = sys.argv[1:]
+    allow_shrink = "--allow-shrink" in argv
+    argv = [a for a in argv if a != "--allow-shrink"]
 
     if argv and argv[0] == "--from-json":
         models, warns = json.load(open(argv[1], encoding="utf-8")), []
         source_label = "Extracted from cached full.json (debug run)."
+        meta = {"workbook": os.path.basename(argv[1]), "savedAt": "",
+                "refreshedAt": datetime.datetime.now().strftime("%Y-%m-%d %H:%M")}
     else:
         path = argv[0] if argv else locate_workbook()
         if not path or not os.path.exists(path):
@@ -564,17 +637,18 @@ def main():
         print("workbook: %s" % path)
         print("saved:    %s" % mtime.strftime("%Y-%m-%d %H:%M"))
         models, warns = extract(path)
+        meta = {"workbook": os.path.basename(path),
+                "savedAt": mtime.strftime("%Y-%m-%d %H:%M"),
+                "refreshedAt": datetime.datetime.now().strftime("%Y-%m-%d %H:%M")}
         source_label = ("Extracted from '%s' (SharePoint via OneDrive sync), "
                         "workbook saved %s, refreshed %s." % (
-                            os.path.basename(path),
-                            mtime.strftime("%Y-%m-%d %H:%M"),
-                            datetime.datetime.now().strftime("%Y-%m-%d %H:%M")))
+                            meta["workbook"], meta["savedAt"], meta["refreshedAt"]))
 
     notes_map = json.load(open(NOTES_PATH, encoding="utf-8")) if os.path.exists(NOTES_PATH) else {}
     if not notes_map:
         print("note: %s missing - manager-notes links will be empty" % NOTES_PATH)
 
-    block, stats = emit_block(models, notes_map, source_label)
+    block, stats = emit_block(models, notes_map, source_label, meta)
 
     print("funds %(funds)d | dates %(dates)d | platforms %(platforms)d | "
           "models %(models)d | snapshots %(snapshots)d | notes links %(notes)d" % stats)
@@ -582,8 +656,10 @@ def main():
     if stats["dropped"]:
         print("dropped empty snapshots: %d" % len(stats["dropped"]))
 
+    check_regression(stats, allow_shrink)
+
     updated = 0
-    for t in TARGETS:
+    for t in targets():
         if not os.path.exists(t):
             print("skipped (missing): %s" % t)
             continue
@@ -592,6 +668,8 @@ def main():
         print("updated: %s (%.0f KB)" % (t, size / 1024))
     if not updated:
         sys.exit("no dashboard HTML files found to update")
+
+    log_run(stats, meta, warns)
 
     if warns:
         print("\nWARNINGS (%d):" % len(warns))

@@ -1,0 +1,30 @@
+[
+ {
+  "funds": 170,
+  "dates": 41,
+  "platforms": 17,
+  "models": 75,
+  "snapshots": 1358,
+  "notes": 33,
+  "latest": "2026-08-03",
+  "warnings": 61,
+  "droppedEmpty": 5,
+  "workbook": "Copy of Model Portfolio Analysis - V4.3.11.xlsx",
+  "savedAt": "2026-08-13 09:20",
+  "refreshedAt": "2026-08-13 11:54"
+ },
+ {
+  "funds": 170,
+  "dates": 41,
+  "platforms": 17,
+  "models": 75,
+  "snapshots": 1358,
+  "notes": 33,
+  "latest": "2026-08-03",
+  "warnings": 61,
+  "droppedEmpty": 5,
+  "workbook": "Copy of Model Portfolio Analysis - V4.3.11.xlsx",
+  "savedAt": "2026-08-13 12:00",
+  "refreshedAt": "2026-08-13 12:17"
+ }
+]
