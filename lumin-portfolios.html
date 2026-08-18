@@ -3556,7 +3556,10 @@
       "lumin-news": LUMIN_NEWS_ISSUES.length
     };
 
-    document.getElementById("sidebarNav").innerHTML = NAV.map(function (g) {
+    var homeItem = '<button class="navitem" aria-current="' + (view.tab === "home") +
+      '" data-tab="home"><span>Home</span></button>';
+
+    document.getElementById("sidebarNav").innerHTML = homeItem + NAV.map(function (g) {
       var open = !!view.navOpen[g.id];
       var items = g.items.map(function (t) {
         var n = counts[t.id];
@@ -3597,6 +3600,55 @@
       "refreshed daily by the market-data job, with a live Morningstar lookup as fallback for uncovered funds; " +
       "all are indicative only - verify against FE Analytics before relying on them. " +
       "AI-generated content must be reviewed by a qualified individual before informing any regulated activity or client communication.";
+  }
+
+  function renderHome() {
+    var months = ["January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"];
+    var latest = (typeof SEED_META !== "undefined") ? SEED_META.latest : null;
+    var latestFmt = "-";
+    if (latest) {
+      var p = latest.split("-");
+      latestFmt = Number(p[2]) + " " + months[Number(p[1]) - 1] + " " + p[0];
+    }
+
+    var boxes = ["Latest rebalance", "Current holdings", "Watchlist", "Funds needing a meeting"]
+      .map(function (title) {
+        var body = "";
+        if (title === "Latest rebalance") {
+          body = '<div class="fact-value">' + latestFmt + "</div>" +
+            '<span class="fact-sub">Most recent model rebalance</span>';
+        } else if (title === "Current holdings") {
+          body = '<div class="fact-value">' + fundRegister().length + "</div>" +
+            '<span class="fact-sub">Distinct funds held across models</span>';
+        } else if (title === "Watchlist") {
+          body = '<div class="fact-value">0</div>' +
+            '<span class="fact-sub">No watchlist data yet</span>';
+        } else if (title === "Funds needing a meeting") {
+          var dotColor = { "Fund A": "#c93b3b", "Fund B": "#d99f1b",
+                           "Fund C": "#2e9e57", "Fund D": "#d99f1b" };
+          var rows = ["Fund A", "Fund B", "Fund C", "Fund D"].map(function (name) {
+            return '<div style="display:flex;align-items:center;gap:8px">' +
+              '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;' +
+              "background:" + dotColor[name] + ';flex:none"></span>' +
+              "<span>" + name + "</span></div>";
+          }).join("");
+          body = '<div class="note note-warn"><span>Preview - sample data, pending backend</span></div>' +
+            '<div style="display:flex;flex-direction:column;gap:8px">' + rows + "</div>" +
+            '<span class="fact-sub" style="margin-top:8px">Red - no meeting in 12+ months ' +
+            "· Amber - 6 to 12 months · Green - within 6 months</span>";
+        }
+        return '<div class="box"><div class="box-head"><h3>' + title + "</h3></div>" +
+          '<div class="box-body">' + body + "</div></div>";
+      }).join("");
+
+    document.getElementById("main").innerHTML =
+      '<h1>Home</h1><p class="blurb">Welcome to the Lumin Investment Hub - a single place to see the model ' +
+      "portfolios, the funds within them, and the research and meeting activity around them. " +
+      "This overview surfaces the most recent rebalance, how many distinct funds are currently " +
+      "held, and which funds are due a manager meeting. Use the tabs on the left to open the " +
+      "portfolios, individual fund research pages, and the team's notes and tasks.</p>" +
+      '<div class="cards" style="grid-template-columns:repeat(2,1fr);gap:8px">' + boxes + "</div>";
   }
 
   function renderPlaceholder(label) {
@@ -4624,8 +4676,8 @@
     return crumb + facts +
       '<div class="fundgrid">' +
       '<div class="fundcol">' + summary +
-      '<div class="ms-wrap" id="msBoxes">' + (tnBoxes(e) || msBoxes(e)) + "</div>" + notesBox + "</div>" +
-      '<div class="fundcol">' + tnDocsBox(e) + registerBox + macro + renderDdqBox() + "</div>" +
+      '<div class="ms-wrap" id="msBoxes">' + (tnBoxes(e) || msBoxes(e)) + "</div>" + "</div>" +
+      '<div class="fundcol">' + tnDocsBox(e) + registerBox + macro + notesBox + renderDdqBox() + "</div>" +
       "</div>";
   }
 
@@ -5359,6 +5411,8 @@
   function render() {
     renderNav();
     var main = document.getElementById("main");
+
+    if (view.tab === "home") { renderHome(); return; }
 
     if (view.tab === "funds") {
       var fp = view.fundPage
